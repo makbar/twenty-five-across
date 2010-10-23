@@ -1,12 +1,9 @@
 package twentyfiveacross.servlet;
 
 import java.io.PrintWriter;
-import java.sql.Connection;
-
-import javax.servlet.ServletOutputStream;
 
 public class WebPages {
-    /* Top level frameset, divides the page in two rows: header and main. */
+    /** Top level frameset, divides the page in two rows: header and main. */
     public static void printFrameset(PrintWriter out) throws Exception {
         out.println("<html>");
         out.println("<head>");
@@ -19,7 +16,7 @@ public class WebPages {
         out.println("</html>");
     }
 
-    /* Draws header frame. */
+    /** Draw the header frame. */
     public static void printHeader(PrintWriter out) throws Exception {
         out.println("<html>");
         out.println("<head>");
@@ -47,6 +44,7 @@ public class WebPages {
         out.println("</html>");
     }
 
+    /** Draw the header frame. */
     public static void printMain(PrintWriter out) throws Exception {
         out.println("<html>");
         out.println("<head>");
@@ -57,14 +55,8 @@ public class WebPages {
         out.println("</html>");
     }
 
-    /* Print the login page. */
-    public static void printLogin(PrintWriter out,
-                                  boolean failedBefore) throws Exception {
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<title>25 Across Login</title>");
-        out.println("<link rel='stylesheet' href='style.css' type='text/css'>");
-        out.println("</head>");
+    /** Print all the style specifications. */
+    public static void printStyles(PrintWriter out) {
         out.println("<style type='text/css'>");
         out.println("BODY {");
         out.println("   font-family:Arial, Helvetica, sans-serif;");
@@ -83,25 +75,35 @@ public class WebPages {
         out.println("   font-size:14pt;");
         out.println("}");
         out.println("</style>");
+    }
+
+
+    /** Print the login page. */
+    public static void printLogin(PrintWriter out,
+                                  boolean failedBefore) throws Exception {
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>25 Across Login</title>");
+        out.println("<link rel='stylesheet' href='style.css' type='text/css'>");
+        out.println("</head>");
+        printStyles(out);
         out.println("<body class='body' onLoad='document.frm._U.focus();'>");
         out.println("   <form name='frm' action='main' method='post'>");
         out.println("       <input type='hidden' name='cmd' value='login'>");
-        out.println("   <table cellspacing=0 cellpadding=0>");
+//        out.println("   <br><br><br>");
+        out.println("   <table cellspacing=0 cellpadding=0 align='center'>");
+        out.println("       <tr style='height:60px;'><td></td></tr>");
         out.println("       <tr>");
-        out.println("           <td><img src='images/noclue.jpg'></td>");
+        out.println("           <td><img src='images/noclue.jpg' border='0'></td>");
         out.println("           <td width='300px'><table align='center'>");
-        out.println("               <tr><td colspan='2' class='header'><br><br>Welcome to 25 Across!<br>Do you have a clue?<br><br></td></tr>");
+        out.println("               <tr><td colspan='2' class='header'>Welcome to 25 Across!</td></tr>");
+        out.println("               <tr><td colspan='2' align='right'>Do <i>you</i> have a clue?<br><br></td></tr>");
         if (failedBefore) {
             out.println("               <tr>");
             out.println("                   <td colspan='2' align='center' class='textBig'>Unable to log-in.<br>");
             out.println("                   Please re-enter your information.</td>");
             out.println("               </tr>");
         }
-//        else {
-//            out.println("               <tr>");
-//            out.println("                   <br><br><td colspan='2' class='textBig'>Please enter your log-in information:</td>");
-//            out.println("               </tr>");
-//        }
         out.println("               <tr><td colspan='2' height='20'></td></tr>");
         out.println("               <tr>");
         out.println("                   <td align='left' class='text'>Username:</td>");
@@ -115,7 +117,8 @@ public class WebPages {
         out.println("               <tr><td colspan='2' align='center'>");
         out.println("                   <input class='button' type='submit' value='Log In'></td>");
         out.println("               </tr>");
-        // TODO: add Register link
+        out.println("               <tr><td colspan='2' height='20'></td></tr>");
+        out.println("               <tr><td colspan='2'>Not registered yet?&nbsp;<a href='#'>Register</a></td></tr>");
         out.println("           </table></td>");
         out.println("       </tr>");
         out.println("   </table>");
