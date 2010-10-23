@@ -36,17 +36,17 @@ public class MainScreen extends JFrame
     JMenuItem mAction_Publish = new JMenuItem();
     JMenu mEdit = new JMenu();
     JMenuItem mEdit_Split = new JMenuItem();
-    JMenuItem mTools_Version = new JMenuItem();
+    // JMenuItem mTools_Version = new JMenuItem();
     JMenuItem mFile_Preferences = new JMenuItem();
 
     public MainScreen()
     {
-        loadPreferences();
+        //loadPreferences();
 
         try
         {
             jbInit();
-            if(prefs.getCheckNewVersions()) checkNewVersions();
+            // if(prefs.getCheckNewVersions()) checkNewVersions();
         }
         catch (Exception ex)
         {
@@ -105,8 +105,8 @@ public class MainScreen extends JFrame
         mEdit.setBackground(new Color(199, 223, 236));
         mEdit_Split.setText("Split Word");
         mEdit_Split.setBackground(new Color(199, 223, 236));
-        mTools_Version.setText("Check Version");
-        mTools_Version.setBackground(new Color(199, 223, 236));
+        // mTools_Version.setText("Check Version");
+        // mTools_Version.setBackground(new Color(199, 223, 236));
         mFile_Preferences.setText("Preferences");
         mFile_Preferences.setBackground(new Color(199, 223, 236));
 
@@ -135,7 +135,7 @@ public class MainScreen extends JFrame
         mFile.add(mFile_Preferences);
         mAction.add(mAction_Publish);
         mEdit.add(mEdit_Split);
-        mTools.add(mTools_Version);
+        // mTools.add(mTools_Version);
     }
 
     private void BuildMenu()
@@ -157,7 +157,7 @@ public class MainScreen extends JFrame
         mFile_NewCrossword.addActionListener(new MenuListener());
         mAction_Publish.addActionListener(new MenuListener());
         mEdit_Split.addActionListener(new MenuListener());
-        mTools_Version.addActionListener(new MenuListener());
+        // mTools_Version.addActionListener(new MenuListener());
         mFile_Preferences.addActionListener(new MenuListener());
     }
 
@@ -300,7 +300,7 @@ public class MainScreen extends JFrame
                 "the latest version of Crossword Sage, \n visit http://crosswordsage.sourceforge.net");
     }
 
-    private void checkNewVersions()
+    /*private void checkNewVersions()
     {
         if (prefs.getUseProxy())
         {
@@ -315,7 +315,7 @@ public class MainScreen extends JFrame
             Thread vcThread = new Thread(new VersionChecker(VERSION_NUMBER));
             vcThread.start();
         }
-    }
+    }*/
 
     private void showPreferences()
     {
@@ -455,10 +455,10 @@ public class MainScreen extends JFrame
             {
                 showPreferences();
             }
-            else if(e.getSource().equals(mTools_Version))
+            /* else if(e.getSource().equals(mTools_Version))
             {
                 checkNewVersions();
-            }
+            }*/
             validate();
         }
     }

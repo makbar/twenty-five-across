@@ -51,6 +51,7 @@ public class WebPages {
         out.println("<title>25 Across</title>");
         out.println("</head>");
         out.println("<body><br><h3>main</h3>");
+        out.println("<applet code='twentyfiveacross.applet.CrossLet' archive='CrossLet.jar' width=750 height=750 />");
         out.println("</head>");
         out.println("</html>");
     }
