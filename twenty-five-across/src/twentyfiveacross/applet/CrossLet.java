@@ -1,13 +1,12 @@
 package twentyfiveacross.applet;
 
 import javax.swing.JApplet;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.JLabel;
 
 import crosswordsage.MainScreen;
 
 public class CrossLet extends JApplet {
+    private static final long serialVersionUID = 1L;
+
     //Called when this applet is loaded into the browser.
     public void init() {
         //Execute a job on the event-dispatching thread; creating this applet's GUI.
