@@ -20,7 +20,7 @@ import twentyfiveacross.ejbs.UserManagerRemote;
 public class WebApp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    @EJB
+	@EJB
     UserManagerRemote userManager;
 
     public WebApp() {
@@ -54,7 +54,7 @@ public class WebApp extends HttpServlet {
             else if ("login".equals(cmd)) {
                 /* Authenticate the user. */
 
-                WebPages.printLogin(out,userManager.sayHi("Team"));
+                WebPages.printLogin(out,userManager.sayHi("Edlira"));
             }
             else if ("register".equals(cmd)) {
                 /* Create an account for the new user. */

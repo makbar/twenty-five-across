@@ -9,7 +9,7 @@ public class WebPages {
         out.println("<head>");
         out.println("<title>25 Across</title>");
         out.println("</head>");
-        out.println("<frameset rows='25%,*'>");
+        out.println("<frameset border='0' rows='10%,*'>");
         out.println("   <frame name='header' src='main?cmd=printHeader' marginwidth=0 scrolling=no>");
         out.println("   <frame name='body' src='main?cmd=printMain' marginwidth=0>");
         out.println("</frameset>");
@@ -21,30 +21,31 @@ public class WebPages {
         out.println("<html>");
         out.println("<head>");
         out.println("<title>25 Across</title>");
-//        out.println("<link rel='stylesheet' href='style.css' type='text/css'>");
         out.println("</head>");
-        out.println("<body><br><h3>header</h3>");
-//        out.println("   <table width='100%' height='100%' border=0 cellpadding=2 cellspacing=0>");
-//        out.println("       <tr><td class='header' width=100% height=80% valign=bottom colspan=2>25 Across</td></tr>");
-//        out.println("       <tr><td class='project' width=20% height=20% valign=middle></td>");
-//        out.println("           <td class='cmdLinks' width=80% height=20% valign=middle>");
+        printStyles(out);
+        out.println("<body class='headerframe'>");
+        out.println("   <table width='100%' height='100%' border=0 cellpadding=2 cellspacing=0>");
+        out.println("       <tr>");
+        out.println("           <td class='logo' width=60% height=80% valign=bottom colspan=2>25 Across</td>");
+        out.println("           <td class='cmdLinks' width=40% height=20% valign=middle align=right>");
+
+        //      /* Print the right links depending on the role of the user that is logged in. */
+        out.println("       <a href='main?cmd=home' target='main' class='headerlink'>Home</a>&nbsp;&nbsp;&nbsp;&nbsp;");
+        //      if (user.isAdmin)
+        out.println("       <a href='main?cmd=printMgmt' target='main' class='headerlink'>Management</a>&nbsp;&nbsp;&nbsp;&nbsp;");
+        //      else
+        out.println("       <a href='main?cmd=printChngPwd' target='main' class='headerlink'>Change Password</a>&nbsp;&nbsp;&nbsp;&nbsp;");
+        out.println("       <a href='main?cmd=logout' target='_top' class='headerlink'>Log Out</a>&nbsp;&nbsp;&nbsp;&nbsp;");
 //
-//        /* Print the right links depending on the role of the user that is logged in. */
-//        out.println("       <a href='main?cmd=home' target='body'>Home</a>&nbsp;&nbsp;&nbsp;");
-////        if (user.isAdmin)
-//            out.println("       <a href='main?cmd=printUsrMgmt' target='body'>User Management</a>&nbsp;&nbsp;&nbsp;");
-////        else
-//            out.println("       <a href='main?cmd=printChngPwd' target='body'>Change Password</a>&nbsp;&nbsp;&nbsp;");
-//        out.println("       <a href='main?cmd=logout' target='_top'>Log Out</a>&nbsp;&nbsp;&nbsp;");
-//
-//        out.println("   </td></tr>");
-//        out.println("   </table>");
-//        out.println("</body>");
-        out.println("</head>");
-        out.println("</html>");
+      out.println("   </td>");
+      out.println("       </tr>");
+      out.println("   </table>");
+      out.println("</body>");
+      out.println("</head>");
+      out.println("</html>");
     }
 
-    /** Draw the header frame. */
+    /** Draw the main frame. */
     static void printMain(PrintWriter out) throws Exception {
         out.println("<html>");
         out.println("<head>");
@@ -186,6 +187,24 @@ public class WebPages {
         out.println("   font-family: \"Comic Sans MS\", cursive;");
         out.println("   font-size: 14pt;");
         out.println("   color: #0077ff;");
+        out.println("}");
+        out.println(".LOGO {");
+        out.println("   font-family: \"Comic Sans MS\", cursive;");
+        out.println("   font-size: 22pt;");
+        out.println("   font-weight: bold;");
+        out.println("   color: white;");
+        out.println("   padding: 0px 0px 10px 15px;");
+        out.println("}");
+        out.println(".HEADERFRAME {");
+        out.println("   font-size: 10pt;");
+        out.println("   background-color: #0077ff;");
+        out.println("}");
+        out.println(".HEADERLINK {");
+        out.println("   font-family: \"Comic Sans MS\", cursive;");
+        out.println("   font-size: 10pt;");
+        out.println("   font-weight: bold;");
+        out.println("   text-decoration:none;");
+        out.println("   color: white;");
         out.println("}");
         out.println(".ERROR {");
         out.println("   color: red;");
