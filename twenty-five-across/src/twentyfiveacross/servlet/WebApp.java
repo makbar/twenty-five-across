@@ -71,6 +71,12 @@ public class WebApp extends HttpServlet {
                 else if ("printRegister".equals(cmd)) {
                     WebPages.printRegister(out,null);
                 }
+                else if ("processRegister".equals(cmd)) {
+                	if(userManager.createUser(req.getParameter("_U"),req.getParameter("name"),req.getParameter("_P")))
+                		WebPages.printLogin(out,"Registration Succeeded! Please Log in.");
+                	else
+                		WebPages.printRegister(out,"Registration Failed! Please try again.");
+            		}
                 else
                     WebPages.printFrameset(out);
             }

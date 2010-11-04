@@ -116,7 +116,7 @@ public class WebPages {
         printStyles(out);
         out.println("<body class='body' onLoad='document.frm._U.focus();'>");
         out.println("   <form name='frm' action='main' method='post'>");
-        out.println("       <input type='hidden' name='cmd' value='register'>");
+        out.println("       <input type='hidden' name='cmd' value='processRegister'>");
         out.println("   <table cellspacing=0 cellpadding=0 align='center'>");
         out.println("       <tr style='height:60px;'><td></td></tr>");
         out.println("       <tr>");
@@ -163,8 +163,8 @@ public class WebPages {
         out.println("</body>");
         out.println("</head>");
         out.println("</html>");
-    }
-
+    }    
+    
     /** Print all the style specifications. */
     static void printStyles(PrintWriter out) {
         out.println("<style type='text/css'>");

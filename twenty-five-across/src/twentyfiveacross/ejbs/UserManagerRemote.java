@@ -1,9 +1,17 @@
 package twentyfiveacross.ejbs;
 import javax.ejb.Remote;
+import javax.servlet.http.HttpServletRequest;
 
 @Remote
 public interface UserManagerRemote {
+	
+	public void init()
+			throws Exception;
+	
     public String sayHi(String name);
+
+    public boolean register(HttpServletRequest req)
+    		throws Exception;
 
     public boolean createUser(String username, String name)
             throws Exception;
