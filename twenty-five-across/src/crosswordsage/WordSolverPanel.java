@@ -1,9 +1,9 @@
 package crosswordsage;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.swing.JPanel;
 import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.JButton;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +11,14 @@ import java.util.regex.*;
 import java.util.*;
 import java.awt.*;
 import java.io.*;
+import javax.ejb.EJB;
+
 import javax.swing.border.Border;
+
+import twentyfiveacross.ejbs.UserManagerRemote;
+
+import EJBAuction2.AuctionHouseRemote;
+import EJBAuction2.AuctionItem;
 
 public class WordSolverPanel extends JPanel
 {
@@ -29,12 +36,20 @@ public class WordSolverPanel extends JPanel
     private JLabel jLabel2 = new JLabel();
     private Border border1 = BorderFactory.createLineBorder(Color.black, 2);
     private File f;
+    
+    @EJB(mappedName="twentyfiveacross.ejbs.UserManagerRemote")
+	UserManagerRemote userManager;
+
 
     public WordSolverPanel()
     {
         try
         {
             jbInit();
+            
+            // EPS
+            //InitialContext ic = new InitialContext();
+            //userManager = (UserManagerRemote) ic.lookup("UserManagerBean");
         }
         catch (Exception ex)
         {
@@ -56,7 +71,7 @@ public class WordSolverPanel extends JPanel
         jButton1.setBorder(border1);
         jButton1.setPreferredSize(new Dimension(150, 27));
         jButton1.setToolTipText("");
-        jButton1.setText("Find Possible Matches");
+        jButton1.setText("List Auction Items");
         jScrollPane1 = new JScrollPane(jTextArea1);
         jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.
                                                   HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -90,7 +105,8 @@ public class WordSolverPanel extends JPanel
     {
         public void actionPerformed(ActionEvent e)
         {
-            ArrayList words = getMatches(jTextField1.getText().toLowerCase());
+        	printItems();
+            /*ArrayList words = getMatches(jTextField1.getText().toLowerCase());
             jTextArea1.setText("");
 
             //do pattern matches
@@ -166,6 +182,7 @@ public class WordSolverPanel extends JPanel
                 }
             }
             jTextArea1.setCaretPosition(0);  //scroll text box to top
+            */
         }
     }
 
@@ -290,5 +307,42 @@ public class WordSolverPanel extends JPanel
         Arrays.sort(data1);
         Arrays.sort(data2);
         return Arrays.equals(data1, data2);
+    }
+    
+    private void printItems() {
+		jTextArea1.append("Connecting...\n");
+		
+		/*AuctionHouseRemote auctionhouse = null;
+		java.util.Properties prop = System.getProperties();
+		prop.put(Context.PROVIDER_URL, "http://localhost:8080");
+		*/
+
+		/*try {
+			InitialContext ic = new InitialContext();
+
+			auctionhouse = (AuctionHouseRemote) ic.lookup("java:global/EJBAuction2/AuctionHouseBean");
+			// EJBAuction2.AuctionHouse auctionhouse = new EJBAuction2.AuctionHouse();
+		} catch (Exception e) {
+			System.err.println("Error!: " + e.getMessage());
+			return;
+		}*/
+		
+		jTextArea1.append("Getting your greeting...\n");
+
+		/*Vector<AuctionItem> list;
+		try {
+			list = auctionhouse.listItemsForSale();
+		} catch (Exception e) {
+			System.err.println("Error: lost connection to auction house. " + e.getMessage());
+			return;
+		}
+		jTextArea1.append(list.size() + " items available for auction.\n");
+
+		for(int x = 0; x<list.size(); x++) {
+			jTextArea1.append((x+1) + ". " + list.elementAt(x).itemName + "\n");
+		}*/
+		String blah = userManager.sayHi("Team");
+		jTextArea1.append(blah);
+			
     }
 }

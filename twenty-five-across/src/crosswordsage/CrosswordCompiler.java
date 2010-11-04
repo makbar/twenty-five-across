@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+/* Peyton: Might get rid of this class? */
+
 public class CrosswordCompiler extends JPanel
 {
     private static int MARGIN_GAP = 8;

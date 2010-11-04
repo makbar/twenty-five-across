@@ -384,7 +384,7 @@ public class MainScreen extends JFrame
 
         public void windowClosing(WindowEvent e)
         {
-            savePreferences();
+            // savePreferences();
             checkSave();
         }
 

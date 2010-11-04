@@ -11,7 +11,7 @@ import com.sun.rowset.CachedRowSetImpl;
 /**
  * Session Bean implementation class UserManager
  */
-@Stateless
+@Stateless(name="UserManagerBean")
 public class UserManager implements UserManagerRemote {
 
 	String mysqlUserName = "tfacross";
