@@ -7,18 +7,21 @@ import java.sql.ResultSet;
 
 import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
-import javax.naming.InitialContext;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.jws.soap.SOAPBinding.Style;
 import javax.servlet.http.HttpServletRequest;
+import javax.jws.WebMethod;
 
 import com.sun.rowset.CachedRowSetImpl;
 
 /**
  * Session Bean implementation class UserManager
  */
-@Stateless
+@WebService(endpointInterface = "twentyfiveacross.ejbs.UserManagerRemote")
+@Stateless(name="UserManagerBean")
 public class UserManager implements UserManagerRemote {
 
-    InitialContext ic;
     EJBContext ejbContext;
 	String mysqlUserName = "tfacross";
 	String mysqlPassword = "tfacross";
@@ -42,8 +45,6 @@ public class UserManager implements UserManagerRemote {
 	}
 	
 	public void init() throws Exception {
-		ic = new InitialContext();
-		//ejbContext = (EJBContext) ic.lookup("java:comp/EJBContext");
 		Class.forName("com.mysql.jdbc.Driver");
 		con = DriverManager.getConnection(mysqlUrl, mysqlUserName, mysqlPassword);
 	}
@@ -66,7 +67,11 @@ public class UserManager implements UserManagerRemote {
 			return false;
     }
 
-    public boolean createUser(String username, String name, String pw)
+    public String sayHi(String name) {
+    	return "Hi there, " + name + "!";
+    }
+    
+    public boolean createUserPw(String username, String name, String pw)
     throws Exception {
 		String mysqlQuery = "INSERT INTO userinfo (UserName, Password, Rating, Status, DisplayName) VALUES (?,SHA(?),?,?,?)";
 		stmt = con.prepareStatement(mysqlQuery);
@@ -98,15 +103,12 @@ public class UserManager implements UserManagerRemote {
 			return false;
 	}
     
-    public boolean register(HttpServletRequest req)
-    throws Exception {
-    	String name = req.getParameter("name");
-    	String username = req.getParameter("_U");
-    	String password = req.getParameter("_P");
+    public boolean register(String username, String password)
+    	throws Exception {
     	if (username!=null && password!=null)
-    		return createUser(name,username,password);
+    		return createUserPw("",username,password);
     	else if(password==null)
-    		return createUser(name,username);
+    		return createUser("",username);
     	else
     	return false;
     }

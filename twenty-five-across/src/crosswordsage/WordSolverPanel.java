@@ -11,14 +11,18 @@ import java.util.regex.*;
 import java.util.*;
 import java.awt.*;
 import java.io.*;
+import java.net.URL;
+
 import javax.ejb.EJB;
 
 import javax.swing.border.Border;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
 
 import twentyfiveacross.ejbs.UserManagerRemote;
 
-import EJBAuction2.AuctionHouseRemote;
-import EJBAuction2.AuctionItem;
+//import EJBAuction2.AuctionHouseRemote;
+//import EJBAuction2.AuctionItem;
 
 public class WordSolverPanel extends JPanel
 {
@@ -37,7 +41,10 @@ public class WordSolverPanel extends JPanel
     private Border border1 = BorderFactory.createLineBorder(Color.black, 2);
     private File f;
     
-    @EJB(mappedName="twentyfiveacross.ejbs.UserManagerRemote")
+    
+    //AuctionHouseRemote auctionHouse;
+    
+    //@EJB(mappedName="twentyfiveacross.ejbs.UserManagerRemote")
 	UserManagerRemote userManager;
 
 
@@ -48,8 +55,32 @@ public class WordSolverPanel extends JPanel
             jbInit();
             
             // EPS
-            //InitialContext ic = new InitialContext();
-            //userManager = (UserManagerRemote) ic.lookup("UserManagerBean");
+            /*System.err.println("Creating properties");
+
+            Hashtable <String,String> env = new Hashtable <String, String>();
+    		env.put(Context.INITIAL_CONTEXT_FACTORY,"org.jnp.interfaces.NamingContextFactory");
+    		env.put(Context.PROVIDER_URL, "http://localhost:8080");
+    		*/
+            
+
+    		System.err.println("Connecting");
+
+            URL url = new URL("http://localhost:8080/UserManagerService/UserManager?wsdl");
+            QName qname = new QName("http://ejbs.twentyfiveacross/", "UserManagerService");
+            Service service = Service.create(url, qname);
+
+            userManager = service.getPort(UserManagerRemote.class);
+			System.err.println("Connected");
+
+    		/*try {
+    			InitialContext ic = new InitialContext(env);
+
+    			userManager = (UserManagerRemote) ic.lookup("java:global/twenty-five-across/UserManagerBean");
+    		} catch (Exception e) {
+    			System.err.println("Error!: " + e.getMessage());
+    			return;
+    		}*/
+    		
         }
         catch (Exception ex)
         {
@@ -71,7 +102,7 @@ public class WordSolverPanel extends JPanel
         jButton1.setBorder(border1);
         jButton1.setPreferredSize(new Dimension(150, 27));
         jButton1.setToolTipText("");
-        jButton1.setText("List Auction Items");
+        jButton1.setText("Say Hi");
         jScrollPane1 = new JScrollPane(jTextArea1);
         jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.
                                                   HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -331,7 +362,7 @@ public class WordSolverPanel extends JPanel
 
 		/*Vector<AuctionItem> list;
 		try {
-			list = auctionhouse.listItemsForSale();
+			list = auctionHouse.listItemsForSale();
 		} catch (Exception e) {
 			System.err.println("Error: lost connection to auction house. " + e.getMessage());
 			return;

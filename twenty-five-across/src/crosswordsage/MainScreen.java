@@ -45,6 +45,8 @@ public class MainScreen extends JFrame
 
         try
         {
+    		System.out.println("MainScreening");
+
             jbInit();
             // if(prefs.getCheckNewVersions()) checkNewVersions();
         }

@@ -3,6 +3,7 @@ package twentyfiveacross.ejbs;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+
 @Entity
 class Games {
     @Id int gameId;
