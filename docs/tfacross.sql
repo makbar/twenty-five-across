@@ -1,8 +1,9 @@
 CREATE TABLE `UserInfo` (
 	`UserName` varchar(10) NOT NULL,
-	`Password` varchar(10) NOT NULL,
+	`Password` varchar(40) NOT NULL,
 	`Rating` int(5),
-	`Status` ENUM('Registered', 'Banned'),
+	`Status` int(1),
+	`DisplayName` varchar(40) NOT NULL,
 	PRIMARY KEY(`UserName`));
 
 CREATE TABLE `Games` (

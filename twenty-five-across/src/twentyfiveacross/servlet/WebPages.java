@@ -52,7 +52,7 @@ public class WebPages {
         out.println("<title>25 Across</title>");
         out.println("</head>");
         out.println("<body><br><h3>main</h3>");
-        out.println("<applet code='twentyfiveacross.applet.CrossLet' archive='CrossLet.jar' width=750 height=750 />");
+        //out.println("<applet code='twentyfiveacross.applet.CrossLet' archive='CrossLet.jar' width=750 height=750 />");
         out.println("</head>");
         out.println("</html>");
     }
@@ -67,7 +67,7 @@ public class WebPages {
         printStyles(out);
         out.println("<body class='body' onLoad='document.frm._U.focus();'>");
         out.println("   <form name='frm' action='main' method='post'>");
-        out.println("       <input type='hidden' name='cmd' value='login'>");
+        out.println("       <input type='hidden' name='cmd' value='processLogin'>");
         out.println("   <table cellspacing=0 cellpadding=0 align='center'>");
         out.println("       <tr style='height:60px;'><td></td></tr>");
         out.println("       <tr>");

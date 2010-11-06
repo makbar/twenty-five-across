@@ -49,24 +49,15 @@ public class WebApp extends HttpServlet {
         try {
             cmd = req.getParameter("cmd");
 
-            if (null == cmd)
-                WebPages.printLogin(out,null);
-            else if ("login".equals(cmd)) {
-                /* Authenticate the user. */
-
-                WebPages.printLogin(out,userManager.sayHi("Edlira"));
-            }
-            else if ("register".equals(cmd)) {
-                /* Create an account for the new user. */
-
-            }
-
-            if (/*user.loggedIn*/true) {
+            if (null!=cmd) {
                 if ("printHeader".equals(cmd)) {
                     WebPages.printHeader(out);
                 }
                 else if ("printMain".equals(cmd)) {
-                    WebPages.printMain(out);
+                    if(true/*user.loggedIn*/)
+                    	WebPages.printMain(out);
+                    else
+                    	WebPages.printLogin(out, null);
                 }
                 else if ("printRegister".equals(cmd)) {
                     WebPages.printRegister(out,null);
@@ -76,12 +67,21 @@ public class WebApp extends HttpServlet {
                 		WebPages.printLogin(out,"Registration Succeeded! Please Log in.");
                 	else
                 		WebPages.printRegister(out,"Registration Failed! Please try again.");
-            		}
+				}
+                else if ("processLogin".equals(cmd)) {
+					if (userManager.login(req.getParameter("_U"),req.getParameter("_P")))
+						WebPages.printMain(out);
+					else
+						WebPages.printLogin(out,"Login Failed! Please try again.");
+				}
                 else
-                    WebPages.printFrameset(out);
+					WebPages.printFrameset(out);
             }
             else
+            {
                 WebPages.printLogin(out,null);
+            	return;
+            }
 
         }
         catch(Exception e) {

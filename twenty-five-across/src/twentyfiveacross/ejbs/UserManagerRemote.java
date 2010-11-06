@@ -8,8 +8,6 @@ public interface UserManagerRemote {
 	public void init()
 			throws Exception;
 	
-    public String sayHi(String name);
-
     public boolean register(HttpServletRequest req)
     		throws Exception;
 
@@ -19,11 +17,14 @@ public interface UserManagerRemote {
     public boolean createUser(String username, String name, String pw)
             throws Exception;
 
-    public boolean updateUser(String username, String name, int roleType)
+	public boolean login(String username, String pw)
+			throws Exception;
+
+		public boolean updateUser(String username, String name, int roleType)
             throws Exception;
 
-    public boolean updateUserPw(String username, byte[] oldPwHash,
-            byte[] newPwHash) throws Exception;
+    public boolean updateUserPw(String username, String oldPw,
+            String newPw) throws Exception;
 
     public boolean banUser(String username)
             throws Exception;
