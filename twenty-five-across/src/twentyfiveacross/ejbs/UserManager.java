@@ -7,22 +7,19 @@ import java.sql.ResultSet;
 
 import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.jws.soap.SOAPBinding.Style;
+import javax.naming.InitialContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.jws.WebMethod;
 
 import com.sun.rowset.CachedRowSetImpl;
 
 /**
  * Session Bean implementation class UserManager
  */
-@WebService(endpointInterface = "twentyfiveacross.ejbs.UserManagerRemote")
-@Stateless(name="UserManagerBean")
+@Stateless
 public class UserManager implements UserManagerRemote {
 
-    EJBContext ejbContext;
+    //InitialContext ic;
+    //EJBContext ejbContext;
 	String mysqlUserName = "tfacross";
 	String mysqlPassword = "tfacross";
 	String mysqlDatabase = "tfacross";
@@ -45,6 +42,8 @@ public class UserManager implements UserManagerRemote {
 	}
 	
 	public void init() throws Exception {
+		//ic = new InitialContext();
+		//ejbContext = (EJBContext) ic.lookup("java:comp/EJBContext");
 		Class.forName("com.mysql.jdbc.Driver");
 		con = DriverManager.getConnection(mysqlUrl, mysqlUserName, mysqlPassword);
 	}
@@ -67,11 +66,7 @@ public class UserManager implements UserManagerRemote {
 			return false;
     }
 
-    public String sayHi(String name) {
-    	return "Hi there, " + name + "!";
-    }
-    
-    public boolean createUserPw(String username, String name, String pw)
+    public boolean createUser(String username, String name, String pw)
     throws Exception {
 		String mysqlQuery = "INSERT INTO userinfo (UserName, Password, Rating, Status, DisplayName) VALUES (?,SHA(?),?,?,?)";
 		stmt = con.prepareStatement(mysqlQuery);
@@ -89,7 +84,18 @@ public class UserManager implements UserManagerRemote {
 			return false;
     }
 
-	public boolean login(String username, String pw) throws Exception {
+	public boolean login(HttpServletRequest req) throws Exception {
+		if(req==null)
+			return false;
+    	String username = req.getParameter("_U");
+    	String password = req.getParameter("_P");
+    	if (username!=null && password!=null)
+    		return checkLogin(username,password);
+    	else
+    		return false;
+	}
+    
+	public boolean checkLogin(String username, String pw) throws Exception {
 		String mysqlQuery = "SELECT UserName FROM userinfo WHERE UserName = ? AND Password = SHA( ? )";
 		stmt = con.prepareStatement(mysqlQuery);
 		stmt.setString(1,username);
@@ -103,39 +109,122 @@ public class UserManager implements UserManagerRemote {
 			return false;
 	}
     
-    public boolean register(String username, String password)
-    	throws Exception {
-    	if (username!=null && password!=null)
-    		return createUserPw("",username,password);
-    	else if(password==null)
-    		return createUser("",username);
+	public CachedRowSetImpl listUsers() throws Exception {
+		String mysqlQuery = "SELECT UserName,Rating,Status,DisplayName FROM userinfo";
+		stmt = con.prepareStatement(mysqlQuery);
+		ResultSet rs = stmt.executeQuery();
+		CachedRowSetImpl crs = new CachedRowSetImpl();
+		crs.populate(rs);
+		return crs;
+	}
+    
+    public boolean register(HttpServletRequest req)
+    throws Exception {
+		if(req==null)
+			return false;
+    	String name = req.getParameter("name");
+    	String username = req.getParameter("_U");
+    	String password = req.getParameter("_P");
+    	if (name!=null && username!=null && password!=null)
+    		return createUser(username,name,password);
+    	else if(name!=null && username!=null)
+    		return createUser(username,name);
     	else
     	return false;
     }
 
-
-    public boolean updateUser(String username, String name, int roleType)
-            throws Exception {
-        return false;
+    public boolean editUser(HttpServletRequest req)
+    		throws Exception {
+    	String name = req.getParameter("name");
+    	String username = req.getParameter("_U");
+    	String password = req.getParameter("_P");
+    	String action = req.getParameter("action");
+    	
+    	if(action == null)
+    		return false;
+    	
+    	if (action=="changeName" && name!=null && username!=null)
+    		return updateUserName(username,name);
+    	else if (action=="changePw" && password!=null && username!=null)
+    		return updateUserPw(username, password);
+    	else if (action=="ban" && username!=null)
+    		return banUser(username);
+    	else if (action=="unBan" && username!=null)
+    		return unBanUser(username);
+    	else if (action=="delete" && username!=null)
+    		return deleteUser(username);
+    	else
+    		return false;    	
     }
 
-    public boolean updateUserPw(String username, String oldPw,
-            String newPw) throws Exception {
-        return false;
+    public boolean updateUserName(String username, String name)
+            throws Exception {
+		String mysqlQuery = "UPDATE userinfo SET DisplayName = ? WHERE UserName = ?";
+		stmt = con.prepareStatement(mysqlQuery);
+		stmt.setString(1, name);
+		stmt.setString(2, username);
+
+		int rows = stmt.executeUpdate();
+		
+		if(rows>0)
+			return true;
+		else
+			return false;
+    }
+
+    public boolean updateUserPw(String username, String newPw) throws Exception {
+		String mysqlQuery = "UPDATE userinfo SET Password = SHA(?) WHERE UserName = ?";
+		stmt = con.prepareStatement(mysqlQuery);
+		stmt.setString(1, newPw);
+		stmt.setString(2, username);
+
+		int rows = stmt.executeUpdate();
+		
+		if(rows>0)
+			return true;
+		else
+			return false;
     }
 
     public boolean banUser(String username)
             throws Exception {
-        return false;
+		String mysqlQuery = "UPDATE userinfo SET Status = 0 WHERE UserName = ?";
+		stmt = con.prepareStatement(mysqlQuery);
+		stmt.setString(1, username);
+
+		int rows = stmt.executeUpdate();
+		
+		if(rows>0)
+			return true;
+		else
+			return false;
     }
 
     public boolean unBanUser(String username)
             throws Exception {
-        return false;
+		String mysqlQuery = "UPDATE userinfo SET Status = 1 WHERE UserName = ?";
+		stmt = con.prepareStatement(mysqlQuery);
+		stmt.setString(1, username);
+
+		int rows = stmt.executeUpdate();
+		
+		if(rows>0)
+			return true;
+		else
+			return false;
     }
 
     public boolean deleteUser(String username)
             throws Exception {
-        return false;
+		String mysqlQuery = "DELETE FROM userinfo WHERE UserName = ?";
+		stmt = con.prepareStatement(mysqlQuery);
+		stmt.setString(1, username);
+
+		int rows = stmt.executeUpdate();
+		
+		if(rows>0)
+			return true;
+		else
+			return false;
     }
 }

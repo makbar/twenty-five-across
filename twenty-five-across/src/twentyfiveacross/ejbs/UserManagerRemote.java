@@ -1,12 +1,6 @@
 package twentyfiveacross.ejbs;
 import javax.ejb.Remote;
-import javax.jws.WebService;
-import javax.jws.WebMethod;
-import javax.jws.soap.SOAPBinding;
-import javax.jws.soap.SOAPBinding.Style;
-import javax.ejb.Stateless;
-
-@WebService
+import javax.servlet.http.HttpServletRequest;
 
 @Remote
 public interface UserManagerRemote {
@@ -14,24 +8,25 @@ public interface UserManagerRemote {
 	public void init()
 			throws Exception;
 	
-    @WebMethod public String sayHi(String name);
-
-    public boolean register(String username, String password)
+    public boolean register(HttpServletRequest req)
     		throws Exception;
 
     public boolean createUser(String username, String name)
             throws Exception;
 
-    public boolean createUserPw(String username, String name, String pw)
+    public boolean createUser(String username, String name, String pw)
             throws Exception;
 
-	public boolean login(String username, String pw)
+	public boolean login(HttpServletRequest req)
 			throws Exception;
 
-		public boolean updateUser(String username, String name, int roleType)
+	public boolean checkLogin(String username, String pw)
+			throws Exception;
+
+	public boolean updateUserName(String username, String name)
             throws Exception;
 
-    public boolean updateUserPw(String username, String oldPw,
+    public boolean updateUserPw(String username,
             String newPw) throws Exception;
 
     public boolean banUser(String username)
