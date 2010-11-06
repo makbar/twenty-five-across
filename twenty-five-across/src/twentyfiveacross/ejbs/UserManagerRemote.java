@@ -8,6 +8,8 @@ public interface UserManagerRemote {
 	public void init()
 			throws Exception;
 	
+	public String sayHi(String name);
+
     public boolean register(HttpServletRequest req)
     		throws Exception;
 

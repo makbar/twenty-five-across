@@ -2,6 +2,7 @@ package twentyfiveacross.servlet;
 
 import java.io.PrintWriter;
 
+
 public class WebPages {
     /** Top level frameset, divides the page in two rows: header and main. */
     static void printFrameset(PrintWriter out) throws Exception {

@@ -48,7 +48,11 @@ public class UserManager implements UserManagerRemote {
 		con = DriverManager.getConnection(mysqlUrl, mysqlUserName, mysqlPassword);
 	}
 
-    public boolean createUser(String username, String name)
+	public String sayHi(String name) {
+		return "Hi " + name;
+	}
+
+	public boolean createUser(String username, String name)
             throws Exception {
 		String mysqlQuery = "INSERT INTO userinfo (UserName, Password, Rating, Status, DisplayName) VALUES (?,SHA(?),?,?,?)";
 		stmt = con.prepareStatement(mysqlQuery);
