@@ -18,6 +18,10 @@ public class CrosswordFileHandler
         chooser.showOpenDialog(jf);
         File f = chooser.getSelectedFile();
 
+        return readCrosswordFromFile(f);
+    }
+    
+    public static Crossword readCrosswordFromFile(File f) {
         ObjectInputStream ois = null;
         try
         {

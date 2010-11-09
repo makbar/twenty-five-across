@@ -58,11 +58,6 @@ public class CrosswordCompiler extends JPanel
     {
     }
 
-    public void publishCrossword()
-    {
-        grid.getCrossword().setIsEditable(false);
-    }
-
     public void loadCrossword(JFrame jf)
     {
         JFileChooser chooser = new JFileChooser();

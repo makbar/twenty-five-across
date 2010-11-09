@@ -1,7 +1,6 @@
 package twentyfiveacross.ejbs;
 import javax.ejb.Remote;
 import javax.servlet.http.HttpServletRequest;
-
 @Remote
 public interface UserManagerRemote {
 	

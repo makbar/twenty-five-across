@@ -19,7 +19,7 @@ import javax.swing.border.Border;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
-import twentyfiveacross.ejbs.UserManagerRemote;
+import twentyfiveacross.ejbs.*;
 
 //import EJBAuction2.AuctionHouseRemote;
 //import EJBAuction2.AuctionItem;
@@ -40,16 +40,11 @@ public class WordSolverPanel extends JPanel
     private JLabel jLabel2 = new JLabel();
     private Border border1 = BorderFactory.createLineBorder(Color.black, 2);
     private File f;
-    
-    
-    //AuctionHouseRemote auctionHouse;
-    
-    //@EJB(mappedName="twentyfiveacross.ejbs.UserManagerRemote")
-	UserManagerRemote userManager;
+    private MainScreen mainScreen;
 
-
-    public WordSolverPanel()
+    public WordSolverPanel(MainScreen myMainScreen)
     {
+    	mainScreen = myMainScreen;
         try
         {
             jbInit();
@@ -63,14 +58,6 @@ public class WordSolverPanel extends JPanel
     		*/
             
 
-    		System.err.println("Connecting");
-
-            URL url = new URL("http://localhost:8080/UserManagerService/UserManager?wsdl");
-            QName qname = new QName("http://ejbs.twentyfiveacross/", "UserManagerService");
-            Service service = Service.create(url, qname);
-
-            userManager = service.getPort(UserManagerRemote.class);
-			System.err.println("Connected");
 
     		/*try {
     			InitialContext ic = new InitialContext(env);
@@ -343,37 +330,10 @@ public class WordSolverPanel extends JPanel
     private void printItems() {
 		jTextArea1.append("Connecting...\n");
 		
-		/*AuctionHouseRemote auctionhouse = null;
-		java.util.Properties prop = System.getProperties();
-		prop.put(Context.PROVIDER_URL, "http://localhost:8080");
-		*/
-
-		/*try {
-			InitialContext ic = new InitialContext();
-
-			auctionhouse = (AuctionHouseRemote) ic.lookup("java:global/EJBAuction2/AuctionHouseBean");
-			// EJBAuction2.AuctionHouse auctionhouse = new EJBAuction2.AuctionHouse();
-		} catch (Exception e) {
-			System.err.println("Error!: " + e.getMessage());
-			return;
-		}*/
-		
 		jTextArea1.append("Getting your greeting...\n");
 
-		/*Vector<AuctionItem> list;
-		try {
-			list = auctionHouse.listItemsForSale();
-		} catch (Exception e) {
-			System.err.println("Error: lost connection to auction house. " + e.getMessage());
-			return;
-		}
-		jTextArea1.append(list.size() + " items available for auction.\n");
-
-		for(int x = 0; x<list.size(); x++) {
-			jTextArea1.append((x+1) + ". " + list.elementAt(x).itemName + "\n");
-		}*/
-		String blah = userManager.sayHi("Team");
+		String blah = mainScreen.userManager.sayHi("Team");
 		jTextArea1.append(blah);
-			
+		validate();
     }
 }

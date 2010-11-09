@@ -2,6 +2,13 @@ package crosswordsage;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
+
+import twentyfiveacross.ejbs.Game;
+import twentyfiveacross.ejbs.GameManagerRemote;
+import twentyfiveacross.ejbs.UserManagerRemote;
+
 import java.awt.event.*;
 import java.net.*;
 import java.io.*;
@@ -25,6 +32,7 @@ public class MainScreen extends JFrame
     JMenu mFile = new JMenu();
     JMenuItem mFile_Save = new JMenuItem();
     JMenuItem mFile_Load = new JMenuItem();
+    JMenuItem mFile_Display = new JMenuItem();
 
     private static final String VERSION_NUMBER = "0.3.5";
     private CrosswordCompiler cc;
@@ -32,12 +40,14 @@ public class MainScreen extends JFrame
     JMenuItem mFile_Print = new JMenuItem();
     JMenuItem mFile_SolveCrossword = new JMenuItem();
     JMenuItem mFile_NewCrossword = new JMenuItem();
-    JMenu mAction = new JMenu();
-    JMenuItem mAction_Publish = new JMenuItem();
     JMenu mEdit = new JMenu();
     JMenuItem mEdit_Split = new JMenuItem();
     // JMenuItem mTools_Version = new JMenuItem();
     JMenuItem mFile_Preferences = new JMenuItem();
+    
+    //@EJB(mappedName="twentyfiveacross.ejbs.UserManagerRemote")
+	public UserManagerRemote userManager;
+	public GameManagerRemote gameManager;
 
     public MainScreen()
     {
@@ -99,10 +109,9 @@ public class MainScreen extends JFrame
         mFile_SolveCrossword.setBackground(new Color(199, 223, 236));
         mFile_NewCrossword.setText("New Crossword");
         mFile_NewCrossword.setBackground(new Color(199, 223, 236));
-        mAction.setText("Action");
-        mAction.setBackground(new Color(199, 223, 236));
-        mAction_Publish.setText("Publish Crossword");
-        mAction_Publish.setBackground(new Color(199, 223, 236));
+        mFile_Display.setText("Display Server's Crossword");
+        mFile_Display.setBackground(new Color(199, 223, 236));
+        
         mEdit.setText("Edit");
         mEdit.setBackground(new Color(199, 223, 236));
         mEdit_Split.setText("Split Word");
@@ -119,14 +128,14 @@ public class MainScreen extends JFrame
         jMenuBar1.add(mEdit);
 
         jMenuBar1.add(mTools);
-        jMenuBar1.add(mAction);
         jMenuBar1.add(mHelp);
 
-        mainPanel.add(new WordSolverPanel());
+        mainPanel.add(new WordSolverPanel(this));
         mHelp.add(mHelp_About);
         mHelp.add(mHelp_Instructions);
         validate();
         mFile.add(mFile_NewCrossword);
+        mFile.add(mFile_Display);
         mFile.addSeparator();
         mFile.add(mFile_Save);
         mFile.addSeparator();
@@ -135,9 +144,24 @@ public class MainScreen extends JFrame
         mFile.addSeparator();
         mFile.add(mFile_Print);
         mFile.add(mFile_Preferences);
-        mAction.add(mAction_Publish);
         mEdit.add(mEdit_Split);
         // mTools.add(mTools_Version);
+        
+		System.err.println("Connecting");
+
+        URL url = new URL("http://localhost:8080/UserManagerService/UserManager?wsdl");
+        QName qname = new QName("http://ejbs.twentyfiveacross/", "UserManagerService");
+        Service service = Service.create(url, qname);
+
+        userManager = service.getPort(UserManagerRemote.class);
+        
+        url = new URL("http://localhost:8080/GameManagerService/GameManager?wsdl");
+        qname = new QName("http://ejbs.twentyfiveacross/", "GameManagerService");
+        service = Service.create(url, qname);
+
+        gameManager = service.getPort(GameManagerRemote.class);
+		System.err.println("Connected");
+
     }
 
     private void BuildMenu()
@@ -157,7 +181,7 @@ public class MainScreen extends JFrame
         mFile_Print.addActionListener(new MenuListener());
         mFile_SolveCrossword.addActionListener(new MenuListener());
         mFile_NewCrossword.addActionListener(new MenuListener());
-        mAction_Publish.addActionListener(new MenuListener());
+        mFile_Display.addActionListener(new MenuListener());
         mEdit_Split.addActionListener(new MenuListener());
         // mTools_Version.addActionListener(new MenuListener());
         mFile_Preferences.addActionListener(new MenuListener());
@@ -273,21 +297,6 @@ public class MainScreen extends JFrame
     {
         String s = JOptionPane.showInputDialog(null,"Specify the format of the word. (eg. 3-2,4,4)");
         cc.splitSelectedWord(s);
-    }
-
-    private void publishCrossword()
-    {
-        int response = JOptionPane.showConfirmDialog(null, "A published crossword can be solved but not edited. Are you sure you want to continue?", null,
-                JOptionPane.YES_NO_OPTION);
-        if (response == JOptionPane.NO_OPTION)
-        {
-
-        }
-        else if (response == JOptionPane.YES_OPTION)
-        {
-            cc.publishCrossword();
-            cc.saveCrossword(this);
-        }
     }
 
     private void printCrossword()
@@ -412,12 +421,12 @@ public class MainScreen extends JFrame
     {
         public void actionPerformed(ActionEvent e)
         {
-            if (e.getActionCommand() == "Solve New Word")
+            /*if (e.getActionCommand() == "Solve New Word")
             {
                 mainPanel.removeAll();
-                mainPanel.add(new WordSolverPanel());
+                mainPanel.add(new WordSolverPanel(this.parent));
             }
-            else if(e.getSource() == mFile_NewCrossword)
+            else*/ if(e.getSource() == mFile_NewCrossword)
             {
                 showCrosswordBuilder();
             }
@@ -445,10 +454,6 @@ public class MainScreen extends JFrame
             {
                 solveCrossword();
             }
-            else if(e.getSource().equals(mAction_Publish))
-            {
-                publishCrossword();
-            }
             else if(e.getSource().equals(mEdit_Split))
             {
                 splitSelectedWord();
@@ -456,6 +461,16 @@ public class MainScreen extends JFrame
             else if(e.getSource() == mFile_Preferences)
             {
                 showPreferences();
+            }
+            else if(e.getSource() == mFile_Display)
+            {
+            	if(gameManager != null) {
+                Game thegame = gameManager.newGame();
+                mainPanel.removeAll();
+                mainPanel.add(new CrosswordSolver(thegame.getCrossword()));
+                validate();
+            	}
+
             }
             /* else if(e.getSource().equals(mTools_Version))
             {

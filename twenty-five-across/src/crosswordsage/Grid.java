@@ -372,6 +372,7 @@ public class Grid extends JPanel
             Word w = (Word) al.get(i);
             ArrayList letters = w.getLetters();
 
+            // Lay out the squares, letter by letter, setting the appropriate properties
             if (w.getWordDirection() == Word.ACROSS)
             {
                 for (int j = 0; j < letters.size(); j++)
