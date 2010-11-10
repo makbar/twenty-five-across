@@ -1,0 +1,99 @@
+15
+
+b:1|e:2|a:3|s:4|t:5||b:6|a:7|h:8|s:9||b:10|a:11|l:12|e:13
+a:14|r|d|o|r||o:15|r|e|o||a:16|c|e|r
+m:17|i|l|l|e||g:18|i|l|l||i:19|t|e|a
+s:20|n|i|d|e|r:21|||l:22|o|i:23|t|e|r|s
+|||e:24|r|e|w:25|h:26|o|n|s||d:27|y|e
+h:28|e:29|m:30||s:31|t|o|a||s:32|a|m:33|||
+a:34|l|o|e:35||i:36|l|r|e:37||l:38|a|r:39|u:40|e:41
+a:42|b|a|t|a:43|n|d|p|s|a:44|l|t|e|r|y
+s:45|a|t|e|d||s:46|o|s|t||e:47|p|e|e
+|||s:48|e|t:49||o:50|a|r|y:51||o:52|a|s
+a:53|r:54|s:55||l:56|e|n:57|n|y|i|s|h:58|||
+m:59|a|n|d:60|e|l|a|||a:61|t|e|m:62|p:63|o:64
+a:65|d|a|r||l:66|i|a:67|m:68||a:69|l|o|o|f
+i:70|i|i|i||i:71|l|l|e||d:72|i|l|i|a
+d:73|o|l|s||t:74|s|i|n||s:75|o|l|l|y
+
+1|beast|Beauty’s admirer
+6|bahs|Scrooge comments
+10|bale|Unit of cotton or hay
+14|ardor|Ada, or _____(Nabakov novel)
+15|oreo|Classic cookie
+16|cer|Sharp, to Cato
+17|mille|Merci _____ fois
+18|gill|1/4 pint
+19|itea|Afternoon order in Rye café
+20|snider|More contemptuously ironic
+22|loiters|Hangs around
+24|erewhons|Literary utopia and namesakes
+27|dye|Word with red or tie
+28|hem|Its height may change every season
+31|stoa|Portico
+32|sam|Famous uncle
+34|aloe|Lesson-giver in a Fugard play title
+36|ilre|_____ Pastore, Mozart opera
+38|larue|Lash _____, movie cowboy
+42|abatandpsaltery|What Babe Ruth and King David were charged with after a wild night on the town
+45|sated|Satisfied
+46|sost|Sustained, in music (abbr.)
+47|epee|Savoie sword
+48|set|What the sun and the moon do
+50|oary|Venerable, to ’Arry
+52|oas|Western hemisphere assn.
+53|ars|Word with nova or antiqua
+56|lennyish|Reminiscent of Bernstein
+59|mandela|South African cause célèbre
+61|atempo|At the original speed, in music
+65|adar|Jewish month
+66|liam|Irish man’s name
+69|aloof|Detached
+70|iiii|Jail wall inscription after half a week
+71|ille|Winnie ____ Pooh
+72|dilia|Niger river
+73|dols|Pts. of a grand
+74|tsin|Tien-____ (Chinese city)
+75|solly|So _____ (accented apology)
+====
+1|bams|Biff’s partners
+2|erin|____ go bragh
+3|adli|Year in Claudius’ reign
+4|solde|Prix de ____ (bargain price)
+5|treers|Some dogs and hunters
+6|bog|Peat place
+7|ari|One of Jackie’s husbands
+8|hello|“_____ Goodbye” (Beatles song)
+9|solons|Legislators
+10|bait|Food it’s well to be wary of
+11|acted|Trod the boards
+12|leery|Suspicious
+13|erase|Eradicate
+21|retin|Put back in a can
+23|isall|“Love ____ you need”
+25|wolds|High, open countrysides, in England
+26|harpoon|Ahab’s weapon
+28|haas|Poet Robert
+29|elba|Last word of a famous palindrome
+30|moat|Castle surrounder
+33|mate|Word with check or stale
+35|etes|Summers on the Riviera
+37|essay|Attempt
+39|repo|“_____ Man” (movie)
+40|urea|Biochemical Compound
+41|eyes|Seers, in a way
+43|adele|Woman’s name meaning “noble”
+44|atria|Roman courtyards
+49|tellit|“_____ to the marines!”
+51|ystads|Belonging to a Southern Swedish city
+53|amaid|“I met _____” (ballad lyric)
+54|radio|Kin of movies and TV
+55|snail|Symbol of slowness
+57|nails|Coffin _____ (cigarettes)
+58|helio|Sun (comb. form)
+60|dris|Wipe ’n’ _____ (pl.)
+62|moll|Gangster's dame
+63|poil|Hair, in Le Havre
+64|ofay|Derogatory racial epithet
+67|ali|_____ Pasha, Turkish ruler of Albania (1787?-1820)
+68|men|“Boys Will Be _____” (1950’s high school textbook)

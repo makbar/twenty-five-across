@@ -1,6 +1,11 @@
 package twentyfiveacross.servlet;
 
 import java.io.PrintWriter;
+import java.util.Vector;
+
+import twentyfiveacross.puzzle.Puzzle;
+import twentyfiveacross.puzzle.Square;
+import twentyfiveacross.puzzle.Word;
 
 
 public class WebPages {
@@ -164,8 +169,119 @@ public class WebPages {
         out.println("</body>");
         out.println("</head>");
         out.println("</html>");
-    }    
-    
+    }
+
+    /** Display the page for a given puzzle. */
+    static void printGamePage(PrintWriter out, Puzzle puzzle) throws Exception {
+        Vector<Word> acrossWords = puzzle.getAcrossWords();
+        Vector<Word> downWords = puzzle.getDownWords();
+
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>25 Across</title>");
+        out.println("</head>");
+        printStyles(out);
+        out.println("<body><br><h3>Puzzle Page</h3>");
+        out.println("   <table align='center'>");
+        out.println("       <tr>");
+
+        out.println("           <td style='vertical-align:top; padding: 0 30px 0 20px;width:420px;'>");
+        printPuzzle(out,puzzle);
+        printUserInputs(out,puzzle);
+        printPuzzleButtons(out,puzzle);
+        out.println("           </td>");
+
+        out.println("           <td style='vertical-align:top;width:200px;'>");
+        printClues(out,acrossWords,"Across");
+        out.println("           </td>");
+
+        out.println("           <td style='vertical-align:top;width:200px;'>");
+        printClues(out,downWords,"Down");
+        out.println("           </td>");
+
+        out.println("       </tr>");
+        out.println("   </table>");
+        out.println("</head>");
+        out.println("</html>");
+    }
+
+    static void printPuzzle(PrintWriter out, Puzzle puzzle) throws Exception {
+        Square[][] squares = puzzle.getSquares();
+        int size = puzzle.getSize();
+        Square square;
+
+        out.println("               <table cellspacing='0' cellpadding='0' class='puzzle'>");
+        for (int i = 0; i < size; i++) {
+            out.println("               <tr>");
+            for (int j = 0; j < size; j++) {
+                square = squares[i][j];
+                printSquare(out,square);
+            }
+            out.println("               </tr>");
+        }
+        out.println("               </table>");
+    }
+
+    static void printSquare(PrintWriter out, Square square) throws Exception {
+        String nr = square.getNumber() == 0 ? "&nbsp;" : String.valueOf(square.getNumber());
+
+        if (true == square.isBlack())
+            out.println("                 <td colspan='2' class='blacksquare'>");
+        else {
+            out.print("                 <td class='squareNr'>");
+            out.print(nr);
+            out.print("</td>");
+            out.print("<td class='squareLetter'>");
+            out.print(square.getLetter());
+//            out.print("&nbsp;");
+            out.println("</td>");
+        }
+    }
+
+    static void printUserInputs(PrintWriter out, Puzzle puzzle) throws Exception {
+        out.println("               <br><table>");
+        out.println("               <form name='frm' action='main' method='post'>");
+        out.println("                   <input type='hidden' name='cmd' value='enterWord'>");
+        out.println("                   <tr>");
+        out.println("                       <td>Word: <input name='word' type='text' size='" + puzzle.getSize() + "'></td>");
+        out.println("                       <td style='padding-left:5px;'>Nr: <input name='nr' type'text' size='1' maxlength='2'></td>");
+        out.println("                       <td style='padding-left:5px;' align='right'>");
+        out.println("                           <input name='direction' type='radio' value='1'>Across</input>");
+        out.println("                           <input name='direction' type='radio' value='2'>Down</input>");
+        out.println("                       </td>");
+        out.println("                       <td style='padding-left:5px;'align='right'><input type='submit' value='Submit'></td>");
+        out.println("                   </tr>");
+        out.println("                   </form>");
+        out.println("               </table>");
+    }
+
+    static void printPuzzleButtons(PrintWriter out, Puzzle puzzle) throws Exception {
+        out.println("               <br><br><table align='center'>");
+        out.println("                   <tr>");
+//        out.println("                       <td style='padding-left:5px;'align='right'><input type='button' value='Save'></td>");
+        out.println("                       <td style='padding-left:5px;'align='right'><input type='button' value='Finished!'></td>");
+        out.println("                       <td style='padding-left:5px;'align='right'><input type='button' value='Reset'></td>");
+        out.println("                       <td style='padding-left:5px;'align='right'><input type='button' value='Quit'></td>");
+        out.println("                   </tr>");
+        out.println("               </table>");
+    }
+    static void printClues(PrintWriter out, Vector<Word> words, String direction)
+            throws Exception {
+        Word word;
+
+        out.println("               <table>");
+        out.println("               <tr><td colspan='2'><b>" + direction + ":</td></tr>");
+        for (int i = 0; i < words.size(); i++) {
+            word = words.get(i);
+            out.print("               <tr><td>");
+            out.print(word.getNumber());
+            out.print(". ");
+            out.print(word.getClue());
+            out.println("</td></tr>");
+        }
+        out.println("               </table>");
+    }
+
     /** Print all the style specifications. */
     static void printStyles(PrintWriter out) {
         out.println("<style type='text/css'>");
@@ -206,6 +322,36 @@ public class WebPages {
         out.println("   font-weight: bold;");
         out.println("   text-decoration:none;");
         out.println("   color: white;");
+        out.println("}");
+        out.println(".PUZZLE {");
+        out.println("   border: 1px solid black;");
+        out.println("   cellpadding: 0px;");
+        out.println("}");
+        out.println(".SQUARENR {");
+        out.println("   width: 10px;");
+        out.println("   height: 32px;");
+        out.println("   background-color: white;");
+        out.println("   border-style: solid;");
+        out.println("   border-color: black;");
+        out.println("   border-width: 1px 0px 1px 1px;");
+        out.println("   text-align: center;");
+        out.println("   vertical-align: top;");
+        out.println("   font-size: 8pt;");
+        out.println("   font-weight: bold;");
+        out.println("}");
+        out.println(".SQUARELETTER {");
+        out.println("   width: 20px;");
+        out.println("   height: 32px;");
+        out.println("   background-color: white;");
+        out.println("   border-style: solid;");
+        out.println("   border-color: black;");
+        out.println("   border-width: 1px 1px 1px 0px;");
+        out.println("   font-variant: small-caps;");
+        out.println("   font-size: 11pt;");
+        out.println("}");
+        out.println(".BLACKSQUARE {");
+        out.println("   background-color: black;");
+        out.println("   border: 1px solid black;");
         out.println("}");
         out.println(".ERROR {");
         out.println("   color: red;");

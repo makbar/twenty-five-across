@@ -1,0 +1,85 @@
+13
+
+p:1|a:2|t:3||j:4|i:5|f:6||t:7|w:8|i:9|c:10|e:11
+i:12|r|a||u:13|s|a||a:14|h|s|i|n
+p:15|o|p|u:16|l|a|r||n:17|o|l|t|e
+s:18|w|a|n|||m:19|e:20|g||||
+|||u:21|p:22|c:23||m:24|o|v:25|i:26|e:27|s:28
+s:29|s:30|e:31||e:32|l|a:33|m||w:34|r|a|p
+c:35|o|m|p:36|r|e|h|e|n:37|s|i|v|e
+a:38|i|m|e||e:39|a|t|s||s:40|e|c
+b:41|r|a|n|d:42|s||t:43|w|a:44|||
+||||i:45|e|r:46|||c:47|h:48|i:49|n:50
+a:51|t:52|e:53|a:54|m||c:55|u:56|l:57|t|u|r|e
+l:58|e|n|y|a||a:59|m|a||m:60|a|a
+s:61|l|a|n|g||s:62|a|w||p:63|q|r
+
+1|pat|___ on the back (praise)
+4|jif|Peter Pan and Skippy competitor
+7|twice|More than ___ as many total entries as any other crossword dictionary
+12|ira|Keogh Plan alternative
+13|usa|2002 Winter Olympics host
+14|ahsin|Bret Harte character
+15|popular|The only crossword dictionary based in America's most ___ crosswords
+17|nolte|"Cannery Row" star
+18|swan|Gloria Vanderbilt logo
+19|meg|Computer capacity unit, for short
+21|upc|Checkout scanner ID: Abbr
+24|movies|More than ten times as many ___ (like "Titanic") as any other crossword dictionary
+29|sse|Wind heading: Abbr
+32|elam|Mesopotamian kingdom
+34|wrap|Saran ___
+35|comprehensive|Appropriately, there are 40 entries under this word, meaning "thorough"
+38|aime|"Darling, Je Vous ___ Beaucoup" (55' song)
+39|eats|Has brunch
+40|sec|NYSE regulator
+41|brands|More than ten times as many ___ (like Chevy and Oreo) as any other crossword dictionary
+43|twa|Former US Airways rival
+45|ier|Comparative suffix
+47|chin|Jay leno prominent feature
+51|ateam|Mt.T's TV group
+55|culture|The only crossword dictionary with full coverage of contemporary life and ___
+58|lenya|Actress married to composer Kurt Weill
+59|ama|"Today I ___ man!"
+60|maa|Barnyard sound
+61|slang|The only crossword dictionary with "sound bite", "world-class" and thousands of other ___ terms
+62|saw|Lumberjack's tool
+63|pqr|Alphabetic trio
+====
+1|pips|Glady Knight's group
+2|arow|"Pretty maids all in ___"
+3|tapa|Spanish snack
+4|jul|Summer mo.
+5|isa|"Love ___ Many-Splendored Thing!"
+6|farm|Pig's home
+7|tango|"The rain in Spain" is one
+8|who|Doctor of sci-fi
+9|isl|Crete, for example: Abbr.
+10|cit|Op. ___ (footnote phrase)
+11|ene|Ending for ethyl
+16|unu|Burmese statesman
+20|emmett|Kelly the clown
+22|per|___ capita income
+23|cleese|Monty Python member
+25|vws|Jettas and Beetles
+26|iris|Dame Judi Dench film
+27|eave|Icicle spot
+28|spec|Risky business, for short
+29|scab|Union bane
+30|soir|"Bon ___!" (French farewell)
+31|emma|Actress Thompson
+33|aha|"Take on Me" rock group
+36|pen|Magic Marker
+37|nsw|Where Sydney is capital: Abbr.
+42|dimag|Yankee great's nickname
+44|act|Get busy
+46|rcas|Some TVs
+48|hump|Dromedary feature
+49|iraq|Desert Storm site
+50|near|___-miss (close call)
+51|als|Caricaturist Hirschfeld et al.
+52|tel|___ Aviv
+53|ena|Disney deer
+54|ayn|First name of the author of "We the Living"
+56|uma|Actress Thurman
+57|law|John Grisham's profession
