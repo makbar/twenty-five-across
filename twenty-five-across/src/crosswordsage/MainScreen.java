@@ -1,16 +1,20 @@
 package crosswordsage;
 
 import java.awt.*;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.swing.*;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
-import twentyfiveacross.ejbs.Game;
+import twentyfiveacross.ejbs.GameRemote;
 import twentyfiveacross.ejbs.GameManagerRemote;
 import twentyfiveacross.ejbs.UserManagerRemote;
 
 import java.awt.event.*;
 import java.net.*;
+import java.util.Hashtable;
 import java.io.*;
 
 
@@ -48,6 +52,7 @@ public class MainScreen extends JFrame
     //@EJB(mappedName="twentyfiveacross.ejbs.UserManagerRemote")
 	public UserManagerRemote userManager;
 	public GameManagerRemote gameManager;
+	public int currentGame = -1;
 
     public MainScreen()
     {
@@ -155,12 +160,34 @@ public class MainScreen extends JFrame
 
         userManager = service.getPort(UserManagerRemote.class);
         
+        /*
         url = new URL("http://localhost:8080/GameManagerService/GameManager?wsdl");
         qname = new QName("http://ejbs.twentyfiveacross/", "GameManagerService");
         service = Service.create(url, qname);
 
-        gameManager = service.getPort(GameManagerRemote.class);
+        gameManager = service.getPort(GameManagerRemote.class);*/
+        
+        System.err.println("Creating properties");
+
+        //Hashtable <String,String> env = new Hashtable <String, String>();
+		//env.put(Context.INITIAL_CONTEXT_FACTORY,"org.jnp.interfaces.NamingContextFactory");
+		//env.put(Context.PROVIDER_URL, "http://localhost:8080");
+		
+		java.util.Properties prop = System.getProperties();
+		prop.put(Context.PROVIDER_URL, "http://localhost:8080");
+
+		try {
+			InitialContext ic = new InitialContext(); //env
+			gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
+		} catch (Exception e) {
+			System.err.println("Error!: " + e.getMessage());
+			e.printStackTrace();
+			return;
+		}
+        
 		System.err.println("Connected");
+		
+		
 
     }
 
@@ -280,7 +307,7 @@ public class MainScreen extends JFrame
     {
         Crossword cw = CrosswordFileHandler.loadCrossword(this);
         mainPanel.removeAll();
-        mainPanel.add(new CrosswordSolver(cw));
+        mainPanel.add(new CrosswordSolver(cw, gameManager, currentGame));
         validate();
     }
 
@@ -465,10 +492,18 @@ public class MainScreen extends JFrame
             else if(e.getSource() == mFile_Display)
             {
             	if(gameManager != null) {
-                Game thegame = gameManager.newGame();
-                mainPanel.removeAll();
-                mainPanel.add(new CrosswordSolver(thegame.getCrossword()));
-                validate();
+            		int loadThisGame;
+            		String[] games = gameManager.listGames();
+            		if (games.length > 0) {
+            			loadThisGame = Integer.parseInt(games[0]);
+            		} else { // create a new game!
+            			loadThisGame = gameManager.newGame();
+            		}
+            		Crossword c = gameManager.getCrossword(loadThisGame);
+            		currentGame = loadThisGame;
+            		mainPanel.removeAll();
+            		mainPanel.add(new CrosswordSolver(c, gameManager, currentGame));
+            		validate();
             	}
 
             }
