@@ -13,10 +13,17 @@ import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
+import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.QueueConnectionFactory;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import javax.jms.Topic;
+import javax.jms.TopicConnection;
+import javax.jms.TopicConnectionFactory;
+import javax.jms.TopicPublisher;
+import javax.jms.TopicSession;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -103,7 +110,7 @@ public class WebApp extends HttpServlet {
                         WebPages.printRegister(out,"Registration Failed! Please try again.");
                 }
                 else if ("processLogin".equals(cmd)) {
-                    sendMessage();
+                    sendMessage("2",puzzle);
 //                    if (userManager.checkLogin(req.getParameter("_U"),req.getParameter("_P")))
 //                        WebPages.printMain(out);
 //                    else
@@ -308,42 +315,24 @@ public class WebApp extends HttpServlet {
         }
     }
 
-    @Resource(mappedName = "testQueue2")
-    private Queue queue;
+    public void sendMessage(String puzzleID, Puzzle puzzle) throws Exception {
+        InitialContext jndiContext = new InitialContext();  // TODO: is this right?
 
-    @Resource(mappedName = "jms/QueueConnectionFactory")
-    private QueueConnectionFactory queueConnectionFactory;
+        TopicConnectionFactory factory = (TopicConnectionFactory)jndiContext.lookup("nameOfFactory?");
 
-    public void sendMessage() {
-        Connection connection = null;
-        Session session = null;
-        MessageProducer messageProducer = null;
-        TextMessage message = null;
-        final int NUM_MSGS = 3;
+        TopicConnection connection = factory.createTopicConnection();
 
-        try {
-            connection = queueConnectionFactory.createConnection();
-            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            messageProducer = session.createProducer(queue);
-            message = session.createTextMessage();
+        TopicSession session = connection.createTopicSession(true, 0);
 
-            for (int i = 0; i < NUM_MSGS; i++) {
-                message.setText("This is message " + (i + 1));
-                System.out.println("Sending message: " + message.getText());
-                messageProducer.send(message);
-            }
+        Topic topic = (Topic) jndiContext.lookup(puzzleID); /* topicName = puzzle ID? */
 
-        } catch (JMSException e) {
-            System.out.println("Exception occurred: " + e.toString());
-//        } finally {
-//            if (connection != null) {
-//                try {
-//                    connection.close();
-//                } catch (JMSException e) {
-//                }
-//            }
+        TopicPublisher publisher = session.createPublisher(topic);
 
-            System.exit(0);
-        }
+        ObjectMessage objectMsg = session.createObjectMessage();
+        objectMsg.setObject(puzzle);
+
+        publisher.publish(objectMsg);
+
+        connection.close();
     }
 }
