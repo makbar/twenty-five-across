@@ -18,23 +18,25 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import twentyfiveacross.ejbs.GameManagerRemote;
 import twentyfiveacross.ejbs.UserManagerRemote;
-import crosswordsage.RegisterScreen.RegisterListener;
 
-public class LoginScreen extends JPanel {
+public class RegisterScreen extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
+	public UserManagerRemote userManager;
+
 	private JButton logInBtn, registerBtn;
     private JPanel mainPanel, imgPanel, formPanel;
-    private JLabel usernameLbl, pwLbl, cartoon, bigHeader, smallHeader;
-    private JTextField  usernameField, pwField;
+    private JLabel nameLbl, usernameLbl, pwLbl, cartoon, bigHeader, smallHeader;
+    private JTextField  nameField, usernameField, pwField;
     TfacrossGui mainScreen;
 
-	public UserManagerRemote userManager;
-    
-    LoginScreen (TfacrossGui myMainScreen) {
+    RegisterScreen (TfacrossGui myMainScreen) {
+        nameLbl = new JLabel();
+        nameLbl.setText("Display name:");
+        nameField = new JTextField(15);
+
         usernameLbl = new JLabel();
         usernameLbl.setText("Username:");
         usernameField = new JTextField(15);
@@ -54,9 +56,9 @@ public class LoginScreen extends JPanel {
         smallHeader.setForeground(new Color(15,124,244));
         smallHeader.setVerticalTextPosition(JLabel.TOP);
         smallHeader.setPreferredSize(new Dimension(60, 60));
-
-        logInBtn = new JButton("Log In");
-        registerBtn = new JButton("New User? Go to Registration!");
+        
+        registerBtn = new JButton("Register");
+        logInBtn = new JButton("Already a user? Go to Login!");
 
         imgPanel = new JPanel();
         imgPanel.setBackground(Color.white);
@@ -67,12 +69,14 @@ public class LoginScreen extends JPanel {
         formPanel.setBackground(Color.white);
         formPanel.add(bigHeader);
         formPanel.add(smallHeader);
+        formPanel.add(nameLbl);
+        formPanel.add(nameField);
         formPanel.add(usernameLbl);
         formPanel.add(usernameField);
         formPanel.add(pwLbl);
         formPanel.add(pwField);
-        formPanel.add(logInBtn);
         formPanel.add(registerBtn);
+        formPanel.add(logInBtn);
 
         mainPanel = new JPanel(new FlowLayout());
         mainPanel.setBackground(Color.white);
@@ -84,11 +88,22 @@ public class LoginScreen extends JPanel {
         add(mainPanel,BorderLayout.CENTER);
         logInBtn.addActionListener(new LoginListener());
         registerBtn.addActionListener(new RegisterListener());
+
+//        setTitle("LOGIN FORM");
         
         mainScreen = myMainScreen;
+//        mainScreen.add(mainPanel);
     }
 
     class LoginListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent a)
+        {
+        	mainScreen.register.setVisible(false);
+        	mainScreen.login.setVisible(true);
+        }
+    }
+    class RegisterListener implements ActionListener
     {
         public void actionPerformed(ActionEvent a)
         {
@@ -99,24 +114,17 @@ public class LoginScreen extends JPanel {
         		InitialContext ic = new InitialContext();
         		userManager = (UserManagerRemote) ic.lookup("UserManager");
 
-        		if(userManager.checkLogin(usernameField.getText(), pwField.getText()))
+        		if(userManager.createUser(usernameField.getText(), nameField.getText(), pwField.getText()))
         		{
-        	   		System.out.println("Password Correct!");
-        	   		if("root".equals(usernameField.getText()))
-        	   		{
-        	   			mainScreen.statusbarStatusLbl.setText("Welcome root. User Management Screen loaded!");
-        	        	mainScreen.login.setVisible(false);
-        	        	mainScreen.manager.setVisible(true);
-        	   		}
-        	   		if(userManager.checkBan(usernameField.getText()))
-        	   			mainScreen.statusbarStatusLbl.setText("You are banned!");
-        	   		else
-        	   			mainScreen.statusbarStatusLbl.setText("Login Accepted!");
+        	   		System.out.println("Registration Done!");
+        	   		mainScreen.statusbarStatusLbl.setText("Registration Succeeded! Now Log in!");
+                	mainScreen.register.setVisible(false);
+                	mainScreen.login.setVisible(true);
         		}
         	   	else
         	   	{
-        	   		System.out.println("Password Incorrect!");
-        	   		mainScreen.statusbarStatusLbl.setText("Login Failed!");
+        	   		System.out.println("Registration Failed!");
+        	   		mainScreen.statusbarStatusLbl.setText("Registration Failed!");
         	   	}
         		
         	} catch (Exception e) {
@@ -124,14 +132,6 @@ public class LoginScreen extends JPanel {
         		e.printStackTrace();
         		return;
         	}
-        }
-    }
-    class RegisterListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent a)
-        {
-        	mainScreen.login.setVisible(false);
-        	mainScreen.register.setVisible(true);
         }
     }
 }

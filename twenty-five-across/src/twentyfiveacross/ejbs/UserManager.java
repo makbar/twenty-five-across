@@ -1,12 +1,14 @@
 package twentyfiveacross.ejbs;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.naming.InitialContext;
 
 /**
  * Session Bean implementation class UserManager
  */
-@Stateless
+@Stateless(name="UserManager",mappedName="UserManager")
 public class UserManager implements UserManagerRemote {
 
 	InitialContext ctx;
@@ -31,7 +33,7 @@ public class UserManager implements UserManagerRemote {
 
 	public boolean createUser(String username, String name, String pw)
 			throws Exception {
-		return bean.create(new UserInfo(username, pw, 1, 1, name));
+		return bean.create(new UserInfo(username, pw, 1, 0, name));
 	}
 
 	public boolean checkLogin(String username, String pw) throws Exception {
@@ -39,6 +41,13 @@ public class UserManager implements UserManagerRemote {
 		if(u==null)
 			return false;
 		return pw.equals(u.getPassword());
+	}
+
+	public boolean checkBan(String username) throws Exception {
+		UserInfo u = bean.find(username);
+		if(u==null)
+			return false;
+		return (u.getStatus()==1);
 	}
 
 	public boolean updateDisplayName(String username, String name)
@@ -100,10 +109,11 @@ public class UserManager implements UserManagerRemote {
 		UserInfo u = bean.find(username);
 		if(u==null)
 			return false;
-		int rating = u.getRating();
-		if (rating < 5) {
-			u.setRating(rating + 1);
-		}
-		return bean.update(u);
+		return bean.delete(u);
 	}
+	
+	public List<String> listUsers() throws Exception {
+		return bean.findAll();
+	}
+
 }

@@ -3,7 +3,8 @@ package twentyfiveacross.ejbs;
 //import java.util.Iterator;
 //import java.util.List;
 
-import javax.ejb.EJBException;
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -47,7 +48,7 @@ public class UserBeanInfoImpl implements UserBeanInfo {
 	public boolean delete(UserInfo bean)
 	{
 		try {
-			em.remove(bean);
+			em.remove(em.merge(bean));
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -58,7 +59,18 @@ public class UserBeanInfoImpl implements UserBeanInfo {
 	public UserInfo find(String username)
 	{
 		try {
+			em.flush();
 			return em.find(UserInfo.class, username);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	@Override
+	public List<String> findAll()
+	{
+		try {
+			return (List<String>) (em.createNativeQuery("SELECT UserName FROM userinfo").getResultList());
 		} catch (Exception e) {
 			return null;
 		}
