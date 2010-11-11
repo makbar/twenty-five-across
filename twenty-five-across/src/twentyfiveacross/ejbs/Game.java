@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.Random;
 
 //@Entity
-public class Game implements GameRemote {
+public class Game {
     @Id int gameId;
     short status; //1 = Finished, 2 = Active
     short accessType; //1 = Public, 2 = Private
