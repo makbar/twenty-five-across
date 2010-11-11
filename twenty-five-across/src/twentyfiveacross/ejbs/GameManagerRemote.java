@@ -6,10 +6,18 @@ import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.ejb.Stateless;
 
-@WebService
+import crosswordsage.Crossword;
+import crosswordsage.SolveState;
+
 @Remote
 public interface GameManagerRemote {
-	@WebMethod public Game[] listGames();
+	public String[] listGames();
 	
-	@WebMethod public Game newGame();
+	public int newGame();
+	
+    public Crossword getCrossword(int gameId);
+    
+    public SolveState getSolveState(int gameId);
+    
+    public Boolean setLetter(int gameId, int x, int y, String letter);
 }
