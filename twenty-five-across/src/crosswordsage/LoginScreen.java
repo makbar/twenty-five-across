@@ -1,11 +1,18 @@
 package crosswordsage;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Box;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,8 +25,8 @@ public class LoginScreen extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
 
     private JButton logInBtn;
-    private JPanel panel;
-    private JLabel usernameLbl, pwLbl;
+    private JPanel mainPanel, imgPanel, formPanel;
+    private JLabel usernameLbl, pwLbl, cartoon, bigHeader, smallHeader;
     private JTextField  usernameField, pwField;
 
     LoginScreen () {
@@ -31,16 +38,45 @@ public class LoginScreen extends JFrame implements ActionListener {
         pwLbl.setText("Password:");
         pwField = new JPasswordField(15);
 
+        cartoon = new JLabel(new ImageIcon("noclue.jpg"));
+
+        bigHeader = new JLabel("Welcome to 25 Across!");
+        bigHeader.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+        bigHeader.setForeground(new Color(15,124,244));
+
+        smallHeader = new JLabel("Do you have a clue?");
+        smallHeader.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
+        smallHeader.setForeground(new Color(15,124,244));
+        smallHeader.setVerticalTextPosition(JLabel.TOP);
+        smallHeader.setPreferredSize(new Dimension(60, 60));
+
         logInBtn = new JButton("Log In");
 
-        panel = new JPanel(new GridLayout(3,10));
-        panel.add(usernameLbl);
-        panel.add(usernameField);
-        panel.add(pwLbl);
-        panel.add(pwField);
-        panel.add(logInBtn);
-        add(panel,BorderLayout.CENTER);
+        imgPanel = new JPanel();
+        imgPanel.setBackground(Color.white);
+        imgPanel.add(cartoon);
+
+        formPanel = new JPanel();
+        formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
+        formPanel.setBackground(Color.white);
+        formPanel.add(bigHeader);
+        formPanel.add(smallHeader);
+        formPanel.add(usernameLbl);
+        formPanel.add(usernameField);
+        formPanel.add(pwLbl);
+        formPanel.add(pwField);
+        formPanel.add(logInBtn);
+
+        mainPanel = new JPanel(new FlowLayout());
+        mainPanel.setBackground(Color.white);
+        mainPanel.setAlignmentX(CENTER_ALIGNMENT);
+        mainPanel.setAlignmentY(CENTER_ALIGNMENT);
+        mainPanel.add(imgPanel);
+        mainPanel.add(formPanel);
+
+        add(mainPanel,BorderLayout.CENTER);
         logInBtn.addActionListener(this);
+
         setTitle("LOGIN FORM");
     }
 
@@ -48,48 +84,3 @@ public class LoginScreen extends JFrame implements ActionListener {
         //TODO
     }
 }
-
-//class Login extends JFrame implements ActionListener
-//{
-// JButton SUBMIT;
-// JPanel panel;
-// JLabel label1,label2;
-// final JTextField  text1,text2;
-//  Login()
-//  {
-//    label1 = new JLabel();
-//    label1.setText("Username:");
-//    text1 = new JTextField(15);
-//
-//    label2 = new JLabel();
-//    label2.setText("Password:");
-//      text2 = new JPasswordField(15);
-//
-//    SUBMIT=new JButton("SUBMIT");
-//
-//    panel=new JPanel(new GridLayout(3,1));
-//    panel.add(label1);
-//    panel.add(text1);
-//    panel.add(label2);
-//    panel.add(text2);
-//    panel.add(SUBMIT);
-//    add(panel,BorderLayout.CENTER);
-//    SUBMIT.addActionListener(this);
-//    setTitle("LOGIN FORM");
-//  }
-//   public void actionPerformed(ActionEvent ae)
-//  {
-//    String value1=text1.getText();
-//    String value2=text2.getText();
-//        if (value1.equals("roseindia") && value2.equals("roseindia")) {
-//    NextPage page=new NextPage();
-//    page.setVisible(true);
-//    JLabel label = new JLabel("Welcome:"+value1);
-//        page.getContentPane().add(label);
-//  }
-//    else{
-//      System.out.println("enter the valid username and password");
-//      JOptionPane.showMessageDialog(this,"Incorrect login or password",
-//            "Error",JOptionPane.ERROR_MESSAGE);
-//  }
-//}
