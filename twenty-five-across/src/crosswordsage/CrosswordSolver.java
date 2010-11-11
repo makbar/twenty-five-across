@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import twentyfiveacross.ejbs.GameManagerRemote;
+
 public class CrosswordSolver extends JPanel
 {
     private static int MARGIN_GAP = 8;
@@ -24,12 +26,16 @@ public class CrosswordSolver extends JPanel
     private Border brdMedBlack = BorderFactory.createLineBorder(Color.BLACK, 2);
     private JTextPane clueTextPane = new JTextPane();
     JButton btnRevealWord = new JButton();
+    private GameManagerRemote gameManager;
+    private int gameNumber;
 
-    public CrosswordSolver(Crossword cw)
+    public CrosswordSolver(Crossword cw, GameManagerRemote gm, int gn)
     {
         this.setLayout(new BorderLayout());
         this.cw = cw;
-        grid = new SolverGrid(cw);
+        this.gameManager = gm;
+        this.gameNumber = gn;
+        grid = new SolverGrid(cw, gm, gn);
         DisplayGrid();
         grid.setCrossword(cw);
         grid.repopulateWords();

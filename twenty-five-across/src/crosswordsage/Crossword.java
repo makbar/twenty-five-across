@@ -29,6 +29,19 @@ public class Crossword implements Serializable
         this.height = height;
         words = new ArrayList();
     }
+    
+    public Crossword copy() {
+    // Note this method does not do a deep copy yet; the words
+    // are not value-copied, only references to them are.
+    	Crossword thecopy = new Crossword(this.width, this.height);
+    	thecopy.setIsEditable(this.getIsEditable());
+    	ArrayList oldwords = this.getWords();
+    	for (int i=0; i<oldwords.size(); i++) {
+    		Word w = (Word) oldwords.get(i);
+    		thecopy.addWord(w);
+    	}
+    	return thecopy;
+    }
 
     public boolean getIsEditable()
     {

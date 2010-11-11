@@ -11,10 +11,27 @@ import java.util.regex.Matcher;
 import java.io.File;
 
 /* Peyton: We can probably delete this class.
- *
+ *  err.. except for the method I just wrote!
  */
 public class Utilities
 {
+	public Crossword removeAnswers(Crossword cw) {
+		//TODO: copy the crossword object before blanking!
+		// Not yet tested.
+		ArrayList words = cw.getWords();
+		String blank = "*";
+		for(int i=0; i<words.size(); i++) {
+			Word w = (Word)words.get(i);
+			String blanked = "";
+			for (int j=0; j<w.getLength(); j++) {
+				blanked += blank;
+			}
+			w.setWord(blanked);
+		}
+		return cw;
+		
+	}
+	
     public Utilities()
     {
     }
@@ -83,3 +100,4 @@ public class Utilities
     }
 
 }
+ 

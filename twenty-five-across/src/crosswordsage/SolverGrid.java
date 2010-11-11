@@ -3,17 +3,25 @@ package crosswordsage;
 import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
+
+import twentyfiveacross.ejbs.GameManagerRemote;
+
 import java.awt.*;
 
 public class SolverGrid extends Grid
 {
+	private GameManagerRemote gameManager;
+	private int currentGame; 
+	
     public SolverGrid()
     {
     }
 
-    public SolverGrid(Crossword cw)
+    public SolverGrid(Crossword cw, GameManagerRemote gm, int cg)
     {
         super(cw);
+        this.gameManager = gm;
+    	this.currentGame = cg;
     }
 
     public void validate()
@@ -205,8 +213,12 @@ public class SolverGrid extends Grid
             {
                 s = String.valueOf(e.getKeyChar());
             }
-            selectedSquare.setLetter(s);
-            selectedSquare = getNextSquare();
+            if(gameManager.setLetter(currentGame, selectedSquare.getXPos(), selectedSquare.getYPos(), s)) {
+            	selectedSquare.setLetter(s);
+            	selectedSquare = getNextSquare();
+            } else {
+            	// noop
+            }
             validate();
         }
     }

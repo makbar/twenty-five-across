@@ -33,6 +33,8 @@ public class CrosswordFileHandler
         catch (Exception e)
         {
             System.out.print(e.getStackTrace());
+            e.printStackTrace();
+            System.err.println("CWD: " + System.getProperty("user.dir"));
         }
         return null;
     }
