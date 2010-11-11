@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
-import twentyfiveacross.ejbs.GameRemote;
 import twentyfiveacross.ejbs.GameManagerRemote;
 import twentyfiveacross.ejbs.UserManagerRemote;
 
