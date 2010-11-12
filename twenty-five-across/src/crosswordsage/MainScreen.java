@@ -153,11 +153,11 @@ public class MainScreen extends JFrame
         
 		System.err.println("Connecting");
 
-        URL url = new URL("http://localhost:8080/UserManagerService/UserManager?wsdl");
+       /* URL url = new URL("http://localhost:8080/UserManagerService/UserManager?wsdl");
         QName qname = new QName("http://ejbs.twentyfiveacross/", "UserManagerService");
         Service service = Service.create(url, qname);
 
-        userManager = service.getPort(UserManagerRemote.class);
+        userManager = service.getPort(UserManagerRemote.class);*/
         
         /*
         url = new URL("http://localhost:8080/GameManagerService/GameManager?wsdl");
