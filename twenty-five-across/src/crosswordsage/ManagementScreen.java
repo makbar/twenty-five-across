@@ -9,9 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,36 +24,32 @@ public class ManagementScreen extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-    String userlist[];// = { "userA", "userB", "userC", "userD", "userE", "userF", "userG", "userH", "userI", "userJ" };
+    String userlist[];
     List<String> usersL;
 
     public UserManagerRemote userManager;
     
 	private JButton banBtn, unBanBtn;
 	private JList usersLst;
-	private JPanel mainPanel, imgPanel, formPanel;
+	private JList banLst;
+	private JPanel mainPanel, imgPanel, formPanel, listPanel;
     private JLabel cartoon, bigHeader, smallHeader, title;
     TfacrossGui mainScreen;
+    
+	DefaultListModel model = new DefaultListModel();
+	
+	String banStr = new String("(Banned)");
+	String actStr = new String("(Active)");
+
 
     ManagementScreen (TfacrossGui myMainScreen) {
     	
-    	java.util.Properties prop = System.getProperties();
-    	prop.put(Context.PROVIDER_URL, "http://localhost:8080");
-
-    	try {
-    		InitialContext ic = new InitialContext();
-    		userManager = (UserManagerRemote) ic.lookup("UserManager");
-    		
-    		usersL = userManager.listUsers();
-    		
-    	} catch (Exception e) {
-    		System.err.println("Error!: " + e.getMessage());
-    		e.printStackTrace();
-    	}
-
-    	userlist = (String[]) (Object[])usersL.toArray(new String[0]);
+    	updateUserList();
     	usersLst = new JList(userlist);
         usersLst.setVisibleRowCount(5);
+        
+        updateLists();
+        banLst.setVisibleRowCount(5);
         
         cartoon = new JLabel(new ImageIcon("noclue.jpg"));
         
@@ -82,10 +78,14 @@ public class ManagementScreen extends JPanel {
         formPanel.add(bigHeader);
         formPanel.add(smallHeader);
         formPanel.add(title);
-        formPanel.add(usersLst);
-        formPanel.add(usersLst);
-        formPanel.add(banBtn);
-        formPanel.add(unBanBtn);
+
+        listPanel = new JPanel();
+        listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.X_AXIS));
+        listPanel.setBackground(Color.white);
+        listPanel.add(usersLst);
+        listPanel.add(banLst);
+        listPanel.add(banBtn);
+        listPanel.add(unBanBtn);
         
         mainPanel = new JPanel(new FlowLayout());
         mainPanel.setBackground(Color.white);
@@ -93,6 +93,7 @@ public class ManagementScreen extends JPanel {
         mainPanel.setAlignmentY(CENTER_ALIGNMENT);
         mainPanel.add(imgPanel);
         mainPanel.add(formPanel);
+        mainPanel.add(listPanel);
 
         add(mainPanel,BorderLayout.CENTER);
 
@@ -101,6 +102,46 @@ public class ManagementScreen extends JPanel {
 
         
         mainScreen = myMainScreen;
+    }
+    
+    void updateUserList()
+    {
+    	try {
+    		InitialContext ic = new InitialContext();
+    		userManager = (UserManagerRemote) ic.lookup("UserManager");
+    		
+    		usersL = userManager.listUsers();
+        	userlist = (String[]) (Object[])usersL.toArray(new String[0]);
+
+    		
+    	} catch (Exception e) {
+    		System.err.println("Error!: " + e.getMessage());
+    		e.printStackTrace();
+    	}
+    }
+
+    void updateLists()
+    {
+    	try {
+    		InitialContext ic = new InitialContext();
+    		userManager = (UserManagerRemote) ic.lookup("UserManager");
+
+        	model.removeAllElements();
+
+        	for(int i=0; i<userlist.length; i++)
+            {
+            	banLst = new JList(model);
+
+            	if(userManager.checkBan(userlist[i]))
+            		model.add(i,banStr);
+            	else
+            		model.add(i,actStr);
+            }
+    		
+    	} catch (Exception e) {
+    		System.err.println("Error!: " + e.getMessage());
+    		e.printStackTrace();
+    	}
     }
 
     class BanListener implements ActionListener
@@ -119,6 +160,8 @@ public class ManagementScreen extends JPanel {
                 	System.out.println("Ban "+usersLst.getSelectedValue().toString());
                 	mainScreen.statusbarStatusLbl.setText("User "+usersLst.getSelectedValue().toString()+" Banned");
         		}
+        		
+        		updateLists();
         		
         	} catch (Exception e) {
         		System.err.println("Error!: " + e.getMessage());
@@ -142,6 +185,8 @@ public class ManagementScreen extends JPanel {
                 	System.out.println("Ban "+usersLst.getSelectedValue().toString());
                 	mainScreen.statusbarStatusLbl.setText("User "+usersLst.getSelectedValue().toString()+" Banned");
         		}
+        		
+        		updateLists();
         		
         	} catch (Exception e) {
         		System.err.println("Error!: " + e.getMessage());

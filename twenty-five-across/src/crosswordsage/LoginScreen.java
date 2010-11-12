@@ -18,9 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import twentyfiveacross.ejbs.GameManagerRemote;
 import twentyfiveacross.ejbs.UserManagerRemote;
-import crosswordsage.RegisterScreen.RegisterListener;
 
 public class LoginScreen extends JPanel {
 
@@ -105,13 +103,24 @@ public class LoginScreen extends JPanel {
         	   		if("root".equals(usernameField.getText()))
         	   		{
         	   			mainScreen.statusbarStatusLbl.setText("Welcome root. User Management Screen loaded!");
-        	        	mainScreen.login.setVisible(false);
-        	        	mainScreen.manager.setVisible(true);
+        	   			mainScreen.login.setVisible(false);
+        	   			mainScreen.manager = new ManagementScreen(mainScreen);
+    	   				mainScreen.mainPanel.add(mainScreen.manager);
+        	   			mainScreen.manager.setVisible(true);
         	   		}
-        	   		if(userManager.checkBan(usernameField.getText()))
-        	   			mainScreen.statusbarStatusLbl.setText("You are banned!");
         	   		else
-        	   			mainScreen.statusbarStatusLbl.setText("Login Accepted!");
+        	   		{
+        	   			if(userManager.checkBan(usernameField.getText()))
+        	   				mainScreen.statusbarStatusLbl.setText("You are banned!");
+        	   			else
+        	   			{
+        	   				mainScreen.statusbarStatusLbl.setText("Welcome! Game List Screen loaded!");
+        	   				mainScreen.login.setVisible(false);
+        	   				mainScreen.lister = new GameListScreen(mainScreen);
+        	   				mainScreen.mainPanel.add(mainScreen.lister);
+        	   				mainScreen.lister.setVisible(true);
+        	   			}
+        	   		}
         		}
         	   	else
         	   	{

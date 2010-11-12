@@ -19,10 +19,6 @@ public class TfacrossGui extends JFrame {
 	JPanel statusbar = new JPanel();
 	
 	JLabel toolbarLbl = new JLabel("");
-//	JLabel toolbarLoginLbl = new JLabel(" | Login |   ");
-//	JLabel toolbarRegisterLbl = new JLabel(" | Register |   ");
-//	JLabel toolbarListGamesLbl = new JLabel(" | List Games |   ");
-//	JLabel toolbarPlayGameLbl = new JLabel(" | Play Game |   ");
     JLabel icon = new JLabel(new ImageIcon("noclue.jpg"));
 
 	JLabel statusbarStatusLbl = new JLabel(" Welcome to Twenty Five Across! ");
@@ -31,7 +27,8 @@ public class TfacrossGui extends JFrame {
 	static TfacrossGui gui;
 	LoginScreen login = new LoginScreen(this);
 	RegisterScreen register = new RegisterScreen(this);
-	ManagementScreen manager = new ManagementScreen(this);
+	ManagementScreen manager;
+	GameListScreen lister;
 
 	BorderLayout borderLayout = new BorderLayout();
 
@@ -62,17 +59,10 @@ public class TfacrossGui extends JFrame {
 		this.setVisible(true);
 
 		toolbar.add(toolbarLbl);
-//		toolbar.add(toolbarLoginLbl);
-//		toolbar.add(toolbarRegisterLbl);
-//		toolbar.add(toolbarListGamesLbl);
-//		toolbar.add(toolbarPlayGameLbl);
 		toolbar.setVisible(true);
-
-//		toolbarLbl.setText("Login");
 		
 		mainPanel.add(login);
 		mainPanel.add(register);
-		mainPanel.add(manager);
 		
 		login.setVisible(true);
 		mainPanel.setVisible(true);
@@ -97,11 +87,6 @@ public class TfacrossGui extends JFrame {
 		this.getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 		this.getContentPane().add(statusbar, java.awt.BorderLayout.SOUTH);
 		
-//		toolbarLoginLbl.setForeground(Color.BLUE);
-//		toolbarRegisterLbl.setForeground(Color.BLUE);
-//		toolbarListGamesLbl.setForeground(Color.BLUE);
-//		toolbarPlayGameLbl.setForeground(Color.BLUE);
-		
 		statusbarStatusLbl.setForeground(Color.RED);
 
 		toolbar.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -116,6 +101,5 @@ public class TfacrossGui extends JFrame {
 		
 		login.setVisible(false);
 		register.setVisible(false);
-		manager.setVisible(false);
 	}
 }

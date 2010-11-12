@@ -21,6 +21,8 @@ public interface UserManagerRemote {
 	public boolean updateUserPw(String username, String newPw) throws Exception;
 
 	public boolean checkBan(String username) throws Exception;
+	
+	public int getRating(String username) throws Exception;
 
 	public List<String> listUsers() throws Exception;
 
