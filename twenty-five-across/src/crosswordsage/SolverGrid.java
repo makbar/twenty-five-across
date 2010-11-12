@@ -24,6 +24,19 @@ public class SolverGrid extends Grid
     	this.currentGame = cg;
     }
 
+    public void applySolveState(SolveState ss) {
+    	if(ss.numSquares() != this.squares.size()) {
+    		System.err.println("Tried to apply a solve state with a different number of squares from the puzzle!");
+    		return;
+    	}
+    	for (int i=0; i<squares.size(); i++) {
+        	Square s = (Square)squares.get(i);
+        	int xpos = s.getXPos();
+        	int ypos = s.getYPos();
+        	s.setLetter(ss.getLetter(xpos, ypos));
+    	}
+    }
+    
     public void validate()
     {
         //redraw the squares with appropriate background colours

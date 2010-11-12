@@ -5,9 +5,14 @@ import java.util.ArrayList;
 public class SolveState implements java.io.Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	ArrayList squares;
-	
+
+	private ArrayList squares;
+
 	SolveState() {
+	}
+	
+	public int numSquares() {
+		return squares.size();
 	}
 	
 	public SolveState(int width, int height) {
@@ -75,7 +80,7 @@ public class SolveState implements java.io.Serializable {
 		}
 		
 		public String toString() {
-			return "x: " + posx + " y: " + posy + " l: " + letter;
+			return "\nx: " + posx + " y: " + posy + " l: " + letter;
 		}
 		
 	}

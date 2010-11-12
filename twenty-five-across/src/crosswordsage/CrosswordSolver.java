@@ -22,10 +22,12 @@ public class CrosswordSolver extends JPanel
     private JList jList1 = new JList();
     private JScrollPane jScrollPane1 = new JScrollPane();
     private JButton btnCheckSolution = new JButton();
+    private JButton btnUpdateState = new JButton();
+    private JButton btnResign = new JButton();
+
     private Border brdThinGrey = BorderFactory.createLineBorder(Color.gray, 1);
     private Border brdMedBlack = BorderFactory.createLineBorder(Color.BLACK, 2);
     private JTextPane clueTextPane = new JTextPane();
-    JButton btnRevealWord = new JButton();
     private GameManagerRemote gameManager;
     private int gameNumber;
 
@@ -44,6 +46,7 @@ public class CrosswordSolver extends JPanel
         grid.removeListeners();
         grid.removeKeyListener(grid.getKeyListeners()[0]);
         grid.init();
+        updateState();
 
         sortClueList();
 
@@ -64,6 +67,10 @@ public class CrosswordSolver extends JPanel
         jList1.setListData(clues.toArray());
     }
 
+	private void updateState() {
+		grid.applySolveState(gameManager.getSolveState(gameNumber));
+	}
+	
     private void compileClues()
     {
         ArrayList words = grid.getCrossword().getWords();
@@ -196,11 +203,16 @@ public class CrosswordSolver extends JPanel
         btnCheckSolution.setMaximumSize(new Dimension(131, 27));
         btnCheckSolution.setPreferredSize(new Dimension(131, 27));
         btnCheckSolution.setText("Check Solution");
-        btnRevealWord.setBorder(brdThinGrey);
-        btnRevealWord.setMaximumSize(new Dimension(160, 27));
-        btnRevealWord.setPreferredSize(new Dimension(160, 27));
-
-
+        btnUpdateState.setBorder(brdThinGrey);
+        btnUpdateState.setMaximumSize(new Dimension(131, 27));
+        btnUpdateState.setPreferredSize(new Dimension(131, 27));
+        btnUpdateState.setText("Update State");
+        btnResign.setBorder(brdThinGrey);
+        btnResign.setMaximumSize(new Dimension(131, 27));
+        btnResign.setPreferredSize(new Dimension(131, 27));
+        btnResign.setText("Resign");
+        
+        
         grid.setMinimumSize(new Dimension(500, 500));
         grid.setPreferredSize(new Dimension(500, 500));
         grid.setMaximumSize(new Dimension(500, 500));
@@ -215,12 +227,12 @@ public class CrosswordSolver extends JPanel
         this.setBackground(new Color(174, 190, 212));
         clueTextPane.setBorder(brdMedBlack);
         clueTextPane.setEditable(false);
-        btnRevealWord.setText("Reveal Selected Word");
         boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
-        boxButtons.add(btnRevealWord);
+        boxButtons.add(btnUpdateState);
         boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
         boxButtons.add(btnCheckSolution);
         boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
+        boxButtons.add(btnResign);
 
         topBox.add(Box.createHorizontalStrut(MARGIN_GAP));
         topBox.add(grid);
@@ -236,7 +248,7 @@ public class CrosswordSolver extends JPanel
         vertBox.add(Box.createVerticalStrut(MARGIN_GAP));
         add(vertBox, BorderLayout.CENTER);
         grid.addMouseListener(new ListListener());
-        btnRevealWord.addActionListener(new CListener());
+        btnUpdateState.addActionListener(new CListener());
     }
 
     class CListener implements ActionListener
@@ -247,11 +259,12 @@ public class CrosswordSolver extends JPanel
             {
                 checkSolution();
             }
-            else if(e.getSource() == btnRevealWord)
+            else if(e.getSource() == btnUpdateState)
             {
-                revealWord();
+                updateState();
             }
         }
+
     }
 
     class SquareListener implements MouseListener
