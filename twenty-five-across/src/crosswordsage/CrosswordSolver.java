@@ -30,6 +30,10 @@ public class CrosswordSolver extends JPanel
     private JTextPane clueTextPane = new JTextPane();
     private GameManagerRemote gameManager;
     private int gameNumber;
+    
+    private Timer timer;
+    
+    private JTextArea taResigned = new JTextArea("The game has been resigned!\n");
 
     public CrosswordSolver(Crossword cw, GameManagerRemote gm, int gn)
     {
@@ -49,9 +53,18 @@ public class CrosswordSolver extends JPanel
         updateState();
 
         sortClueList();
+        
+        //add(taResigned, );
 
         validate();
 
+        timer = new Timer(1000, new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		updateState();
+        	}
+        });
+        timer.start();
+        
         try
         {
             jbInit();
@@ -228,7 +241,7 @@ public class CrosswordSolver extends JPanel
         clueTextPane.setBorder(brdMedBlack);
         clueTextPane.setEditable(false);
         boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
-        boxButtons.add(btnUpdateState);
+        //boxButtons.add(btnUpdateState);
         boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
         boxButtons.add(btnCheckSolution);
         boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
