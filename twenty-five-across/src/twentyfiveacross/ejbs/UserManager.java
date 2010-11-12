@@ -3,6 +3,8 @@ package twentyfiveacross.ejbs;
 import java.util.List;
 
 import javax.ejb.Stateless;
+
+import javax.jws.WebService;
 import javax.naming.InitialContext;
 
 /**
