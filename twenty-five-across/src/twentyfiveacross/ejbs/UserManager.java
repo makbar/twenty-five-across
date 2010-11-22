@@ -118,4 +118,10 @@ public class UserManager implements UserManagerRemote {
 		return bean.findAll();
 	}
 
+	@Override
+	public int getRating(String username) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

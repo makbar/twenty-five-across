@@ -2,9 +2,13 @@ package crosswordsage;
 
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
 import javax.swing.*;
 
 import twentyfiveacross.ejbs.GameManagerRemote;
+import twentyfiveacross.ejbs.SquareUnit;
 
 import java.awt.*;
 
@@ -24,8 +28,8 @@ public class SolverGrid extends Grid
     	this.currentGame = cg;
     }
 
-    public void applySolveState(SolveState ss) {
-    	if(ss.numSquares() != this.squares.size()) {
+    public void applySolveState(Collection<SquareUnit> ss) {
+    	if(ss.size() != this.squares.size()) {
     		System.err.println("Tried to apply a solve state with a different number of squares from the puzzle!");
     		return;
     	}
@@ -33,11 +37,21 @@ public class SolverGrid extends Grid
         	Square s = (Square)squares.get(i);
         	int xpos = s.getXPos();
         	int ypos = s.getYPos();
-        	s.setLetter(ss.getLetter(xpos, ypos));
+        	s.setLetter(getLetter(ss, xpos, ypos));
     	}
     }
     
-    public void validate()
+    private String getLetter(Collection<SquareUnit> ss, int xpos, int ypos) {
+		for(Iterator iter = ss.iterator(); iter.hasNext();) {
+			SquareUnit s = (SquareUnit)iter.next();
+			if(s.getPosx() == xpos && s.getPosy() == ypos) {
+				return s.getLetter();
+			}			
+		}
+		return "";
+	}
+
+	public void validate()
     {
         //redraw the squares with appropriate background colours
         for(int i=0; i<squares.size(); i++)

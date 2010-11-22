@@ -351,8 +351,9 @@ public class WordSolverPanel extends JPanel
 		}
 		for(int i = 0; i<games.length; i++) {
 			loadThisGame = Integer.parseInt(games[i]);
-			SolveState s = mainScreen.gameManager.getSolveState(loadThisGame);		
-			jTextArea1.append("\nSolve State of game#" + loadThisGame + ": " + s.toString());
+			//SolveState s = mainScreen.gameManager.getSolveState(loadThisGame);		
+			String s = mainScreen.gameManager.getSolveStateString(loadThisGame);
+			jTextArea1.append("\nSolve State of game#" + loadThisGame + ": " + s);
 		}
 		validate();
     }
