@@ -107,14 +107,20 @@ public class RegisterScreen extends JPanel {
     {
         public void actionPerformed(ActionEvent a)
         {
-        	java.util.Properties prop = System.getProperties();
-        	prop.put(Context.PROVIDER_URL, "http://localhost:8080");
-
+        	//java.util.Properties prop = System.getProperties();
+        	//prop.put(Context.PROVIDER_URL, "http://localhost:8080");
+        	
         	try {
         		InitialContext ic = new InitialContext();
-        		userManager = (UserManagerRemote) ic.lookup("UserManager");
+        		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
+        		String uName = usernameField.getText();
+        		String nField = nameField.getText();
+        		String pw = pwField.getText();
+        		
+        		boolean test = userManager.createUser(uName, nField, pw);
 
-        		if(userManager.createUser(usernameField.getText(), nameField.getText(), pwField.getText()))
+        		//if(userManager.createUser(usernameField.getText(), nameField.getText(), pwField.getText()))
+        		if(test)
         		{
         	   		System.out.println("Registration Done!");
         	   		mainScreen.statusbarStatusLbl.setText("Registration Succeeded! Now Log in!");

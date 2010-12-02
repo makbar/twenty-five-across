@@ -108,7 +108,8 @@ public class ManagementScreen extends JPanel {
     {
     	try {
     		InitialContext ic = new InitialContext();
-    		userManager = (UserManagerRemote) ic.lookup("UserManager");
+    		//userManager = (UserManagerRemote) ic.lookup("UserManager");
+    		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
     		
     		usersL = userManager.listUsers();
         	userlist = (String[]) (Object[])usersL.toArray(new String[0]);
@@ -124,7 +125,8 @@ public class ManagementScreen extends JPanel {
     {
     	try {
     		InitialContext ic = new InitialContext();
-    		userManager = (UserManagerRemote) ic.lookup("UserManager");
+    		//userManager = (UserManagerRemote) ic.lookup("UserManager");
+    		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
 
         	model.removeAllElements();
 
@@ -150,7 +152,8 @@ public class ManagementScreen extends JPanel {
         {
         	try {
         		InitialContext ic = new InitialContext();
-        		userManager = (UserManagerRemote) ic.lookup("UserManager");
+        		//userManager = (UserManagerRemote) ic.lookup("UserManager");
+        		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
         		
         		if(null==usersLst.getSelectedValue())
         			return;
@@ -175,7 +178,8 @@ public class ManagementScreen extends JPanel {
         {
         	try {
         		InitialContext ic = new InitialContext();
-        		userManager = (UserManagerRemote) ic.lookup("UserManager");
+        		//userManager = (UserManagerRemote) ic.lookup("UserManager");
+        		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
         		
         		if(null==usersLst.getSelectedValue())
         			return;

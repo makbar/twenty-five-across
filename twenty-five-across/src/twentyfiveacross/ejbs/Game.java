@@ -21,8 +21,7 @@ import java.util.Random;
 @Entity
 @Table(name="games")//TODO:  Correct name?
 @NamedQueries({
-    @NamedQuery(name = "findAllGames", query = "SELECT g FROM Game g WHERE g.accessType = 3"),
-    @NamedQuery(name = "getNewGame", query = "SELECT TOP 1 g FROM Game g WHERE g.accessType = 3")
+    @NamedQuery(name = "findAllGames", query = "SELECT g FROM Game g WHERE g.accessType = 2")
 })
 public class Game implements Serializable {
 
@@ -32,7 +31,7 @@ public class Game implements Serializable {
 	public static final int USERRESIGNED = -2;
 	
     private int gameId;
-    private int status; //1 = Finished, 2 = Active, 3 = Game Not Started
+    private int status; //1 = Finished, 2 = Active
     private int accessType; //1 = Public, 2 = Private
     public String playingUser;
     public String resigningUser;
@@ -45,14 +44,17 @@ public class Game implements Serializable {
     private byte[] cw; // This is the crossword associated with the game
     //private SolveState ss; // This contains the state of every square
     
-    /*Game() {
+    Game() {
     	gameId = (int) (Math.random() * (double)Integer.MAX_VALUE);
+    	accessType = 2;
+    	status = 2;
+    	/*gameId = (int) (Math.random() * (double)Integer.MAX_VALUE);
     	File f = new File("helloworld2");
     	System.err.println("Loading crossword...");
     	cw = CrosswordFileHandler.readCrosswordFromFile(f);
     	System.err.println("Loaded crossword! id: " + gameId);
-    	ss = new SolveState(cw.getWidth(), cw.getHeight());
-    }*/
+    	ss = new SolveState(cw.getWidth(), cw.getHeight());*/
+    }
     
     @Id
     public int getGameId() {

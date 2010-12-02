@@ -3,11 +3,13 @@ package crosswordsage;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 
 import twentyfiveacross.ejbs.GameManagerRemote;
+import twentyfiveacross.ejbs.SquareUnit;
 
 public class CrosswordSolver extends JPanel
 {
@@ -81,7 +83,8 @@ public class CrosswordSolver extends JPanel
     }
 
 	private void updateState() {
-		grid.applySolveState(gameManager.getSolveState(gameNumber));
+		int size = gameManager.getSolveStateSize(gameNumber);
+		grid.applySolveState(gameNumber, size);
 	}
 	
     private void compileClues()

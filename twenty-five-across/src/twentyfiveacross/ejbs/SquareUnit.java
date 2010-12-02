@@ -3,6 +3,7 @@ package twentyfiveacross.ejbs;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -12,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="squares")
 @NamedQueries({
-    @NamedQuery(name = "setSquare", query = "UPDATE s FROM SquareUnit s SET WHERE s.game.gameId = :gameId AND s.letter = :letter AND s.posx = :x AND s.posy = :y")
+    @NamedQuery(name = "setSquare", query = "UPDATE SquareUnit s SET s.letter = :letter WHERE s.game.gameId = :gameId AND s.posx = :x AND s.posy = :y")
 })
 public class SquareUnit implements Serializable {
 
@@ -28,6 +29,7 @@ public class SquareUnit implements Serializable {
 		squareId = (int) (Math.random() * (double)Integer.MAX_VALUE);
 	}
 	
+	@Id
 	public int getSquareId() {
 		return squareId;
 	}

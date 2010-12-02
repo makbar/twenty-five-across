@@ -95,7 +95,7 @@ public class LoginScreen extends JPanel {
 
         	try {
         		InitialContext ic = new InitialContext();
-        		userManager = (UserManagerRemote) ic.lookup("UserManager");
+        		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
 
         		if(userManager.checkLogin(usernameField.getText(), pwField.getText()))
         		{

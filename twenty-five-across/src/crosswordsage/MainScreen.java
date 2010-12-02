@@ -177,7 +177,8 @@ public class MainScreen extends JFrame
 
 		try {
 			InitialContext ic = new InitialContext(); //env
-			gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
+			//gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
+			gameManager = (GameManagerRemote) ic.lookup("twentyfiveacross.ejbs.GameManagerRemote");
 		} catch (Exception e) {
 			System.err.println("Error!: " + e.getMessage());
 			e.printStackTrace();
@@ -490,19 +491,24 @@ public class MainScreen extends JFrame
             }
             else if(e.getSource() == mFile_Display)
             {
-            	if(gameManager != null) {
-            		int loadThisGame;
-            		String[] games = gameManager.listGames();
-            		if (games.length > 0) {
-            			loadThisGame = Integer.parseInt(games[0]);
-            		} else { // create a new game!
-            			loadThisGame = gameManager.newGame();
-            		}
-            		Crossword c = gameManager.getCrossword(loadThisGame);
-            		currentGame = loadThisGame;
-            		mainPanel.removeAll();
-            		mainPanel.add(new CrosswordSolver(c, gameManager, currentGame));
-            		validate();
+            	try {
+	            	if(gameManager != null) {
+	            		int loadThisGame;
+	            		String[] games = gameManager.listGames();
+	            		if (games.length > 0) {
+	            			loadThisGame = Integer.parseInt(games[0]);
+	            		} else { // create a new game!
+	            			loadThisGame = gameManager.newGame();
+	            		}
+	            		Crossword c = gameManager.getCrossword(loadThisGame);
+	            		currentGame = loadThisGame;
+	            		mainPanel.removeAll();
+	            		mainPanel.add(new CrosswordSolver(c, gameManager, currentGame));
+	            		validate();
+	            	}
+            	} catch (Exception e2)
+            	{
+            		e2.printStackTrace();
             	}
 
             }

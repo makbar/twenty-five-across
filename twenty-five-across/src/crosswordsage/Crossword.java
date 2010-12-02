@@ -5,7 +5,12 @@ import java.io.*;
 
 public class Crossword implements Serializable
 {
-    public Crossword()
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4238375454185622658L;
+
+	public Crossword()
     {
         try
         {

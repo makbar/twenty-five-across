@@ -10,7 +10,7 @@ import javax.naming.InitialContext;
 /**
  * Session Bean implementation class UserManager
  */
-@Stateless(name="UserManager",mappedName="UserManager")
+@Stateless//(name="UserManager", mappedName="UserManager")
 public class UserManager implements UserManagerRemote {
 
 	InitialContext ctx;
@@ -26,7 +26,7 @@ public class UserManager implements UserManagerRemote {
 
 	public void init() throws Exception {
 		ctx = new InitialContext();
-		bean = (UserBeanInfo) ctx.lookup("ejb/UserInfoJNDI");
+		bean = (UserBeanInfo) ctx.lookup("twentyfiveacross.ejbs.UserBeanInfo");
 	}
 
 	public String sayHi(String name) {
@@ -35,7 +35,8 @@ public class UserManager implements UserManagerRemote {
 
 	public boolean createUser(String username, String name, String pw)
 			throws Exception {
-		return bean.create(new UserInfo(username, pw, 1, 0, name));
+		boolean test = bean.create(new UserInfo(username, pw, 1, 0, name));
+		return test;
 	}
 
 	public boolean checkLogin(String username, String pw) throws Exception {

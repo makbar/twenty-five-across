@@ -28,8 +28,8 @@ public class SolverGrid extends Grid
     	this.currentGame = cg;
     }
 
-    public void applySolveState(Collection<SquareUnit> ss) {
-    	if(ss.size() != this.squares.size()) {
+    public void applySolveState(int gameId, int size) {//Collection<SquareUnit> ss, int size) {
+    	if(size != this.squares.size()) {
     		System.err.println("Tried to apply a solve state with a different number of squares from the puzzle!");
     		return;
     	}
@@ -37,18 +37,12 @@ public class SolverGrid extends Grid
         	Square s = (Square)squares.get(i);
         	int xpos = s.getXPos();
         	int ypos = s.getYPos();
-        	s.setLetter(getLetter(ss, xpos, ypos));
+        	s.setLetter(getLetter(gameId, xpos, ypos));
     	}
     }
     
-    private String getLetter(Collection<SquareUnit> ss, int xpos, int ypos) {
-		for(Iterator iter = ss.iterator(); iter.hasNext();) {
-			SquareUnit s = (SquareUnit)iter.next();
-			if(s.getPosx() == xpos && s.getPosy() == ypos) {
-				return s.getLetter();
-			}			
-		}
-		return "";
+    private String getLetter(int gameId, int xpos, int ypos) {
+    	return gameManager.getLetter(gameId, xpos, ypos);
 	}
 
 	public void validate()

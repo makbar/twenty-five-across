@@ -93,7 +93,8 @@ public class GameListScreen extends JPanel {
     {
     	try {
     		InitialContext ic = new InitialContext();
-    		gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
+    		//gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
+    		gameManager = (GameManagerRemote) ic.lookup("twentyfiveacross.ejbs.GameManagerRemote");
     		
     		gamelist = gameManager.listGames().clone();
     		
@@ -109,7 +110,8 @@ public class GameListScreen extends JPanel {
         {
         	try {
         		InitialContext ic = new InitialContext();
-        		gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
+        		//gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
+        		gameManager = (GameManagerRemote) ic.lookup("twentyfiveacross.ejbs.GameManagerRemote");
         		
         		if(null==gameLst.getSelectedValue())
         			return;
@@ -133,8 +135,8 @@ public class GameListScreen extends JPanel {
         {
         	try {
         		InitialContext ic = new InitialContext();
-        		gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
-        		
+        		//gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
+        		gameManager = (GameManagerRemote) ic.lookup("twentyfiveacross.ejbs.GameManagerRemote");
         		mainScreen.lister.setVisible(false);
         		int loadThisGame = gameManager.newGame();
         		Crossword c = gameManager.getCrossword(loadThisGame);

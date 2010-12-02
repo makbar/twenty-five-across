@@ -11,7 +11,7 @@ import javax.persistence.PersistenceContext;
 
 //import org.eclipse.persistence.annotations.Convert;
 
-@Stateless(name="UserBeanInfo", mappedName="ejb/UserInfoJNDI") 
+@Stateless//(name="UserBeanInfo", mappedName="ejb/UserInfoJNDI") 
 public class UserBeanInfoImpl implements UserBeanInfo {
 	
 	@PersistenceContext(name="persistence_ctx")
@@ -19,18 +19,19 @@ public class UserBeanInfoImpl implements UserBeanInfo {
 	//public static final String RemoteJNDIName =  UserBeanInfoImpl.class.getSimpleName() + "/remote";
 	
 	@Override
-	public boolean create(UserInfo bean)
+	public boolean create(UserInfo bean) throws Exception
 	{
-		try {
+		int something = 23;
+		//try {
 			if (em.find(UserInfo.class, bean.getUsername()) == null) {
 				em.persist(bean);
 				return true;
 			}
 			else
 				return false;
-		} catch (Exception e) {
-			return false;
-		}
+		//} catch (Exception e) {
+		//	return false;
+		//}
 	}
 
 	@Override

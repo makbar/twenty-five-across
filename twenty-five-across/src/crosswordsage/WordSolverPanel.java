@@ -328,33 +328,38 @@ public class WordSolverPanel extends JPanel
     }
     
     private void printItems() {
-		jTextArea1.append("Connecting...\n");
-		
-		jTextArea1.append("Getting your greeting...\n");
-
-		String blah = mainScreen.userManager.sayHi("Team");
-		jTextArea1.append(blah);
-		String[] bliggity = mainScreen.gameManager.listGames();
-		jTextArea1.append("Just got a list of games:");
-		jTextArea1.append("l: " + bliggity.length);
-		int gameId = mainScreen.gameManager.newGame();
-		jTextArea1.append("\nCreated a new game:");
-		jTextArea1.append("id: " + gameId);
-		bliggity = mainScreen.gameManager.listGames();
-		jTextArea1.append("\nJust got a list of games:");
-		jTextArea1.append("l: " + bliggity.length);
-		
-		int loadThisGame;
-		String[] games = mainScreen.gameManager.listGames();
-		if(games.length < 1) {
-			jTextArea1.append("\nNo games to show state!");
-		}
-		for(int i = 0; i<games.length; i++) {
-			loadThisGame = Integer.parseInt(games[i]);
-			//SolveState s = mainScreen.gameManager.getSolveState(loadThisGame);		
-			String s = mainScreen.gameManager.getSolveStateString(loadThisGame);
-			jTextArea1.append("\nSolve State of game#" + loadThisGame + ": " + s);
-		}
-		validate();
+    	
+    	try {
+			jTextArea1.append("Connecting...\n");
+			
+			jTextArea1.append("Getting your greeting...\n");
+	
+			String blah = mainScreen.userManager.sayHi("Team");
+			jTextArea1.append(blah);
+			String[] bliggity = mainScreen.gameManager.listGames();
+			jTextArea1.append("Just got a list of games:");
+			jTextArea1.append("l: " + bliggity.length);
+			int gameId = mainScreen.gameManager.newGame();
+			jTextArea1.append("\nCreated a new game:");
+			jTextArea1.append("id: " + gameId);
+			bliggity = mainScreen.gameManager.listGames();
+			jTextArea1.append("\nJust got a list of games:");
+			jTextArea1.append("l: " + bliggity.length);
+			
+			int loadThisGame;
+			String[] games = mainScreen.gameManager.listGames();
+			if(games.length < 1) {
+				jTextArea1.append("\nNo games to show state!");
+			}
+			for(int i = 0; i<games.length; i++) {
+				loadThisGame = Integer.parseInt(games[i]);
+				//SolveState s = mainScreen.gameManager.getSolveState(loadThisGame);		
+				String s = mainScreen.gameManager.getSolveStateString(loadThisGame);
+				jTextArea1.append("\nSolve State of game#" + loadThisGame + ": " + s);
+			}
+			validate();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
 }

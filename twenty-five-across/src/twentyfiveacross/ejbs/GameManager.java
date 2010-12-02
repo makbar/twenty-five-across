@@ -1,41 +1,30 @@
+/**
+ * All game-related tasks, including allowing users
+ * to look up games, create a new one, etc.
+ */
 package twentyfiveacross.ejbs;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.ejb.*;
-import javax.jws.WebService;
-import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ejb.Stateful;
-
-import org.glassfish.gmbal.logex.StackTrace;
-
 import crosswordsage.Crossword;
-import crosswordsage.SolveState.SquareState;
 
-@Singleton(name="GameManager", mappedName="ejb/SimpleBeanJNDI")
+@Singleton
 public class GameManager implements GameManagerRemote {
-	// Allows users to look up games, create a new one
+	
 	
 	@PersistenceContext(name="persistence_ctx")
 	EntityManager em;
 	
-	private Hashtable<Integer, Game> games;
-	
-	/*public GameManager() {
-		games = new Hashtable<Integer, Game>();
-	}*/
-	
-	public String[] listGames() {
+	public String[] listGames() throws Exception {
 		List games = em.createNamedQuery("findAllGames").getResultList();
+		if(games.size() == 0)
+			return null;
 		String[] gamesArr = new String[games.size()];
 		int c=0;
 		for(Iterator iter = games.iterator(); iter.hasNext();) {
@@ -43,23 +32,17 @@ public class GameManager implements GameManagerRemote {
 			gamesArr[c++] = " "	+ game.getGameId();
 		}
 		return gamesArr;
-		
-		/*// Probably need locking in here
-		Enumeration <Game> gameEnum = games.elements();
-		String[] gamesArr = new String[games.size()];
-		
-		int c=0;
-		for(; gameEnum.hasMoreElements();) {
-			gamesArr[c++] = "" + gameEnum.nextElement().gameId;
-		}
-		System.err.println("Oh hi, I have " + gamesArr.length + " games!\n" + gamesArr.toString());
-		return gamesArr;*/
 	}
 	
-	public int newGame() {
+	public int newGame() throws Exception {
 		
-		Game g = (Game)em.createNamedQuery("getNewGame").getSingleResult();
-		Crossword cw = getCrossword(g.getGameId());
+		CWBean cwb = (CWBean)em.createNamedQuery("getCw").setMaxResults(1).getSingleResult();
+		em.createNamedQuery("incCount")
+			.setParameter("count", cwb.getCount() + 1)
+			.setParameter("id", cwb.getCwId());
+		Game g = new Game();
+		byte[] byteObj = cwb.getCw();
+		Crossword cw = getCw(byteObj);
 		int width = cw.getWidth();
 		int height = cw.getHeight();
 		ArrayList squares = new ArrayList();
@@ -67,50 +50,52 @@ public class GameManager implements GameManagerRemote {
 			for(int j=0; j<height; j++) {
 				SquareUnit square = new SquareUnit();
 				square.setGame(g);
-				square.setPosx(width);
-				square.setPosy(height);
+				square.setPosx(i);
+				square.setPosy(j);
 				squares.add(square);
 				em.persist(square);
 			}
 		}
 		g.setSquares(squares);
 		g.setAccessType(2);
-		//ss = new SolveState(cw.getWidth(), cw.getHeight());
+		g.setCw(byteObj);
 		em.persist(g);
 		return g.getGameId();
-		
-		/*games.put(g.gameId, g);
-		System.err.println("Creating new game, I have " + games.size() + " games!\n" + games.toString());
-		return g.gameId;*/
 	}
-
+	
 	@Override
-	public Crossword getCrossword(int gameId) {
-		Crossword cw = null;
+	public Crossword getCrossword(int gameId) throws Exception{
+		if(gameId <= 0)
+			return null;
 		Game g = em.find(Game.class, gameId);
+		if(g == null || g.getStatus() != 2)
+			return null;
 		byte[] byteObject = g.getCw();
+		return getCw(byteObject);
+	}
+	
+	public Crossword getCw(byte[] byteObject) throws Exception{
+		Crossword cw = null;
 		ByteArrayInputStream bais;
 		ObjectInputStream in;
-		try {
-			bais = new ByteArrayInputStream(byteObject);
-			in = new ObjectInputStream(bais);
-			cw = (Crossword) in.readObject();
-			in.close();
-		}
-		catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		catch (ClassNotFoundException ex) {
-			ex.printStackTrace();
-		}
+			
+		bais = new ByteArrayInputStream(byteObject);
+		in = new ObjectInputStream(bais);
+		cw = (Crossword) in.readObject();
+		in.close();
 		return cw;
 	}
 
 	@Override
 	public Collection<SquareUnit> getSolveState(int gameId) {
+		if(gameId <= 0)
+			return null;
 		Game g = em.find(Game.class, gameId);
+		if(g == null || g.getStatus() != 2)
+			return null;
 		return g.getSquares();
 	}
+	
 
 	@Override
 	public Boolean setLetter(int gameId, int x, int y, String letter) {
@@ -118,11 +103,27 @@ public class GameManager implements GameManagerRemote {
 			System.err.println("User entered bad character: " + (int) letter.charAt(0));
 			return false;
 		}
+		if(x <= 0 || y <= 0) {
+			return false;
+		}
+		if(gameId <= 0)
+			return null;
 		Game g = em.find(Game.class, gameId);
+		if(g == null)
+			return null;
+		try {
+			Crossword cw = getCw(g.getCw());
+			if(x > cw.getWidth() || y > cw.getHeight())
+				return null;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(g.getStatus() == 1) {/*Game finished */
 			System.err.println("setLetter called on a finished puzzle");
 			return false;
 		}
+		
 		em.createNamedQuery("setSquare")
 		.setParameter("gameId", gameId)
 		.setParameter("letter", letter)
@@ -142,33 +143,22 @@ public class GameManager implements GameManagerRemote {
 		}
 		return buf;
 	}
-}
 
+	@Override
+	public int getSolveStateSize(int gameId) {
+		Collection<SquareUnit> squares = getSolveState(gameId);
+		return squares.size();
+	}
 
-/*
-Some code that was supposed to return an interface but doesn't seem to?
-		// actually, we want to create a new game instance on the server side, then
-		// return an interface to the game?
-		GameRemote interfaceRef = null;
-		
-		Class remoteInterface = null;
-        for(Class interface_: Game.class.getInterfaces()) {
-            if(interface_.isAnnotationPresent(Remote.class))
-                remoteInterface = interface_;
-        }
-        if(remoteInterface == null)
-            throw new  IllegalArgumentException(
-                "Game requires a remote interface.  This *really* shouldn't happen");
-		Stateful e = Game.class.getAnnotation(Stateful.class);
-		String jndiName = e.mappedName();
-		try {
-			interfaceRef = (GameRemote) ctx.lookup(jndiName);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+	@Override
+	public String getLetter(int gameId, int xpos, int ypos) {
+		Collection<SquareUnit> ss = getSolveState(gameId);
+		for(Iterator iter = ss.iterator(); iter.hasNext();) {
+			SquareUnit s = (SquareUnit)iter.next();
+			if(s.getPosx() == xpos && s.getPosy() == ypos) {
+				return s.getLetter();
+			}			
 		}
-		
-		games.add(interfaceRef);
-		
-		return interfaceRef;
-		*/
-		
+		return "";
+	}
+}
