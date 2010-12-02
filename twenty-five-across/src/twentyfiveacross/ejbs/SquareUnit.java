@@ -27,6 +27,7 @@ public class SquareUnit implements Serializable {
 	
 	public SquareUnit() {
 		squareId = (int) (Math.random() * (double)Integer.MAX_VALUE);
+		letter = "";
 	}
 	
 	@Id

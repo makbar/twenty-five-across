@@ -234,12 +234,17 @@ public class SolverGrid extends Grid
             {
                 s = String.valueOf(e.getKeyChar());
             }
-            if(gameManager.setLetter(currentGame, selectedSquare.getXPos(), selectedSquare.getYPos(), s)) {
-            	selectedSquare.setLetter(s);
-            	selectedSquare = getNextSquare();
-            } else {
-            	// noop
-            }
+            try {
+				if(gameManager.setLetter(currentGame, selectedSquare.getXPos(), selectedSquare.getYPos(), s)) {
+					selectedSquare.setLetter(s);
+					selectedSquare = getNextSquare();
+				} else {
+					// noop
+				}
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
             validate();
         }
     }

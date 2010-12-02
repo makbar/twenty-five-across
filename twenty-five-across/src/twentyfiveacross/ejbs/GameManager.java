@@ -29,7 +29,7 @@ public class GameManager implements GameManagerRemote {
 		int c=0;
 		for(Iterator iter = games.iterator(); iter.hasNext();) {
 			Game game = (Game) iter.next();
-			gamesArr[c++] = " "	+ game.getGameId();
+			gamesArr[c++] = Integer.toString(game.getGameId());
 		}
 		return gamesArr;
 	}
@@ -98,7 +98,7 @@ public class GameManager implements GameManagerRemote {
 	
 
 	@Override
-	public Boolean setLetter(int gameId, int x, int y, String letter) {
+	public Boolean setLetter(int gameId, int x, int y, String letter) throws Exception {
 		if(!letter.matches("[a-zA-Z]")) {
 			System.err.println("User entered bad character: " + (int) letter.charAt(0));
 			return false;
@@ -127,8 +127,8 @@ public class GameManager implements GameManagerRemote {
 		em.createNamedQuery("setSquare")
 		.setParameter("gameId", gameId)
 		.setParameter("letter", letter)
-		.setParameter("posx", x)
-		.setParameter("posy", y);
+		.setParameter("x", x)
+		.setParameter("y", y);
 		
 		return true;
 	}

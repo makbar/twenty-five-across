@@ -23,7 +23,7 @@ public interface GameManagerRemote {
     
     public Collection<SquareUnit> getSolveState(int gameId);
     
-    public Boolean setLetter(int gameId, int x, int y, String letter);
+    public Boolean setLetter(int gameId, int x, int y, String letter) throws Exception;
 
 	public String getSolveStateString(int gameId);
 	
