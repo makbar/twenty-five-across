@@ -91,8 +91,9 @@ public class LoginScreen extends JPanel {
         public void actionPerformed(ActionEvent a)
         {
         	java.util.Properties prop = System.getProperties();
-        	prop.put(Context.PROVIDER_URL, "http://localhost:8080");
-
+        	//prop.put(Context.PROVIDER_URL, "http://localhost:8080");
+        	prop.put(Context.PROVIDER_URL, "http://209.2.231.104:8080");
+        	
         	try {
         		InitialContext ic = new InitialContext();
         		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
