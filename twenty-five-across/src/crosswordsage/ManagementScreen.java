@@ -40,9 +40,12 @@ public class ManagementScreen extends JPanel {
 	
 	String banStr = new String("(Banned)");
 	String actStr = new String("(Active)");
+	
+	String rootToken;
 
-
-    ManagementScreen (TfacrossGui myMainScreen) {
+    ManagementScreen (TfacrossGui myMainScreen, String token) {
+    	
+    	rootToken = token;
     	
     	updateUserList();
     	usersLst = new JList(userlist);
@@ -111,7 +114,7 @@ public class ManagementScreen extends JPanel {
     		//userManager = (UserManagerRemote) ic.lookup("UserManager");
     		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
     		
-    		usersL = userManager.listUsers();
+    		usersL = userManager.listUsers(rootToken);
         	userlist = (String[]) (Object[])usersL.toArray(new String[0]);
 
     		
@@ -158,7 +161,7 @@ public class ManagementScreen extends JPanel {
         		if(null==usersLst.getSelectedValue())
         			return;
         		
-        		if(userManager.banUser(usersLst.getSelectedValue().toString()))
+        		if(userManager.banUser(usersLst.getSelectedValue().toString(),rootToken))
         		{
                 	System.out.println("Ban "+usersLst.getSelectedValue().toString());
                 	mainScreen.statusbarStatusLbl.setText("User "+usersLst.getSelectedValue().toString()+" Banned");
@@ -184,7 +187,7 @@ public class ManagementScreen extends JPanel {
         		if(null==usersLst.getSelectedValue())
         			return;
         		
-        		if(userManager.unBanUser(usersLst.getSelectedValue().toString()))
+        		if(userManager.unBanUser(usersLst.getSelectedValue().toString(),rootToken))
         		{
                 	System.out.println("Ban "+usersLst.getSelectedValue().toString());
                 	mainScreen.statusbarStatusLbl.setText("User "+usersLst.getSelectedValue().toString()+" Banned");

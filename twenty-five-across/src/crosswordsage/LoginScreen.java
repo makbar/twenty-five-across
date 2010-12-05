@@ -119,7 +119,7 @@ public class LoginScreen extends JPanel {
         	   		{
         	   			mainScreen.statusbarStatusLbl.setText("Welcome root. User Management Screen loaded!");
         	   			mainScreen.login.setVisible(false);
-        	   			mainScreen.manager = new ManagementScreen(mainScreen);
+        	   			mainScreen.manager = new ManagementScreen(mainScreen,pwhash.toString());
     	   				mainScreen.mainPanel.add(mainScreen.manager);
         	   			mainScreen.manager.setVisible(true);
         	   		}

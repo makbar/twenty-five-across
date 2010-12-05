@@ -46,10 +46,7 @@ public class UserManager implements UserManagerRemote {
 
 	public boolean createUser(String username, String name, String pw)
 			throws Exception {
-		if(!isSane(username)||!isSane(name)){
-			return false;
-		}
-		if(pw.length()>40){
+		if(!isSane(username)||!isSane(name)||!isSane(pw)){
 			return false;
 		}
 		boolean test = bean.create(new UserInfo(username, pw, 1, 0, name));
@@ -57,10 +54,7 @@ public class UserManager implements UserManagerRemote {
 	}
 
 	public boolean checkLogin(String username, String pw) throws Exception {
-		if(!isSane(username)){
-			return false;
-		}
-		if(pw.length()>40){
+		if(!isSane(username)||!isSane(pw)){
 			return false;
 		}
 		UserInfo u = bean.find(username);
@@ -79,9 +73,12 @@ public class UserManager implements UserManagerRemote {
 		return (u.getStatus()==1);
 	}
 
-	public boolean updateDisplayName(String username, String name)
+	public boolean updateDisplayName(String username, String name, String managerToken)
 			throws Exception {
 		if(!isSane(username)||!isSane(name)){
+			return false;
+		}
+		if(!checkLogin("root",managerToken)){
 			return false;
 		}
 		UserInfo u = bean.find(username);
@@ -91,11 +88,11 @@ public class UserManager implements UserManagerRemote {
 		return bean.update(u);
 	}
 
-	public boolean updateUserPw(String username, String newPw) throws Exception {
-		if(!isSane(username)){
+	public boolean updateUserPw(String username, String newPw, String managerToken) throws Exception {
+		if(!isSane(username)||!isSane(newPw)){
 			return false;
 		}
-		if(newPw.length()>40){
+		if(!checkLogin("root",managerToken)){
 			return false;
 		}
 		UserInfo u = bean.find(username);
@@ -105,8 +102,11 @@ public class UserManager implements UserManagerRemote {
 		return bean.update(u);
 	}
 
-	public boolean banUser(String username) throws Exception {
+	public boolean banUser(String username, String managerToken) throws Exception {
 		if(!isSane(username)){
+			return false;
+		}
+		if(!checkLogin("root",managerToken)){
 			return false;
 		}
 		UserInfo u = bean.find(username);
@@ -116,8 +116,11 @@ public class UserManager implements UserManagerRemote {
 		return bean.update(u);
 	}
 
-	public boolean unBanUser(String username) throws Exception {
+	public boolean unBanUser(String username, String managerToken) throws Exception {
 		if(!isSane(username)){
+			return false;
+		}
+		if(!checkLogin("root",managerToken)){
 			return false;
 		}
 		UserInfo u = bean.find(username);
@@ -127,8 +130,11 @@ public class UserManager implements UserManagerRemote {
 		return bean.update(u);
 	}
 
-	public boolean incUserRating(String username) throws Exception {
+	public boolean incUserRating(String username, String managerToken) throws Exception {
 		if(!isSane(username)){
+			return false;
+		}
+		if(!checkLogin("root",managerToken)){
 			return false;
 		}
 		UserInfo u = bean.find(username);
@@ -141,8 +147,11 @@ public class UserManager implements UserManagerRemote {
 		return bean.update(u);
 	}
 
-	public boolean decUserRating(String username) throws Exception {
+	public boolean decUserRating(String username, String managerToken) throws Exception {
 		if(!isSane(username)){
+			return false;
+		}
+		if(!checkLogin("root",managerToken)){
 			return false;
 		}
 		UserInfo u = bean.find(username);
@@ -155,8 +164,11 @@ public class UserManager implements UserManagerRemote {
 		return bean.update(u);
 	}
 
-	public boolean deleteUser(String username) throws Exception {
+	public boolean deleteUser(String username, String managerToken) throws Exception {
 		if(!isSane(username)){
+			return false;
+		}
+		if(!checkLogin("root",managerToken)){
 			return false;
 		}
 		UserInfo u = bean.find(username);
@@ -165,7 +177,7 @@ public class UserManager implements UserManagerRemote {
 		return bean.delete(u);
 	}
 	
-	public List<String> listUsers() throws Exception {
+	public List<String> listUsers(String managerToken) throws Exception {
 		return bean.findAll();
 	}
 
