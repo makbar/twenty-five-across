@@ -38,9 +38,19 @@ public class GameListScreen extends JPanel {
 	
     GameListScreen (TfacrossGui myMainScreen) {
     	
+        playBtn = new JButton("Play Game");
+        newBtn = new JButton("Create New Game");
+
+    	gamelist = null;
     	updateGameList();
-    	gameLst = new JList(gamelist);
-        gameLst.setVisibleRowCount(5);
+    	if (null!=gamelist) {
+    		gameLst = new JList(gamelist);
+    	}
+    	else {
+    		gameLst = new JList();
+    		playBtn.setEnabled(false);
+    	}
+    	gameLst.setVisibleRowCount(5);
         
         cartoon = new JLabel(new ImageIcon("noclue.jpg"));
         
@@ -56,9 +66,6 @@ public class GameListScreen extends JPanel {
         smallHeader.setVerticalTextPosition(JLabel.TOP);
         smallHeader.setPreferredSize(new Dimension(60, 60));
         
-        playBtn = new JButton("Play Game");
-        newBtn = new JButton("Create New Game");
-
         imgPanel = new JPanel();
         imgPanel.setBackground(Color.white);
         imgPanel.add(cartoon);
@@ -96,7 +103,11 @@ public class GameListScreen extends JPanel {
     		//gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
     		gameManager = (GameManagerRemote) ic.lookup("twentyfiveacross.ejbs.GameManagerRemote");
     		
-    		gamelist = gameManager.listGames().clone();
+    		String[] listGamesStr = gameManager.listGames();
+    		if(null==listGamesStr)
+    			gamelist = null;
+    		else
+    			gamelist = listGamesStr.clone();
     		
     	} catch (Exception e) {
     		System.err.println("Error!: " + e.getMessage());

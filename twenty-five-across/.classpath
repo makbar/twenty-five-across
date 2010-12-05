@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="C:/glassfishv3/glassfish/lib/appserv-rt.jar"/>
 	<classpathentry kind="lib" path="C:/glassfishv3/glassfish/lib/javaee.jar"/>
 	<classpathentry kind="lib" path="C:/glassfishv3/glassfish/lib/jndi-properties.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

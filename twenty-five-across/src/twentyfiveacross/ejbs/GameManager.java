@@ -128,7 +128,7 @@ public class GameManager implements GameManagerRemote {
 		.setParameter("gameId", gameId)
 		.setParameter("letter", letter)
 		.setParameter("x", x)
-		.setParameter("y", y);
+		.setParameter("y", y).executeUpdate();
 		
 		return true;
 	}
