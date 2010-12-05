@@ -19,6 +19,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import twentyfiveacross.ejbs.UserManagerRemote;
+import java.security.MessageDigest; 
 
 public class RegisterScreen extends JPanel {
 
@@ -117,7 +118,18 @@ public class RegisterScreen extends JPanel {
         		String nField = nameField.getText();
         		String pw = pwField.getText();
         		
-        		boolean test = userManager.createUser(uName, nField, pw);
+        		MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+        		StringBuffer pwhash = new StringBuffer();
+        		digest.reset();
+        	    digest.update(pw.getBytes());
+        	    byte[] hash = digest.digest();
+        		for (int i=0;i<hash.length;i++) {
+        			pwhash.append(Integer.toHexString(0xFF & hash[i]));
+        		}
+
+        	    System.out.println("hash: " + pwhash.toString());
+ 
+        		boolean test = userManager.createUser(uName, nField, pwhash.toString());
 
         		//if(userManager.createUser(usernameField.getText(), nameField.getText(), pwField.getText()))
         		if(test)

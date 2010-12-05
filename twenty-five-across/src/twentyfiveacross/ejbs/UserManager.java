@@ -46,10 +46,10 @@ public class UserManager implements UserManagerRemote {
 
 	public boolean createUser(String username, String name, String pw)
 			throws Exception {
-		if(!isSane(username)||!isSane(name)||!isSane(pw)){
+		if(!isSane(username)||!isSane(name)){
 			return false;
 		}
-		if(pw.length()<8){
+		if(pw.length()>40){
 			return false;
 		}
 		boolean test = bean.create(new UserInfo(username, pw, 1, 0, name));
@@ -57,7 +57,10 @@ public class UserManager implements UserManagerRemote {
 	}
 
 	public boolean checkLogin(String username, String pw) throws Exception {
-		if(!isSane(username)||!isSane(pw)){
+		if(!isSane(username)){
+			return false;
+		}
+		if(pw.length()>40){
 			return false;
 		}
 		UserInfo u = bean.find(username);
@@ -89,10 +92,10 @@ public class UserManager implements UserManagerRemote {
 	}
 
 	public boolean updateUserPw(String username, String newPw) throws Exception {
-		if(!isSane(username)||!isSane(newPw)){
+		if(!isSane(username)){
 			return false;
 		}
-		if(newPw.length()<8){
+		if(newPw.length()>40){
 			return false;
 		}
 		UserInfo u = bean.find(username);

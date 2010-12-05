@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.MessageDigest;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -91,17 +92,30 @@ public class LoginScreen extends JPanel {
         public void actionPerformed(ActionEvent a)
         {
         	java.util.Properties prop = System.getProperties();
-        	//prop.put(Context.PROVIDER_URL, "http://localhost:8080");
-        	prop.put(Context.PROVIDER_URL, "http://209.2.231.104:8080");
+        	prop.put(Context.PROVIDER_URL, "http://localhost:8080");
         	
         	try {
         		InitialContext ic = new InitialContext();
         		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
 
-        		if(userManager.checkLogin(usernameField.getText(), pwField.getText()))
+        		String uName = usernameField.getText();
+        		String uPass = pwField.getText();
+        		
+        		MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+        		StringBuffer pwhash = new StringBuffer();
+        		digest.reset();
+        	    digest.update(uPass.getBytes());
+        	    byte[] hash = digest.digest();
+        		for (int i=0;i<hash.length;i++) {
+        			pwhash.append(Integer.toHexString(0xFF & hash[i]));
+        		}
+
+        	    System.out.println("hash: " + pwhash.toString());
+
+        		if(userManager.checkLogin(uName, pwhash.toString()))
         		{
         	   		System.out.println("Password Correct!");
-        	   		if("root".equals(usernameField.getText()))
+        	   		if("root".equals(uName))
         	   		{
         	   			mainScreen.statusbarStatusLbl.setText("Welcome root. User Management Screen loaded!");
         	   			mainScreen.login.setVisible(false);
@@ -111,7 +125,7 @@ public class LoginScreen extends JPanel {
         	   		}
         	   		else
         	   		{
-        	   			if(userManager.checkBan(usernameField.getText()))
+        	   			if(userManager.checkBan(uName))
         	   				mainScreen.statusbarStatusLbl.setText("You are banned!");
         	   			else
         	   			{
