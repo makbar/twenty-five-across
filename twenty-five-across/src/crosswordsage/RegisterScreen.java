@@ -118,6 +118,11 @@ public class RegisterScreen extends JPanel {
         		String uName = usernameField.getText();
         		String nField = nameField.getText();
         		String pw = pwField.getText();
+        		if(pw.length()<8)
+        		{
+        	   		mainScreen.statusbarStatusLbl.setText("Error: The password should be at least 8 characters long!");
+        	   		return;
+        		}
         		
         		MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
         		StringBuffer pwhash = new StringBuffer();
@@ -128,7 +133,7 @@ public class RegisterScreen extends JPanel {
         			pwhash.append(Integer.toHexString(0xFF & hash[i]));
         		}
 
-        	    System.out.println("hash: " + pwhash.toString());
+        	    //System.out.println("hash: " + pwhash.toString());
  
         		boolean test = userManager.createUser(uName, nField, pwhash.toString());
 
