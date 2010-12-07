@@ -101,6 +101,7 @@ public class RegisterScreen extends JPanel {
         public void actionPerformed(ActionEvent a)
         {
         	mainScreen.register.setVisible(false);
+			mainScreen.register.pwField.setText("");
         	mainScreen.login.setVisible(true);
         }
     }
@@ -137,6 +138,7 @@ public class RegisterScreen extends JPanel {
         	   		System.out.println("Registration Done!");
         	   		mainScreen.statusbarStatusLbl.setText("Registration Succeeded! Now Log in!");
                 	mainScreen.register.setVisible(false);
+	   				mainScreen.register.pwField.setText("");
                 	mainScreen.login.setVisible(true);
         		}
         	   	else

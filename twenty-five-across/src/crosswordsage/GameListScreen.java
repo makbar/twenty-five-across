@@ -27,9 +27,9 @@ public class GameListScreen extends JPanel {
 
 	public GameManagerRemote gameManager;
     
-	private JButton playBtn;
-	private JButton newBtn;
-	private JList gameLst;
+	private JButton playBtn=null;
+	private JButton newBtn=null;
+	private JList gameLst=null;
 	private JPanel mainPanel, imgPanel, formPanel;
     private JLabel cartoon, bigHeader, smallHeader, title;
     TfacrossGui mainScreen;
@@ -42,16 +42,7 @@ public class GameListScreen extends JPanel {
         newBtn = new JButton("Create New Game");
 
     	gamelist = null;
-    	updateGameList();
-    	if (null!=gamelist) {
-    		gameLst = new JList(gamelist);
-    	}
-    	else {
-    		gameLst = new JList();
-    		playBtn.setEnabled(false);
-    	}
-    	gameLst.setVisibleRowCount(5);
-        
+    	    	
         cartoon = new JLabel(new ImageIcon("noclue.jpg"));
         
         title = new JLabel();
@@ -76,10 +67,11 @@ public class GameListScreen extends JPanel {
         formPanel.add(bigHeader);
         formPanel.add(smallHeader);
         formPanel.add(title);
-        formPanel.add(gameLst);
-        formPanel.add(playBtn);
-        formPanel.add(newBtn);
-        
+        //formPanel.add(gameLst);
+        //formPanel.add(playBtn);
+        //formPanel.add(newBtn);
+        updateGameList();
+
         mainPanel = new JPanel(new FlowLayout());
         mainPanel.setBackground(Color.white);
         mainPanel.setAlignmentX(CENTER_ALIGNMENT);
@@ -109,6 +101,25 @@ public class GameListScreen extends JPanel {
     		else
     			gamelist = listGamesStr.clone();
     		
+    		if(null!=gameLst)
+    		{
+    			formPanel.remove(gameLst);
+    			formPanel.remove(playBtn);
+    			formPanel.remove(newBtn);
+    			gameLst=null;
+    		}
+    		if (null!=gamelist) {
+        		gameLst = new JList(gamelist);
+        	}
+        	else {
+        		gameLst = new JList();
+        		playBtn.setEnabled(false);
+        	}
+        	gameLst.setVisibleRowCount(5);
+            formPanel.add(gameLst);
+            formPanel.add(playBtn);
+            formPanel.add(newBtn);
+        	    		
     	} catch (Exception e) {
     		System.err.println("Error!: " + e.getMessage());
     		e.printStackTrace();
@@ -129,9 +140,16 @@ public class GameListScreen extends JPanel {
         		
         		mainScreen.lister.setVisible(false);
         		int loadThisGame = Integer.parseInt(gameLst.getSelectedValue().toString());
+        		if(null!=mainScreen.solverScreen)
+        		{
+        			mainScreen.mainPanel.remove(mainScreen.solverScreen);
+        			mainScreen.solverScreen = null;
+        		}
         		Crossword c = gameManager.getCrossword(loadThisGame);
 //        		mainScreen.mainPanel.removeAll();
-        		mainScreen.mainPanel.add(new CrosswordSolver(c, gameManager, loadThisGame));
+        		CrosswordSolver cs = new CrosswordSolver(c, gameManager, loadThisGame, mainScreen);
+        		mainScreen.mainPanel.add(cs);
+        		mainScreen.solverScreen = cs;
         		mainScreen.validate();
         		
         	} catch (Exception e) {
@@ -152,7 +170,9 @@ public class GameListScreen extends JPanel {
         		int loadThisGame = gameManager.newGame();
         		Crossword c = gameManager.getCrossword(loadThisGame);
 //        		mainScreen.mainPanel.removeAll();
-        		mainScreen.mainPanel.add(new CrosswordSolver(c, gameManager, loadThisGame));
+        		CrosswordSolver cs = new CrosswordSolver(c, gameManager, loadThisGame, mainScreen);
+        		mainScreen.mainPanel.add(cs);
+        		mainScreen.solverScreen = cs;
         		mainScreen.validate();
         		
         	} catch (Exception e) {

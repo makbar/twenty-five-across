@@ -20,7 +20,7 @@ import java.io.*;
 public class MainScreen extends JFrame
 {
     Preferences prefs = new Preferences();
-
+    
     //define menu variables
     JMenuBar jMenuBar1 = new JMenuBar();
     JMenu mTools = new JMenu();
@@ -83,7 +83,7 @@ public class MainScreen extends JFrame
         this.setJMenuBar(jMenuBar1);
         this.setTitle("Crossword Sage");
         this.getContentPane().setLayout(borderLayout1);
-        this.setBounds(0, 0, 700, 700);
+        this.setBounds(0, 0, 800, 700);
         this.addWindowListener(new WinListener());
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -307,7 +307,7 @@ public class MainScreen extends JFrame
     {
         Crossword cw = CrosswordFileHandler.loadCrossword(this);
         mainPanel.removeAll();
-        mainPanel.add(new CrosswordSolver(cw, gameManager, currentGame));
+        mainPanel.add(new CrosswordSolver(cw, gameManager, currentGame, null));
         validate();
     }
 
@@ -503,7 +503,7 @@ public class MainScreen extends JFrame
 	            		Crossword c = gameManager.getCrossword(loadThisGame);
 	            		currentGame = loadThisGame;
 	            		mainPanel.removeAll();
-	            		mainPanel.add(new CrosswordSolver(c, gameManager, currentGame));
+	            		mainPanel.add(new CrosswordSolver(c, gameManager, currentGame, null));
 	            		validate();
 	            	}
             	} catch (Exception e2)

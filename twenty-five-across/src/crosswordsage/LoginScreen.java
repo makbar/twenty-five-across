@@ -27,8 +27,8 @@ public class LoginScreen extends JPanel {
 
 	private JButton logInBtn, registerBtn;
     private JPanel mainPanel, imgPanel, formPanel;
-    private JLabel usernameLbl, pwLbl, cartoon, bigHeader, smallHeader;
-    private JTextField  usernameField, pwField;
+    private JLabel usernameLbl, pwLbl, cartoon, bigHeader, smallHeader, serverLbl;
+    private JTextField  usernameField, pwField, serverField;
     TfacrossGui mainScreen;
 
 	public UserManagerRemote userManager;
@@ -56,6 +56,11 @@ public class LoginScreen extends JPanel {
 
         logInBtn = new JButton("Log In");
         registerBtn = new JButton("New User? Go to Registration!");
+        
+        serverLbl = new JLabel();
+        serverLbl.setText("Server:");
+        serverField = new JTextField(15);
+        serverField.setText("localhost");
 
         imgPanel = new JPanel();
         imgPanel.setBackground(Color.white);
@@ -72,6 +77,9 @@ public class LoginScreen extends JPanel {
         formPanel.add(pwField);
         formPanel.add(logInBtn);
         formPanel.add(registerBtn);
+        formPanel.add(serverLbl);
+        formPanel.add(serverField);
+        
 
         mainPanel = new JPanel(new FlowLayout());
         mainPanel.setBackground(Color.white);
@@ -92,10 +100,14 @@ public class LoginScreen extends JPanel {
         public void actionPerformed(ActionEvent a)
         {
         	java.util.Properties prop = System.getProperties();
-        	prop.put(Context.PROVIDER_URL, "http://localhost:8080");
+        	prop.put(Context.PROVIDER_URL, "http://" + serverField.getText() + ":8080");
+        	prop.setProperty("org.omg.CORBA.ORBInitialHost", serverField.getText());
         	
         	try {
-        		InitialContext ic = new InitialContext();
+        		mainScreen.statusbarStatusLbl.setText("Trying to connect to " + prop.getProperty("org.omg.CORBA.ORBInitialHost"));
+        		mainScreen.statusbarStatusLbl.validate();
+        		mainScreen.validate();
+        		InitialContext ic = new InitialContext(prop);
         		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
 
         		String uName = usernameField.getText();
@@ -119,6 +131,7 @@ public class LoginScreen extends JPanel {
         	   		{
         	   			mainScreen.statusbarStatusLbl.setText("Welcome root. User Management Screen loaded!");
         	   			mainScreen.login.setVisible(false);
+    	   				mainScreen.login.pwField.setText("");
         	   			mainScreen.manager = new ManagementScreen(mainScreen,pwhash.toString());
     	   				mainScreen.mainPanel.add(mainScreen.manager);
         	   			mainScreen.manager.setVisible(true);
@@ -131,6 +144,7 @@ public class LoginScreen extends JPanel {
         	   			{
         	   				mainScreen.statusbarStatusLbl.setText("Welcome! Game List Screen loaded!");
         	   				mainScreen.login.setVisible(false);
+        	   				mainScreen.login.pwField.setText("");
         	   				mainScreen.lister = new GameListScreen(mainScreen);
         	   				mainScreen.mainPanel.add(mainScreen.lister);
         	   				mainScreen.lister.setVisible(true);
@@ -144,6 +158,7 @@ public class LoginScreen extends JPanel {
         	   	}
         		
         	} catch (Exception e) {
+        		mainScreen.statusbarStatusLbl.setText("Connection to server failed. Check address.");
         		System.err.println("Error!: " + e.getMessage());
         		e.printStackTrace();
         		return;
@@ -155,6 +170,7 @@ public class LoginScreen extends JPanel {
         public void actionPerformed(ActionEvent a)
         {
         	mainScreen.login.setVisible(false);
+			mainScreen.login.pwField.setText("");
         	mainScreen.register.setVisible(true);
         }
     }

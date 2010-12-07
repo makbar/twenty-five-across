@@ -26,6 +26,7 @@ public class CrosswordSolver extends JPanel
     private JButton btnCheckSolution = new JButton();
     private JButton btnUpdateState = new JButton();
     private JButton btnResign = new JButton();
+    private JButton btnBack = new JButton();
     private JLabel lblGameNr = new JLabel();
 
     private Border brdThinGrey = BorderFactory.createLineBorder(Color.gray, 1);
@@ -37,13 +38,16 @@ public class CrosswordSolver extends JPanel
     private Timer timer;
 
     private JTextArea taResigned = new JTextArea("The game has been resigned!\n");
+    
+    TfacrossGui mainScreen;
 
-    public CrosswordSolver(Crossword cw, GameManagerRemote gm, int gn)
+    public CrosswordSolver(Crossword cw, GameManagerRemote gm, int gn, TfacrossGui ms)
     {
         this.setLayout(new BorderLayout());
         this.cw = cw;
         this.gameManager = gm;
         this.gameNumber = gn;
+        this.mainScreen = ms;
         grid = new SolverGrid(cw, gm, gn);
         DisplayGrid();
         grid.setCrossword(cw);
@@ -61,7 +65,7 @@ public class CrosswordSolver extends JPanel
 
         validate();
 
-        timer = new Timer(1000, new ActionListener() {
+        timer = new Timer(10000, new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		updateState();
         	}
@@ -84,8 +88,8 @@ public class CrosswordSolver extends JPanel
     }
 
 	private void updateState() {
-		//int size = gameManager.getSolveStateSize(gameNumber);
-		grid.applySolveState(gameManager.getSolveState(gameNumber));
+		int size = gameManager.getSolveStateSize(gameNumber);
+		grid.applySolveState(gameNumber, size);
 	}
 
     private void compileClues()
@@ -228,6 +232,10 @@ public class CrosswordSolver extends JPanel
         btnResign.setMaximumSize(new Dimension(131, 27));
         btnResign.setPreferredSize(new Dimension(131, 27));
         btnResign.setText("Resign");
+        btnBack.setBorder(brdThinGrey);
+        btnBack.setMaximumSize(new Dimension(131, 27));
+        btnBack.setPreferredSize(new Dimension(131, 27));
+        btnBack.setText("Back to Games");
         lblGameNr.setText("Game: " + gameNumber);
         lblGameNr.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
         lblGameNr.setForeground(new Color(15,124,244));
@@ -237,13 +245,14 @@ public class CrosswordSolver extends JPanel
         grid.setPreferredSize(new Dimension(500, 500));
         grid.setMaximumSize(new Dimension(500, 500));
         jList1.setMaximumSize(new Dimension(2000, 2000));
-        jList1.setMinimumSize(new Dimension(2, 17));
-        jList1.setPreferredSize(new Dimension(332, 2000));
+        jList1.setMinimumSize(new Dimension(200, 500));
+        jList1.setPreferredSize(new Dimension(432, 2000));
         jList1.setToolTipText("");
         jList1.setActionMap(null);
         jScrollPane1.setAutoscrolls(true);
         jScrollPane1.setMaximumSize(new Dimension(32767, 32767));
-        jScrollPane1.setPreferredSize(new Dimension(100, 200));
+        jScrollPane1.setMinimumSize(new Dimension(200, 200));
+        jScrollPane1.setPreferredSize(new Dimension(200, 200));
         this.setBackground(new Color(174, 190, 212));
         clueTextPane.setBorder(brdMedBlack);
         clueTextPane.setEditable(false);
@@ -255,6 +264,8 @@ public class CrosswordSolver extends JPanel
         boxButtons.add(btnCheckSolution);
         boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
         boxButtons.add(btnResign);
+        boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
+        boxButtons.add(btnBack);
 
         topBox.add(Box.createHorizontalStrut(MARGIN_GAP));
         topBox.add(grid);
@@ -270,7 +281,8 @@ public class CrosswordSolver extends JPanel
         vertBox.add(Box.createVerticalStrut(MARGIN_GAP));
         add(vertBox, BorderLayout.CENTER);
         grid.addMouseListener(new ListListener());
-        btnUpdateState.addActionListener(new CListener());
+        //btnUpdateState.addActionListener(new CListener());
+        btnBack.addActionListener(new CListener());
     }
 
     class CListener implements ActionListener
@@ -284,6 +296,16 @@ public class CrosswordSolver extends JPanel
             else if(e.getSource() == btnUpdateState)
             {
                 updateState();
+            }
+            else if(e.getSource() == btnBack)
+            {
+            	//mainScreen.mainPanel.remove(mainScreen.solverScreen);
+            	//mainScreen.mainPanel.removeAll();
+        		mainScreen.solverScreen.setVisible(false);
+        		mainScreen.lister.updateGameList();
+        		mainScreen.lister.setVisible(true);
+            	mainScreen.validate();
+            	mainScreen.mainPanel.validate();
             }
         }
 

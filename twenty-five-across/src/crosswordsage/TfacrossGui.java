@@ -27,8 +27,10 @@ public class TfacrossGui extends JFrame {
 	static TfacrossGui gui;
 	LoginScreen login = new LoginScreen(this);
 	RegisterScreen register = new RegisterScreen(this);
-	ManagementScreen manager;
-	GameListScreen lister;
+	ManagementScreen manager=null;
+	GameListScreen lister=null;
+	CrosswordSolver solverScreen=null;
+
 
 	BorderLayout borderLayout = new BorderLayout();
 
@@ -79,7 +81,7 @@ public class TfacrossGui extends JFrame {
 		this.getContentPane().setBackground(SystemColor.control);
 		this.setTitle("Twenty Five Across");
 		this.getContentPane().setLayout(borderLayout);
-		this.setBounds(0, 0, 700, 700);
+		this.setBounds(0, 0, 800, 700);
 		this.setLocation(250, 20);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -93,7 +95,7 @@ public class TfacrossGui extends JFrame {
 		toolbar.setBounds(0,0,700,100);
 
 		mainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		mainPanel.setBounds(0, 100, 700, 500);
+		mainPanel.setBounds(0, 100, 800, 500);
 		mainPanel.setBackground(Color.WHITE);
 		 
 		toolbar.setBorder(BorderFactory.createLineBorder(Color.black));
