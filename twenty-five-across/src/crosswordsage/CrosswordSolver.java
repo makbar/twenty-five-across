@@ -84,8 +84,8 @@ public class CrosswordSolver extends JPanel
     }
 
 	private void updateState() {
-		int size = gameManager.getSolveStateSize(gameNumber);
-		grid.applySolveState(gameNumber, size);
+		//int size = gameManager.getSolveStateSize(gameNumber);
+		grid.applySolveState(gameManager.getSolveState(gameNumber));
 	}
 
     private void compileClues()
