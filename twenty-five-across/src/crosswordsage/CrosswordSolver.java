@@ -26,15 +26,16 @@ public class CrosswordSolver extends JPanel
     private JButton btnCheckSolution = new JButton();
     private JButton btnUpdateState = new JButton();
     private JButton btnResign = new JButton();
+    private JLabel lblGameNr = new JLabel();
 
     private Border brdThinGrey = BorderFactory.createLineBorder(Color.gray, 1);
     private Border brdMedBlack = BorderFactory.createLineBorder(Color.BLACK, 2);
     private JTextPane clueTextPane = new JTextPane();
     private GameManagerRemote gameManager;
     private int gameNumber;
-    
+
     private Timer timer;
-    
+
     private JTextArea taResigned = new JTextArea("The game has been resigned!\n");
 
     public CrosswordSolver(Crossword cw, GameManagerRemote gm, int gn)
@@ -55,7 +56,7 @@ public class CrosswordSolver extends JPanel
         updateState();
 
         sortClueList();
-        
+
         //add(taResigned, );
 
         validate();
@@ -66,7 +67,7 @@ public class CrosswordSolver extends JPanel
         	}
         });
         timer.start();
-        
+
         try
         {
             jbInit();
@@ -86,7 +87,7 @@ public class CrosswordSolver extends JPanel
 		int size = gameManager.getSolveStateSize(gameNumber);
 		grid.applySolveState(gameNumber, size);
 	}
-	
+
     private void compileClues()
     {
         ArrayList words = grid.getCrossword().getWords();
@@ -227,8 +228,11 @@ public class CrosswordSolver extends JPanel
         btnResign.setMaximumSize(new Dimension(131, 27));
         btnResign.setPreferredSize(new Dimension(131, 27));
         btnResign.setText("Resign");
-        
-        
+        lblGameNr.setText("Game: " + gameNumber);
+        lblGameNr.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+        lblGameNr.setForeground(new Color(15,124,244));
+
+
         grid.setMinimumSize(new Dimension(500, 500));
         grid.setPreferredSize(new Dimension(500, 500));
         grid.setMaximumSize(new Dimension(500, 500));
@@ -245,6 +249,8 @@ public class CrosswordSolver extends JPanel
         clueTextPane.setEditable(false);
         boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
         //boxButtons.add(btnUpdateState);
+        boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
+        boxButtons.add(lblGameNr);
         boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
         boxButtons.add(btnCheckSolution);
         boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
