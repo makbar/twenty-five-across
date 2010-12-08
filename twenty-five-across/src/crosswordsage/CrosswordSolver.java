@@ -262,8 +262,8 @@ public class CrosswordSolver extends JPanel
         boxButtons.add(lblGameNr);
         boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
         boxButtons.add(btnCheckSolution);
-        boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
-        boxButtons.add(btnResign);
+        //boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
+        //boxButtons.add(btnResign);
         boxButtons.add(Box.createHorizontalStrut(MARGIN_GAP));
         boxButtons.add(btnBack);
 
@@ -300,8 +300,6 @@ public class CrosswordSolver extends JPanel
             }
             else if(e.getSource() == btnBack)
             {
-            	//mainScreen.mainPanel.remove(mainScreen.solverScreen);
-            	//mainScreen.mainPanel.removeAll();
         		mainScreen.solverScreen.setVisible(false);
         		mainScreen.lister.updateGameList();
         		mainScreen.lister.setVisible(true);
@@ -310,8 +308,6 @@ public class CrosswordSolver extends JPanel
             }
             else if(e.getSource() == btnResign)
             {
-            	//mainScreen.mainPanel.remove(mainScreen.solverScreen);
-            	//mainScreen.mainPanel.removeAll();
         		mainScreen.solverScreen.setVisible(false);
         		mainScreen.lister.updateGameList();
         		mainScreen.lister.setVisible(true);

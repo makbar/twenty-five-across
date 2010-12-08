@@ -106,6 +106,7 @@ public class GameListScreen extends JPanel {
     		
     		if(null!=gameLst)
     		{
+        		playBtn.setEnabled(true);
     			formPanel.remove(gameLst);
     			formPanel.remove(playBtn);
     			formPanel.remove(newBtn);
