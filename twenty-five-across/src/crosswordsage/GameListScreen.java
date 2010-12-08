@@ -30,6 +30,7 @@ public class GameListScreen extends JPanel {
 	private JButton playBtn=null;
 	private JButton newBtn=null;
 	private JList gameLst=null;
+    private JButton logoutBtn = new JButton();
 	private JPanel mainPanel, imgPanel, formPanel;
     private JLabel cartoon, bigHeader, smallHeader, title;
     TfacrossGui mainScreen;
@@ -40,6 +41,7 @@ public class GameListScreen extends JPanel {
     	
         playBtn = new JButton("Play Game");
         newBtn = new JButton("Create New Game");
+        logoutBtn = new JButton("Logout");
 
     	gamelist = null;
     	    	
@@ -83,6 +85,7 @@ public class GameListScreen extends JPanel {
 
         playBtn.addActionListener(new PlayListener());
         newBtn.addActionListener(new NewListener());
+        logoutBtn.addActionListener(new LogoutListener());
 
         
         mainScreen = myMainScreen;
@@ -106,6 +109,7 @@ public class GameListScreen extends JPanel {
     			formPanel.remove(gameLst);
     			formPanel.remove(playBtn);
     			formPanel.remove(newBtn);
+    			formPanel.remove(logoutBtn);
     			gameLst=null;
     		}
     		if (null!=gamelist) {
@@ -119,6 +123,7 @@ public class GameListScreen extends JPanel {
             formPanel.add(gameLst);
             formPanel.add(playBtn);
             formPanel.add(newBtn);
+            formPanel.add(logoutBtn);
         	    		
     	} catch (Exception e) {
     		System.err.println("Error!: " + e.getMessage());
@@ -169,12 +174,32 @@ public class GameListScreen extends JPanel {
         		mainScreen.lister.setVisible(false);
         		int loadThisGame = gameManager.newGame();
         		Crossword c = gameManager.getCrossword(loadThisGame);
+        		if(null!=mainScreen.solverScreen)
+        		{
+        			mainScreen.mainPanel.remove(mainScreen.solverScreen);
+        			mainScreen.solverScreen = null;
+        		}
 //        		mainScreen.mainPanel.removeAll();
         		CrosswordSolver cs = new CrosswordSolver(c, gameManager, loadThisGame, mainScreen);
         		mainScreen.mainPanel.add(cs);
         		mainScreen.solverScreen = cs;
         		mainScreen.validate();
         		
+        	} catch (Exception e) {
+        		System.err.println("Error!: " + e.getMessage());
+        		e.printStackTrace();
+        	}
+        }
+    }
+    class LogoutListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent a)
+        {
+        	try {
+        		mainScreen.lister.setVisible(false);
+        		mainScreen.login.setVisible(true);
+            	mainScreen.validate();
+            	mainScreen.mainPanel.validate();
         	} catch (Exception e) {
         		System.err.println("Error!: " + e.getMessage());
         		e.printStackTrace();

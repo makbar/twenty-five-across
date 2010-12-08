@@ -283,6 +283,7 @@ public class CrosswordSolver extends JPanel
         grid.addMouseListener(new ListListener());
         //btnUpdateState.addActionListener(new CListener());
         btnBack.addActionListener(new CListener());
+        btnResign.addActionListener(new CListener());
     }
 
     class CListener implements ActionListener
@@ -298,6 +299,16 @@ public class CrosswordSolver extends JPanel
                 updateState();
             }
             else if(e.getSource() == btnBack)
+            {
+            	//mainScreen.mainPanel.remove(mainScreen.solverScreen);
+            	//mainScreen.mainPanel.removeAll();
+        		mainScreen.solverScreen.setVisible(false);
+        		mainScreen.lister.updateGameList();
+        		mainScreen.lister.setVisible(true);
+            	mainScreen.validate();
+            	mainScreen.mainPanel.validate();
+            }
+            else if(e.getSource() == btnResign)
             {
             	//mainScreen.mainPanel.remove(mainScreen.solverScreen);
             	//mainScreen.mainPanel.removeAll();

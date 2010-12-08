@@ -127,7 +127,7 @@ public class LoginScreen extends JPanel {
         			pwhash.append(Integer.toHexString(0xFF & hash[i]));
         		}
 
-        	    System.out.println("hash: " + pwhash.toString());
+        	    //System.out.println("hash: " + pwhash.toString());
 
         		if(userManager.checkLogin(uName, pwhash.toString()))
         		{
@@ -150,6 +150,11 @@ public class LoginScreen extends JPanel {
         	   				mainScreen.statusbarStatusLbl.setText("Welcome! Game List Screen loaded!");
         	   				mainScreen.login.setVisible(false);
         	   				mainScreen.login.pwField.setText("");
+        	        		if(null!=mainScreen.lister)
+        	        		{
+        	        			mainScreen.mainPanel.remove(mainScreen.lister);
+        	        			mainScreen.lister = null;
+        	        		}
         	   				mainScreen.lister = new GameListScreen(mainScreen);
         	   				mainScreen.mainPanel.add(mainScreen.lister);
         	   				mainScreen.lister.setVisible(true);
