@@ -2,6 +2,7 @@ package crosswordsage;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -33,7 +34,7 @@ public class LoginScreen extends JPanel {
     TfacrossGui mainScreen;
 
 	public UserManagerRemote userManager;
-    
+
     LoginScreen (TfacrossGui myMainScreen) {
         usernameLbl = new JLabel();
         usernameLbl.setText("Username:");
@@ -58,7 +59,7 @@ public class LoginScreen extends JPanel {
         logInBtn = new JButton("Log In");
         registerBtn = new JButton("New User? Go to Registration!");
         connectBtn = new JButton("Connect");
-        
+
         serverLbl = new JLabel();
         serverLbl.setText("Server:");
         serverField = new JTextField(15);
@@ -82,7 +83,7 @@ public class LoginScreen extends JPanel {
         formPanel.add(serverLbl);
         formPanel.add(serverField);
         formPanel.add(connectBtn);
-        
+
 
         mainPanel = new JPanel(new FlowLayout());
         mainPanel.setBackground(Color.white);
@@ -94,27 +95,29 @@ public class LoginScreen extends JPanel {
         add(mainPanel,BorderLayout.CENTER);
         logInBtn.addActionListener(new LoginListener());
         registerBtn.addActionListener(new RegisterListener());
-        
+
         connectBtn.addActionListener(new ConnectListener());
         pwField.setEnabled(false);
         usernameField.setEnabled(false);
         logInBtn.setEnabled(false);
         registerBtn.setEnabled(false);
-        
+
         mainScreen = myMainScreen;
     }
 
     class LoginListener implements ActionListener
     {
         public void actionPerformed(ActionEvent a)
-        {        	
+        {
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
         	try {
         		InitialContext ic = new InitialContext();
         		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
 
         		String uName = usernameField.getText();
         		String uPass = pwField.getText();
-        		
+
         		MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
         		StringBuffer pwhash = new StringBuffer();
         		digest.reset();
@@ -158,12 +161,14 @@ public class LoginScreen extends JPanel {
         	   		System.out.println("Password Incorrect!");
         	   		mainScreen.statusbarStatusLbl.setText("Login Failed!");
         	   	}
-        		
+
+                setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
         	} catch (Exception e) {
         		mainScreen.statusbarStatusLbl.setText("Connection to server failed. Check address.");
         		System.err.println("Error!: " + e.getMessage());
         		e.printStackTrace();
-        		return;
+        		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         	}
         }
     }
@@ -180,16 +185,19 @@ public class LoginScreen extends JPanel {
     {
         public void actionPerformed(ActionEvent a)
         {
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
         	java.util.Properties prop = System.getProperties();
         	prop.put(Context.PROVIDER_URL, "http://" + serverField.getText() + ":8080");
         	prop.setProperty("org.omg.CORBA.ORBInitialHost", serverField.getText());
-        	
+
         	try {
         		mainScreen.statusbarStatusLbl.setText("Trying to connect to " + prop.getProperty("org.omg.CORBA.ORBInitialHost"));
         		InitialContext ic = new InitialContext();
         		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
 
         		mainScreen.statusbarStatusLbl.setText("Connection to server succeeded! Please Log in.");
+                setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         		pwField.setEnabled(true);
                 usernameField.setEnabled(true);
                 logInBtn.setEnabled(true);
@@ -199,6 +207,7 @@ public class LoginScreen extends JPanel {
 
         	} catch (Exception e) {
         		mainScreen.statusbarStatusLbl.setText("Connection to server failed. Check address.");
+                setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         		System.err.println("Error!: " + e.getMessage());
         		e.printStackTrace();
         		return;

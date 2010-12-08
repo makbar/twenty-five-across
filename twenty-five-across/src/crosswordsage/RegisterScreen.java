@@ -2,6 +2,7 @@ package crosswordsage;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -19,7 +20,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import twentyfiveacross.ejbs.UserManagerRemote;
-import java.security.MessageDigest; 
+import java.security.MessageDigest;
 
 public class RegisterScreen extends JPanel {
 
@@ -57,7 +58,7 @@ public class RegisterScreen extends JPanel {
         smallHeader.setForeground(new Color(15,124,244));
         smallHeader.setVerticalTextPosition(JLabel.TOP);
         smallHeader.setPreferredSize(new Dimension(60, 60));
-        
+
         registerBtn = new JButton("Register");
         logInBtn = new JButton("Already a user? Go to Login!");
 
@@ -91,7 +92,7 @@ public class RegisterScreen extends JPanel {
         registerBtn.addActionListener(new RegisterListener());
 
 //        setTitle("LOGIN FORM");
-        
+
         mainScreen = myMainScreen;
 //        mainScreen.add(mainPanel);
     }
@@ -111,7 +112,9 @@ public class RegisterScreen extends JPanel {
         {
         	//java.util.Properties prop = System.getProperties();
         	//prop.put(Context.PROVIDER_URL, "http://localhost:8080");
-        	
+
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
         	try {
         		InitialContext ic = new InitialContext();
         		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
@@ -121,9 +124,10 @@ public class RegisterScreen extends JPanel {
         		if(pw.length()<8)
         		{
         	   		mainScreen.statusbarStatusLbl.setText("Error: The password should be at least 8 characters long!");
+                    setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         	   		return;
         		}
-        		
+
         		MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
         		StringBuffer pwhash = new StringBuffer();
         		digest.reset();
@@ -134,7 +138,7 @@ public class RegisterScreen extends JPanel {
         		}
 
         	    //System.out.println("hash: " + pwhash.toString());
- 
+
         		boolean test = userManager.createUser(uName, nField, pwhash.toString());
 
         		//if(userManager.createUser(usernameField.getText(), nameField.getText(), pwField.getText()))
@@ -151,7 +155,8 @@ public class RegisterScreen extends JPanel {
         	   		System.out.println("Registration Failed!");
         	   		mainScreen.statusbarStatusLbl.setText("Registration Failed!");
         	   	}
-        		
+                setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
         	} catch (Exception e) {
         		System.err.println("Error!: " + e.getMessage());
         		e.printStackTrace();
