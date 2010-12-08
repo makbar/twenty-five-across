@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import twentyfiveacross.ejbs.UserManagerRemote;
 
@@ -25,7 +26,7 @@ public class LoginScreen extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-	private JButton logInBtn, registerBtn;
+	private JButton logInBtn, registerBtn, connectBtn;
     private JPanel mainPanel, imgPanel, formPanel;
     private JLabel usernameLbl, pwLbl, cartoon, bigHeader, smallHeader, serverLbl;
     private JTextField  usernameField, pwField, serverField;
@@ -56,6 +57,7 @@ public class LoginScreen extends JPanel {
 
         logInBtn = new JButton("Log In");
         registerBtn = new JButton("New User? Go to Registration!");
+        connectBtn = new JButton("Connect");
         
         serverLbl = new JLabel();
         serverLbl.setText("Server:");
@@ -79,6 +81,7 @@ public class LoginScreen extends JPanel {
         formPanel.add(registerBtn);
         formPanel.add(serverLbl);
         formPanel.add(serverField);
+        formPanel.add(connectBtn);
         
 
         mainPanel = new JPanel(new FlowLayout());
@@ -92,22 +95,21 @@ public class LoginScreen extends JPanel {
         logInBtn.addActionListener(new LoginListener());
         registerBtn.addActionListener(new RegisterListener());
         
+        connectBtn.addActionListener(new ConnectListener());
+        pwField.setEnabled(false);
+        usernameField.setEnabled(false);
+        logInBtn.setEnabled(false);
+        registerBtn.setEnabled(false);
+        
         mainScreen = myMainScreen;
     }
 
     class LoginListener implements ActionListener
     {
         public void actionPerformed(ActionEvent a)
-        {
-        	java.util.Properties prop = System.getProperties();
-        	prop.put(Context.PROVIDER_URL, "http://" + serverField.getText() + ":8080");
-        	prop.setProperty("org.omg.CORBA.ORBInitialHost", serverField.getText());
-        	
+        {        	
         	try {
-        		mainScreen.statusbarStatusLbl.setText("Trying to connect to " + prop.getProperty("org.omg.CORBA.ORBInitialHost"));
-        		mainScreen.statusbarStatusLbl.validate();
-        		mainScreen.validate();
-        		InitialContext ic = new InitialContext(prop);
+        		InitialContext ic = new InitialContext();
         		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
 
         		String uName = usernameField.getText();
@@ -172,6 +174,35 @@ public class LoginScreen extends JPanel {
         	mainScreen.login.setVisible(false);
 			mainScreen.login.pwField.setText("");
         	mainScreen.register.setVisible(true);
+        }
+    }
+    class ConnectListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent a)
+        {
+        	java.util.Properties prop = System.getProperties();
+        	prop.put(Context.PROVIDER_URL, "http://" + serverField.getText() + ":8080");
+        	prop.setProperty("org.omg.CORBA.ORBInitialHost", serverField.getText());
+        	
+        	try {
+        		mainScreen.statusbarStatusLbl.setText("Trying to connect to " + prop.getProperty("org.omg.CORBA.ORBInitialHost"));
+        		InitialContext ic = new InitialContext();
+        		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
+
+        		mainScreen.statusbarStatusLbl.setText("Connection to server succeeded! Please Log in.");
+        		pwField.setEnabled(true);
+                usernameField.setEnabled(true);
+                logInBtn.setEnabled(true);
+                registerBtn.setEnabled(true);
+                serverField.setEnabled(false);
+                connectBtn.setEnabled(false);
+
+        	} catch (Exception e) {
+        		mainScreen.statusbarStatusLbl.setText("Connection to server failed. Check address.");
+        		System.err.println("Error!: " + e.getMessage());
+        		e.printStackTrace();
+        		return;
+        	}
         }
     }
 }
