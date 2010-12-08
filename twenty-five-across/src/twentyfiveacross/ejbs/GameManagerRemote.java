@@ -41,4 +41,6 @@ public interface GameManagerRemote {
 	public int finishedUsers(int currentGame);
 
 	public void updateGameState(int currentGame);
+
+	public void updateUserRating(String bestUser, int bestCount);
 }

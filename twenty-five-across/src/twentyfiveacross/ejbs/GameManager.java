@@ -224,4 +224,10 @@ public class GameManager implements GameManagerRemote {
 		em.flush();
 		
 	}
+
+	@Override
+	public void updateUserRating(String bestUser, int bestCount) {
+		
+		
+	}
 }

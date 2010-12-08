@@ -299,10 +299,11 @@ public class SolverGrid extends Grid
                 s = String.valueOf(e.getKeyChar());
             }
             try {
+            	
             	if(finished.contains(currentGame)) {
             		//Shouldn't update game
             	}
-            	if(gameManager.setLetter(currentGame, selectedSquare.getXPos(), selectedSquare.getYPos(), s, user)) {
+            	else if(gameManager.setLetter(currentGame, selectedSquare.getXPos(), selectedSquare.getYPos(), s, user)) {
 					selectedSquare.setLetter(s);
 					selectedSquare = getNextSquare();
 				} else {
