@@ -70,7 +70,7 @@ public class UserBeanInfoImpl implements UserBeanInfo {
 	public List<String> findAll()
 	{
 		try {
-			return (List<String>) (em.createNativeQuery("SELECT UserName FROM userinfo").getResultList());
+			return (List<String>) (em.createNativeQuery("SELECT UserName FROM userinfo WHERE UserName!='root'").getResultList());
 		} catch (Exception e) {
 			return null;
 		}

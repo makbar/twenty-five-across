@@ -48,11 +48,6 @@ public class ManagementScreen extends JPanel {
     	rootToken = token;
     	
     	updateUserList();
-    	usersLst = new JList(userlist);
-        usersLst.setVisibleRowCount(5);
-        
-        updateLists();
-        banLst.setVisibleRowCount(5);
         
         cartoon = new JLabel(new ImageIcon("noclue.jpg"));
         
@@ -115,7 +110,19 @@ public class ManagementScreen extends JPanel {
     		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
     		
     		usersL = userManager.listUsers(rootToken);
-        	userlist = (String[]) (Object[])usersL.toArray(new String[0]);
+    		if(null!=usersL)
+    		{
+    			userlist = (String[]) (Object[])usersL.toArray(new String[0]);
+    	    	usersLst = new JList(userlist);
+    	        updateLists();
+    	        usersLst.setVisibleRowCount(5);    	        
+    	        banLst.setVisibleRowCount(5);
+    		}
+    		else
+    		{
+    	    	usersLst = new JList();
+    	    	banLst = new JList();    			
+    		}
 
     		
     	} catch (Exception e) {
@@ -135,13 +142,12 @@ public class ManagementScreen extends JPanel {
 
         	for(int i=0; i<userlist.length; i++)
             {
-            	banLst = new JList(model);
-
             	if(userManager.checkBan(userlist[i]))
             		model.add(i,banStr);
             	else
             		model.add(i,actStr);
             }
+        	banLst = new JList(model);
     		
     	} catch (Exception e) {
     		System.err.println("Error!: " + e.getMessage());
