@@ -132,6 +132,7 @@ public class LoginScreen extends JPanel {
         		if(userManager.checkLogin(uName, pwhash.toString()))
         		{
         	   		System.out.println("Password Correct!");
+        	   		SolverGrid.setUser(uName);
         	   		if("root".equals(uName))
         	   		{
         	   			mainScreen.statusbarStatusLbl.setText("Welcome root. User Management Screen loaded!");

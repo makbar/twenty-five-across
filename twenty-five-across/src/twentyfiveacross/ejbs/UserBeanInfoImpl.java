@@ -21,16 +21,13 @@ public class UserBeanInfoImpl implements UserBeanInfo {
 	@Override
 	public boolean create(UserInfo bean) throws Exception
 	{
-		try {
-			if (em.find(UserInfo.class, bean.getUsername()) == null) {
-				em.persist(bean);
-				return true;
-			}
-			else
-				return false;
-		} catch (Exception e) {
-			return false;
+		if (em.find(UserInfo.class, bean.getUsername()) == null) {
+			em.persist(bean);
+			return true;
 		}
+		else
+			return false;
+		
 	}
 
 	@Override

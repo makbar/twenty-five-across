@@ -1,5 +1,6 @@
 package twentyfiveacross.ejbs;
 import java.util.Collection;
+import java.util.Map;
 
 import javax.ejb.Remote;
 import javax.jws.WebService;
@@ -21,13 +22,23 @@ public interface GameManagerRemote {
     
     //public void loadGames();
     
-    public Collection<SquareUnit> getSolveState(int gameId);
+    public Collection<SquareUnit> getSquares(int gameId);
     
-    public Boolean setLetter(int gameId, int x, int y, String letter) throws Exception;
+    public Boolean setLetter(int gameId, int x, int y, String letter, String username) throws Exception;
 
-	public String getSolveStateString(int gameId);
+	public Map<String, String> getSolveState(int gameId);
 	
-	public int getSolveStateSize(int gameId);
+	//public int getSolveStateSize(int gameId);
 
-	public String getLetter(int gameId, int xpos, int ypos);
+	//public String getLetter(int gameId, int xpos, int ypos);
+
+	String getSolveStateString(int gameId);
+
+	Map<String, String> getSolvedSquares(int gameId);
+	
+	public void incFinished(int currentGame);
+
+	public int finishedUsers(int currentGame);
+
+	public void updateGameState(int currentGame);
 }

@@ -3,7 +3,11 @@ package crosswordsage;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.*;
 
@@ -16,6 +20,8 @@ public class SolverGrid extends Grid
 {
 	private GameManagerRemote gameManager;
 	private int currentGame; 
+	private static String user;
+	private List<Integer> finished = new Vector<Integer>();
 	
     public SolverGrid()
     {
@@ -27,9 +33,19 @@ public class SolverGrid extends Grid
         this.gameManager = gm;
     	this.currentGame = cg;
     }
+    
+    public static String getUser() {
+		return user;
+	}
 
-    public void applySolveState(int gameId, int size) {//Collection<SquareUnit> ss, int size) {
-    	if(size != this.squares.size()) {
+	public static void setUser(String user) {
+		SolverGrid.user = user;
+	}
+
+	public void applySolveState(int gameId) {
+		Map<String, String> ss = gameManager.getSolveState(gameId);
+		
+    	if(ss.size() != this.squares.size()) {
     		System.err.println("Tried to apply a solve state with a different number of squares from the puzzle!");
     		return;
     	}
@@ -37,13 +53,13 @@ public class SolverGrid extends Grid
         	Square s = (Square)squares.get(i);
         	int xpos = s.getXPos();
         	int ypos = s.getYPos();
-        	s.setLetter(getLetter(gameId, xpos, ypos));
+        	String key = xpos + " " + ypos;
+        	String letter = ss.get(key);
+        	if(letter != null)
+        		s.setLetter(letter);
+        	//s.setLetter(getLetter(gameId, xpos, ypos));
     	}
     }
-    
-    private String getLetter(int gameId, int xpos, int ypos) {
-    	return gameManager.getLetter(gameId, xpos, ypos);
-	}
 
 	public void validate()
     {
@@ -127,8 +143,31 @@ public class SolverGrid extends Grid
 
     public void checkSolution()
     {
-        for(int i=0; i<squares.size(); i++)
-        {
+    	/* finished is a list of all games a user is finished with */
+    	if(finished.contains(currentGame)) {
+    		return;
+    	}
+    	else {
+    		finished.add(currentGame);
+    		gameManager.incFinished(currentGame); /* Increment count of finished users */
+    	}
+    	Map<String, Integer> scores = new HashMap<String, Integer>();
+    	Map<String, String> ss = gameManager.getSolvedSquares(currentGame);
+    	if(ss.size() == 0)
+    		return;
+    	List<String> users = new Vector<String>();
+    	for(Iterator<String> iter = ss.keySet().iterator(); iter.hasNext();) {
+    		String key = iter.next();
+    		String user = ss.get(key);
+    		if(user.length() > 0 && !users.contains(user))
+    			users.add(user);
+    	}
+    	if(gameManager.finishedUsers(currentGame) < users.size()) {
+    		JOptionPane.showMessageDialog(null, "Some users still in play!");
+    		return;
+    	}
+    	for(int i=0; i<squares.size(); i++)
+        {       	
             Square s = (Square)squares.get(i);
             s.setIsCorrect(true);
 
@@ -142,6 +181,14 @@ public class SolverGrid extends Grid
                         String answerLetter = String.valueOf(w.getWord().charAt(s.getLetterIndexAcross()));
                         if (s.getLetter().equals(answerLetter.toUpperCase()))
                         {
+                        	String key = s.getXPos() + " " + s.getYPos();
+                        	if(ss.containsKey(key)){
+                        		String user = ss.get(key);
+                        		if(scores.get(user) == null)
+                        			scores.put(user, 1);
+                        		else
+                        			scores.put(user, scores.get(user) + 1);
+                        	}
                             s.setIsCorrect(true);
                         }
                         else
@@ -154,6 +201,14 @@ public class SolverGrid extends Grid
                         String answerLetter = String.valueOf(w.getWord().charAt(s.getLetterIndexDown()));
                         if (s.getLetter().equals(answerLetter.toUpperCase()))
                         {
+                        	String key = s.getXPos() + " " + s.getYPos();
+                        	String user = ss.get(key);
+                        	if(user != null){
+                        		if(scores.get(user) == null)
+                        			scores.put(user, 1);
+                        		else
+                        			scores.put(user, scores.get(user) + 1);
+                        	}
                             s.setIsCorrect(true);
                         }
                         else
@@ -166,6 +221,15 @@ public class SolverGrid extends Grid
             s.validate();
             s.repaint();
         }
+    	StringBuffer buf = new StringBuffer();
+	    buf.append("Scores\n");
+	    for(Iterator<String> iter = scores.keySet().iterator(); iter.hasNext();) {
+	    	String user = iter.next();
+	    	int count = scores.get(user);
+	    	buf.append(user).append("     ").append(count).append("\n");
+	    }
+	    JOptionPane.showMessageDialog(null, buf.toString());
+	    gameManager.updateGameState(currentGame);
         validate();
     }
 
@@ -235,7 +299,10 @@ public class SolverGrid extends Grid
                 s = String.valueOf(e.getKeyChar());
             }
             try {
-				if(gameManager.setLetter(currentGame, selectedSquare.getXPos(), selectedSquare.getYPos(), s)) {
+            	if(finished.contains(currentGame)) {
+            		//Shouldn't update game
+            	}
+            	if(gameManager.setLetter(currentGame, selectedSquare.getXPos(), selectedSquare.getYPos(), s, user)) {
 					selectedSquare.setLetter(s);
 					selectedSquare = getNextSquare();
 				} else {

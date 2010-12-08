@@ -1,6 +1,8 @@
 package twentyfiveacross.ejbs;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -21,7 +23,7 @@ import java.util.Random;
 @Entity
 @Table(name="games")//TODO:  Correct name?
 @NamedQueries({
-    @NamedQuery(name = "findAllGames", query = "SELECT g FROM Game g WHERE g.accessType = 2")
+    @NamedQuery(name = "findAllGames", query = "SELECT g FROM Game g WHERE g.accessType = 2 AND g.status = 2")
 })
 public class Game implements Serializable {
 
@@ -33,6 +35,7 @@ public class Game implements Serializable {
     private int gameId;
     private int status; //1 = Finished, 2 = Active
     private int accessType; //1 = Public, 2 = Private
+    private int finished;
     public String playingUser;
     public String resigningUser;
     private Collection<SquareUnit> squares;
@@ -57,6 +60,7 @@ public class Game implements Serializable {
     }
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getGameId() {
 		return gameId;
 	}
@@ -96,11 +100,18 @@ public class Game implements Serializable {
 		this.cw = cw;
 	}
 	
+	public int getFinished() {
+		return finished;
+	}
+
+	public void setFinished(int finished) {
+		this.finished = finished;
+	}
+
 	public void resign(String user) {
 		solvedState = USERRESIGNED;
 		resigningUser = user;
-	}
-	
+	}	
 	/*
 	public String toString() {
     	return "A " + cw.getWidth() + " x " + cw.getHeight() + " crossword.";
