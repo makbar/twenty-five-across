@@ -150,9 +150,9 @@ public class SolverGrid extends Grid
     
     public boolean getUpdate()
     {
-    	if(!finished.contains(currentGame)) {
+    	/*if(!finished.contains(currentGame)) {
     		return false;
-    	}
+    	}*/
     	Map<String, Integer> scores = new HashMap<String, Integer>();
     	Map<String, String> ss = gameManager.getSolvedSquares(currentGame);
     	if(ss.size() == 0)
@@ -232,6 +232,7 @@ public class SolverGrid extends Grid
     	    	}
     	    }    	    
     	    gameManager.updateGameState(currentGame);
+    	    
     	    JOptionPane.showMessageDialog(null, buf.toString());
             validate();
             return true;
