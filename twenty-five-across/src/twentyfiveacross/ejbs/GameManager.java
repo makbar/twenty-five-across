@@ -96,7 +96,7 @@ public class GameManager implements GameManagerRemote {
 		if(gameId <= 0)
 			return null;
 		Game g = em.find(Game.class, gameId);
-		if(g == null || g.getStatus() != 2)
+		if(g == null)// || g.getStatus() != 2)
 			return null;
 		return g.getSquares();
 	}
