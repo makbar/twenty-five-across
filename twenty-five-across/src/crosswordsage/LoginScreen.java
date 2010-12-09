@@ -114,7 +114,13 @@ public class LoginScreen extends JPanel {
         	try {
         		InitialContext ic = new InitialContext();
         		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                // TODO: serverLost()
+            }
 
+            try {
         		String uName = usernameField.getText();
         		String uPass = pwField.getText();
 
@@ -201,7 +207,13 @@ public class LoginScreen extends JPanel {
         		mainScreen.statusbarStatusLbl.setText("Trying to connect to " + prop.getProperty("org.omg.CORBA.ORBInitialHost"));
         		InitialContext ic = new InitialContext();
         		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                // TODO: serverLost()
+            }
 
+            try {
         		mainScreen.statusbarStatusLbl.setText("Connection to server succeeded! Please Log in.");
                 setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         		pwField.setEnabled(true);

@@ -26,7 +26,7 @@ public class GameListScreen extends JPanel {
     String gamelist[];
 
 	public GameManagerRemote gameManager;
-    
+
 	private JButton playBtn=null;
 	private JButton newBtn=null;
 	private JList gameLst=null;
@@ -34,19 +34,19 @@ public class GameListScreen extends JPanel {
 	private JPanel mainPanel, imgPanel, formPanel;
     private JLabel cartoon, bigHeader, smallHeader, title;
     TfacrossGui mainScreen;
-    
+
 	DefaultListModel model = new DefaultListModel();
-	
+
     GameListScreen (TfacrossGui myMainScreen) {
-    	
+
         playBtn = new JButton("Play Game");
         newBtn = new JButton("Create New Game");
         logoutBtn = new JButton("Logout");
 
     	gamelist = null;
-    	    	
+
         cartoon = new JLabel(new ImageIcon("noclue.jpg"));
-        
+
         title = new JLabel();
 
         bigHeader = new JLabel("Welcome to 25 Across!");
@@ -58,7 +58,7 @@ public class GameListScreen extends JPanel {
         smallHeader.setForeground(new Color(15,124,244));
         smallHeader.setVerticalTextPosition(JLabel.TOP);
         smallHeader.setPreferredSize(new Dimension(60, 60));
-        
+
         imgPanel = new JPanel();
         imgPanel.setBackground(Color.white);
         imgPanel.add(cartoon);
@@ -87,23 +87,29 @@ public class GameListScreen extends JPanel {
         newBtn.addActionListener(new NewListener());
         logoutBtn.addActionListener(new LogoutListener());
 
-        
+
         mainScreen = myMainScreen;
     }
-    
+
     void updateGameList()
     {
     	try {
     		InitialContext ic = new InitialContext();
     		//gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
     		gameManager = (GameManagerRemote) ic.lookup("twentyfiveacross.ejbs.GameManagerRemote");
-    		
+    	}
+    	catch (Exception e) {
+            e.printStackTrace();
+    	    // TODO: serverLost()
+    	}
+
+    	try {
     		String[] listGamesStr = gameManager.listGames();
     		if(null==listGamesStr)
     			gamelist = null;
     		else
     			gamelist = listGamesStr.clone();
-    		
+
     		if(null!=gameLst)
     		{
         		playBtn.setEnabled(true);
@@ -125,7 +131,7 @@ public class GameListScreen extends JPanel {
             formPanel.add(playBtn);
             formPanel.add(newBtn);
             formPanel.add(logoutBtn);
-        	    		
+
     	} catch (Exception e) {
     		System.err.println("Error!: " + e.getMessage());
     		e.printStackTrace();
@@ -140,10 +146,17 @@ public class GameListScreen extends JPanel {
         		InitialContext ic = new InitialContext();
         		//gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
         		gameManager = (GameManagerRemote) ic.lookup("twentyfiveacross.ejbs.GameManagerRemote");
-        		
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                // TODO: serverLost()
+            }
+
+            try {
+
         		if(null==gameLst.getSelectedValue())
         			return;
-        		
+
         		mainScreen.lister.setVisible(false);
         		int loadThisGame = Integer.parseInt(gameLst.getSelectedValue().toString());
         		if(null!=mainScreen.solverScreen)
@@ -157,7 +170,7 @@ public class GameListScreen extends JPanel {
         		mainScreen.mainPanel.add(cs);
         		mainScreen.solverScreen = cs;
         		mainScreen.validate();
-        		
+
         	} catch (Exception e) {
         		System.err.println("Error!: " + e.getMessage());
         		e.printStackTrace();
@@ -172,6 +185,13 @@ public class GameListScreen extends JPanel {
         		InitialContext ic = new InitialContext();
         		//gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
         		gameManager = (GameManagerRemote) ic.lookup("twentyfiveacross.ejbs.GameManagerRemote");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                // TODO: serverLost()
+            }
+
+            try {
         		mainScreen.lister.setVisible(false);
         		int loadThisGame = gameManager.newGame();
         		Crossword c = gameManager.getCrossword(loadThisGame);
@@ -185,7 +205,7 @@ public class GameListScreen extends JPanel {
         		mainScreen.mainPanel.add(cs);
         		mainScreen.solverScreen = cs;
         		mainScreen.validate();
-        		
+
         	} catch (Exception e) {
         		System.err.println("Error!: " + e.getMessage());
         		e.printStackTrace();

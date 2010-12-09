@@ -122,7 +122,13 @@ public class ManagementScreen extends JPanel {
     		InitialContext ic = new InitialContext();
     		//userManager = (UserManagerRemote) ic.lookup("UserManager");
     		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            // TODO: serverLost()
+        }
 
+        try {
     		usersL = userManager.listUsers(rootToken);
     		if(null!=usersL)
     		{
@@ -151,7 +157,13 @@ public class ManagementScreen extends JPanel {
     		InitialContext ic = new InitialContext();
     		//userManager = (UserManagerRemote) ic.lookup("UserManager");
     		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            // TODO: serverLost()
+        }
 
+        try {
         	model.removeAllElements();
 
         	for(int i=0; i<userlist.length; i++)
@@ -178,7 +190,13 @@ public class ManagementScreen extends JPanel {
         		InitialContext ic = new InitialContext();
         		//userManager = (UserManagerRemote) ic.lookup("UserManager");
         		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                // TODO: serverLost()
+            }
 
+            try {
         		if(null==usersLst.getSelectedValue())
         			return;
 
@@ -204,7 +222,13 @@ public class ManagementScreen extends JPanel {
         		InitialContext ic = new InitialContext();
         		//userManager = (UserManagerRemote) ic.lookup("UserManager");
         		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                // TODO: serverLost()
+            }
 
+            try {
         		if(null==usersLst.getSelectedValue())
         			return;
 

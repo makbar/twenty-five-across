@@ -19,10 +19,10 @@ import java.awt.*;
 public class SolverGrid extends Grid
 {
 	private GameManagerRemote gameManager;
-	private int currentGame; 
+	private int currentGame;
 	private static String user;
 	private List<Integer> finished = new Vector<Integer>();
-	
+
     public SolverGrid()
     {
     }
@@ -33,7 +33,7 @@ public class SolverGrid extends Grid
         this.gameManager = gm;
     	this.currentGame = cg;
     }
-    
+
     public static String getUser() {
 		return user;
 	}
@@ -42,9 +42,9 @@ public class SolverGrid extends Grid
 		SolverGrid.user = user;
 	}
 
-	public void applySolveState(int gameId) {
+	public void applySolveState(int gameId) throws Exception {
 		Map<String, String> ss = gameManager.getSolveState(gameId);
-		
+
     	if(ss.size() != this.squares.size()) {
     		System.err.println("Tried to apply a solve state with a different number of squares from the puzzle!");
     		return;
@@ -167,7 +167,7 @@ public class SolverGrid extends Grid
     		return;
     	}
     	for(int i=0; i<squares.size(); i++)
-        {       	
+        {
             Square s = (Square)squares.get(i);
             s.setIsCorrect(true);
 
@@ -299,7 +299,7 @@ public class SolverGrid extends Grid
                 s = String.valueOf(e.getKeyChar());
             }
             try {
-            	
+
             	if(finished.contains(currentGame)) {
             		//Shouldn't update game
             	}

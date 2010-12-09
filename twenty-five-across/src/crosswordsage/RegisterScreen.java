@@ -118,6 +118,13 @@ public class RegisterScreen extends JPanel {
         	try {
         		InitialContext ic = new InitialContext();
         		userManager = (UserManagerRemote) ic.lookup("twentyfiveacross.ejbs.UserManagerRemote");
+        	}
+            catch (Exception e) {
+                e.printStackTrace();
+                // TODO: serverLost()
+            }
+
+             try {
         		String uName = usernameField.getText();
         		String nField = nameField.getText();
         		String pw = pwField.getText();

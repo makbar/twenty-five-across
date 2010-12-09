@@ -38,7 +38,7 @@ public class CrosswordSolver extends JPanel
     private Timer timer;
 
     private JTextArea taResigned = new JTextArea("The game has been resigned!\n");
-    
+
     TfacrossGui mainScreen;
 
     public CrosswordSolver(Crossword cw, GameManagerRemote gm, int gn, TfacrossGui ms)
@@ -88,8 +88,13 @@ public class CrosswordSolver extends JPanel
     }
 
 	private void updateState() {
-		//int size = gameManager.getSolveStateSize(gameNumber);
-		grid.applySolveState(gameNumber);
+	    try {
+	        //int size = gameManager.getSolveStateSize(gameNumber);
+	        grid.applySolveState(gameNumber);
+	    }
+	    catch (Exception e) {
+	        // TODO: lostServer()
+	    }
 	}
 
     private void compileClues()

@@ -20,7 +20,7 @@ import java.io.*;
 public class MainScreen extends JFrame
 {
     Preferences prefs = new Preferences();
-    
+
     //define menu variables
     JMenuBar jMenuBar1 = new JMenuBar();
     JMenu mTools = new JMenu();
@@ -47,7 +47,7 @@ public class MainScreen extends JFrame
     JMenuItem mEdit_Split = new JMenuItem();
     // JMenuItem mTools_Version = new JMenuItem();
     JMenuItem mFile_Preferences = new JMenuItem();
-    
+
     //@EJB(mappedName="twentyfiveacross.ejbs.UserManagerRemote")
 	public UserManagerRemote userManager;
 	public GameManagerRemote gameManager;
@@ -115,7 +115,7 @@ public class MainScreen extends JFrame
         mFile_NewCrossword.setBackground(new Color(199, 223, 236));
         mFile_Display.setText("Display Server's Crossword");
         mFile_Display.setBackground(new Color(199, 223, 236));
-        
+
         mEdit.setText("Edit");
         mEdit.setBackground(new Color(199, 223, 236));
         mEdit_Split.setText("Split Word");
@@ -150,7 +150,7 @@ public class MainScreen extends JFrame
         mFile.add(mFile_Preferences);
         mEdit.add(mEdit_Split);
         // mTools.add(mTools_Version);
-        
+
 		System.err.println("Connecting");
 
        /* URL url = new URL("http://localhost:8080/UserManagerService/UserManager?wsdl");
@@ -158,20 +158,20 @@ public class MainScreen extends JFrame
         Service service = Service.create(url, qname);
 
         userManager = service.getPort(UserManagerRemote.class);*/
-        
+
         /*
         url = new URL("http://localhost:8080/GameManagerService/GameManager?wsdl");
         qname = new QName("http://ejbs.twentyfiveacross/", "GameManagerService");
         service = Service.create(url, qname);
 
         gameManager = service.getPort(GameManagerRemote.class);*/
-        
+
         System.err.println("Creating properties");
 
         //Hashtable <String,String> env = new Hashtable <String, String>();
 		//env.put(Context.INITIAL_CONTEXT_FACTORY,"org.jnp.interfaces.NamingContextFactory");
 		//env.put(Context.PROVIDER_URL, "http://localhost:8080");
-		
+
 		java.util.Properties prop = System.getProperties();
 		prop.put(Context.PROVIDER_URL, "http://localhost:8080");
 
@@ -180,15 +180,11 @@ public class MainScreen extends JFrame
 			//gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
 			gameManager = (GameManagerRemote) ic.lookup("twentyfiveacross.ejbs.GameManagerRemote");
 		} catch (Exception e) {
-			System.err.println("Error!: " + e.getMessage());
-			e.printStackTrace();
-			return;
+            e.printStackTrace();
+		    // TODO: serverLost()
 		}
-        
-		System.err.println("Connected");
-		
-		
 
+		System.err.println("Connected");
     }
 
     private void BuildMenu()
