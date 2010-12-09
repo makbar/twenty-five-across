@@ -113,5 +113,6 @@ public class TfacrossGui extends JFrame {
 		login.setVisible(true);
 		statusbarStatusLbl.setText("Connection to server lost.  Please check connection and try again.");
 		/* Also, set the state to the login state */ 
+	
 	}
 }
