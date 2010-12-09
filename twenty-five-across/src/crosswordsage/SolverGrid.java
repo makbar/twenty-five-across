@@ -230,9 +230,9 @@ public class SolverGrid extends Grid
     		    	int count = scores.get(user);
     		    	buf.append(user).append("     ").append(count).append("\n");
     	    	}
-    	    }
-    	    JOptionPane.showMessageDialog(null, buf.toString());
+    	    }    	    
     	    gameManager.updateGameState(currentGame);
+    	    JOptionPane.showMessageDialog(null, buf.toString());
             validate();
             return true;
     	}
