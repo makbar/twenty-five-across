@@ -154,19 +154,20 @@ public class GameListScreen extends JPanel {
 
         		if(null==gameLst.getSelectedValue())
         			return;
-        		
-        		mainScreen.lister.setVisible(false);
         		int loadThisGame = Integer.parseInt(gameLst.getSelectedValue().toString());
-        		if(null!=mainScreen.solverScreen)
-        		{
-        			mainScreen.mainPanel.remove(mainScreen.solverScreen);
-        			mainScreen.solverScreen = null;
-        		}
         		Crossword c = gameManager.getCrossword(loadThisGame);
         		if(null == c) {
         			mainScreen.statusbarStatusLbl.setText("Called on a finished game");
         			return;
         		}
+        		mainScreen.lister.setVisible(false);
+        		
+        		if(null!=mainScreen.solverScreen)
+        		{
+        			mainScreen.mainPanel.remove(mainScreen.solverScreen);
+        			mainScreen.solverScreen = null;
+        		}
+        		
 //        		mainScreen.mainPanel.removeAll();
         		CrosswordSolver cs = new CrosswordSolver(c, gameManager, loadThisGame, mainScreen);
         		mainScreen.mainPanel.add(cs);
