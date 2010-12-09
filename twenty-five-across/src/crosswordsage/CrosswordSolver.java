@@ -228,7 +228,7 @@ public class CrosswordSolver extends JPanel
         btnCheckSolution.setBorder(brdThinGrey);
         btnCheckSolution.setMaximumSize(new Dimension(131, 27));
         btnCheckSolution.setPreferredSize(new Dimension(131, 27));
-        btnCheckSolution.setText("Check Solution");
+        btnCheckSolution.setText("Finished");
         btnUpdateState.setBorder(brdThinGrey);
         btnUpdateState.setMaximumSize(new Dimension(131, 27));
         btnUpdateState.setPreferredSize(new Dimension(131, 27));
@@ -297,6 +297,7 @@ public class CrosswordSolver extends JPanel
         {
             if (e.getSource() == btnCheckSolution)
             {
+            	btnCheckSolution.setEnabled(false);
                 checkSolution();
             }
             else if(e.getSource() == btnUpdateState)
