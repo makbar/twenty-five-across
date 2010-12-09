@@ -163,6 +163,10 @@ public class GameListScreen extends JPanel {
         			mainScreen.solverScreen = null;
         		}
         		Crossword c = gameManager.getCrossword(loadThisGame);
+        		if(null == c) {
+        			mainScreen.statusbarStatusLbl.setText("Called on a finished game");
+        			return;
+        		}
 //        		mainScreen.mainPanel.removeAll();
         		CrosswordSolver cs = new CrosswordSolver(c, gameManager, loadThisGame, mainScreen);
         		mainScreen.mainPanel.add(cs);

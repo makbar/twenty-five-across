@@ -52,7 +52,7 @@ public class SolverGrid extends Grid
 			
 		}
 
-    	if(ss.size() != this.squares.size()) {
+    	if(ss.size() != 0 && ss.size() != this.squares.size()) {
     		System.err.println("Tried to apply a solve state with a different number of squares from the puzzle!");
     		return;
     	}
@@ -147,21 +147,16 @@ public class SolverGrid extends Grid
             }
         }
     }
-
-    public void checkSolution()
+    
+    public boolean getUpdate()
     {
-    	/* finished is a list of all games a user is finished with */
-    	if(finished.contains(currentGame)) {
-    		return;
-    	}
-    	else {
-    		finished.add(currentGame);
-    		gameManager.incFinished(currentGame); /* Increment count of finished users */
+    	if(!finished.contains(currentGame)) {
+    		return false;
     	}
     	Map<String, Integer> scores = new HashMap<String, Integer>();
     	Map<String, String> ss = gameManager.getSolvedSquares(currentGame);
     	if(ss.size() == 0)
-    		return;
+    		return false;
     	List<String> users = new Vector<String>();
     	for(Iterator<String> iter = ss.keySet().iterator(); iter.hasNext();) {
     		String key = iter.next();
@@ -169,75 +164,89 @@ public class SolverGrid extends Grid
     		if(user.length() > 0 && !users.contains(user))
     			users.add(user);
     	}
-    	if(gameManager.finishedUsers(currentGame) < users.size()) {
-    		JOptionPane.showMessageDialog(null, "Some users still in play!");
-    		return;
-    	}
-    	for(int i=0; i<squares.size(); i++)
-        {
-            Square s = (Square)squares.get(i);
-            s.setIsCorrect(true);
-
-            if(s.getLetter() != " ")
+    	if(gameManager.finishedUsers(currentGame) >= users.size()) {    		
+    		for(int i=0; i<squares.size(); i++)
             {
-                Word w = s.getWord();
-                if (w != null)
+                Square s = (Square)squares.get(i);
+                s.setIsCorrect(true);
+
+                if(s.getLetter() != " ")
                 {
-                    if (w.getWordDirection() == Word.ACROSS)
+                    Word w = s.getWord();
+                    if (w != null)
                     {
-                        String answerLetter = String.valueOf(w.getWord().charAt(s.getLetterIndexAcross()));
-                        if (s.getLetter().equals(answerLetter.toUpperCase()))
+                        if (w.getWordDirection() == Word.ACROSS)
                         {
-                        	String key = s.getXPos() + " " + s.getYPos();
-                        	if(ss.containsKey(key)){
-                        		String user = ss.get(key);
-                        		if(scores.get(user) == null)
-                        			scores.put(user, 1);
-                        		else
-                        			scores.put(user, scores.get(user) + 1);
-                        	}
-                            s.setIsCorrect(true);
+                            String answerLetter = String.valueOf(w.getWord().charAt(s.getLetterIndexAcross()));
+                            if (s.getLetter().equals(answerLetter.toUpperCase()))
+                            {
+                            	String key = s.getXPos() + " " + s.getYPos();
+                            	if(ss.containsKey(key)){
+                            		String user = ss.get(key);
+                            		if(scores.get(user) == null)
+                            			scores.put(user, 1);
+                            		else
+                            			scores.put(user, scores.get(user) + 1);
+                            	}
+                                s.setIsCorrect(true);
+                            }
+                            else
+                            {
+                                s.setIsCorrect(false);
+                            }
                         }
-                        else
+                        else if (w.getWordDirection() == Word.DOWN)
                         {
-                            s.setIsCorrect(false);
-                        }
-                    }
-                    else if (w.getWordDirection() == Word.DOWN)
-                    {
-                        String answerLetter = String.valueOf(w.getWord().charAt(s.getLetterIndexDown()));
-                        if (s.getLetter().equals(answerLetter.toUpperCase()))
-                        {
-                        	String key = s.getXPos() + " " + s.getYPos();
-                        	String user = ss.get(key);
-                        	if(user != null){
-                        		if(scores.get(user) == null)
-                        			scores.put(user, 1);
-                        		else
-                        			scores.put(user, scores.get(user) + 1);
-                        	}
-                            s.setIsCorrect(true);
-                        }
-                        else
-                        {
-                            s.setIsCorrect(false);
+                            String answerLetter = String.valueOf(w.getWord().charAt(s.getLetterIndexDown()));
+                            if (s.getLetter().equals(answerLetter.toUpperCase()))
+                            {
+                            	String key = s.getXPos() + " " + s.getYPos();
+                            	String user = ss.get(key);
+                            	if(user != null){
+                            		if(scores.get(user) == null)
+                            			scores.put(user, 1);
+                            		else
+                            			scores.put(user, scores.get(user) + 1);
+                            	}
+                                s.setIsCorrect(true);
+                            }
+                            else
+                            {
+                                s.setIsCorrect(false);
+                            }
                         }
                     }
                 }
+                s.validate();
+                s.repaint();
             }
-            s.validate();
-            s.repaint();
-        }
-    	StringBuffer buf = new StringBuffer();
-	    buf.append("Scores\n");
-	    for(Iterator<String> iter = scores.keySet().iterator(); iter.hasNext();) {
-	    	String user = iter.next();
-	    	int count = scores.get(user);
-	    	buf.append(user).append("     ").append(count).append("\n");
-	    }
-	    JOptionPane.showMessageDialog(null, buf.toString());
-	    gameManager.updateGameState(currentGame);
-        validate();
+        	StringBuffer buf = new StringBuffer();
+    	    buf.append("Scores\n");
+    	    for(Iterator<String> iter = users.iterator(); iter.hasNext();) {
+    	    	String user = iter.next();
+    	    	if(!scores.containsKey(user))
+    	    		buf.append(user).append("     0").append("\n");
+    	    	else {
+    		    	int count = scores.get(user);
+    		    	buf.append(user).append("     ").append(count).append("\n");
+    	    	}
+    	    }
+    	    JOptionPane.showMessageDialog(null, buf.toString());
+    	    gameManager.updateGameState(currentGame);
+            validate();
+            return true;
+    	}
+    	return false;
+    }
+
+    public void checkSolution()
+    {
+    	/* finished is a list of all games a user is finished with */
+    	if(!finished.contains(currentGame)) {
+    		finished.add(currentGame);
+    		gameManager.incFinished(currentGame); /* Increment count of finished users */
+    	}
+
     }
 
 

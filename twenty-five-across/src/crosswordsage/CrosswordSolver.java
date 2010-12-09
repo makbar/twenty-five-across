@@ -91,6 +91,13 @@ public class CrosswordSolver extends JPanel
 	    try {
 	        //int size = gameManager.getSolveStateSize(gameNumber);
 	        grid.applySolveState(gameNumber);
+	        if(grid.getUpdate()) {
+        		mainScreen.solverScreen.setVisible(false);
+        		mainScreen.lister.updateGameList();
+        		mainScreen.lister.setVisible(true);
+            	mainScreen.validate();
+            	mainScreen.mainPanel.validate();
+	        }
 	    }
 	    catch (Exception e) {
 	        // TODO: lostServer()
@@ -208,6 +215,7 @@ public class CrosswordSolver extends JPanel
     public void checkSolution()
     {
         grid.checkSolution();
+        
     }
 
     private void revealWord()
@@ -298,6 +306,7 @@ public class CrosswordSolver extends JPanel
             if (e.getSource() == btnCheckSolution)
             {
             	btnCheckSolution.setEnabled(false);
+            	btnBack.setEnabled(false);
                 checkSolution();
             }
             else if(e.getSource() == btnUpdateState)
