@@ -26,27 +26,25 @@ public class GameListScreen extends JPanel {
     String gamelist[];
 
 	public GameManagerRemote gameManager;
-
-	private JButton playBtn=null;
-	private JButton newBtn=null;
+    
+	private JButton playBtn, newBtn, logoutBtn;
 	private JList gameLst=null;
-    private JButton logoutBtn = new JButton();
 	private JPanel mainPanel, imgPanel, formPanel;
     private JLabel cartoon, bigHeader, smallHeader, title;
     TfacrossGui mainScreen;
-
+    
 	DefaultListModel model = new DefaultListModel();
-
+	
     GameListScreen (TfacrossGui myMainScreen) {
-
+    	
         playBtn = new JButton("Play Game");
         newBtn = new JButton("Create New Game");
         logoutBtn = new JButton("Logout");
 
     	gamelist = null;
-
+    	    	
         cartoon = new JLabel(new ImageIcon("noclue.jpg"));
-
+        
         title = new JLabel();
 
         bigHeader = new JLabel("Welcome to 25 Across!");
@@ -58,7 +56,7 @@ public class GameListScreen extends JPanel {
         smallHeader.setForeground(new Color(15,124,244));
         smallHeader.setVerticalTextPosition(JLabel.TOP);
         smallHeader.setPreferredSize(new Dimension(60, 60));
-
+        
         imgPanel = new JPanel();
         imgPanel.setBackground(Color.white);
         imgPanel.add(cartoon);
@@ -87,10 +85,10 @@ public class GameListScreen extends JPanel {
         newBtn.addActionListener(new NewListener());
         logoutBtn.addActionListener(new LogoutListener());
 
-
+        
         mainScreen = myMainScreen;
     }
-
+    
     void updateGameList()
     {
     	try {
@@ -109,7 +107,7 @@ public class GameListScreen extends JPanel {
     			gamelist = null;
     		else
     			gamelist = listGamesStr.clone();
-
+    		
     		if(null!=gameLst)
     		{
         		playBtn.setEnabled(true);
@@ -131,7 +129,7 @@ public class GameListScreen extends JPanel {
             formPanel.add(playBtn);
             formPanel.add(newBtn);
             formPanel.add(logoutBtn);
-
+        	    		
     	} catch (Exception e) {
     		System.err.println("Error!: " + e.getMessage());
     		e.printStackTrace();
@@ -156,7 +154,7 @@ public class GameListScreen extends JPanel {
 
         		if(null==gameLst.getSelectedValue())
         			return;
-
+        		
         		mainScreen.lister.setVisible(false);
         		int loadThisGame = Integer.parseInt(gameLst.getSelectedValue().toString());
         		if(null!=mainScreen.solverScreen)
@@ -170,7 +168,7 @@ public class GameListScreen extends JPanel {
         		mainScreen.mainPanel.add(cs);
         		mainScreen.solverScreen = cs;
         		mainScreen.validate();
-
+        		
         	} catch (Exception e) {
         		System.err.println("Error!: " + e.getMessage());
         		e.printStackTrace();
@@ -205,7 +203,7 @@ public class GameListScreen extends JPanel {
         		mainScreen.mainPanel.add(cs);
         		mainScreen.solverScreen = cs;
         		mainScreen.validate();
-
+        		
         	} catch (Exception e) {
         		System.err.println("Error!: " + e.getMessage());
         		e.printStackTrace();

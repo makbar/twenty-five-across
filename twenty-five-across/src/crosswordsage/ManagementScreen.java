@@ -29,7 +29,7 @@ public class ManagementScreen extends JPanel {
 
     public UserManagerRemote userManager;
 
-	private JButton banBtn, unBanBtn;
+	private JButton banBtn, unBanBtn, logoutBtn;
 	private JList usersLst;
 	private JList banLst;
 	private JPanel mainPanel, imgPanel, formPanel, titlePanel, listPanel, btnPanel;
@@ -47,6 +47,10 @@ public class ManagementScreen extends JPanel {
 
     	rootToken = token;
 
+        banBtn = new JButton("Ban");
+        unBanBtn = new JButton("UnBan");
+        logoutBtn = new JButton("Logout");
+
     	updateUserList();
 
         cartoon = new JLabel(new ImageIcon("noclue.jpg"));
@@ -62,9 +66,6 @@ public class ManagementScreen extends JPanel {
         smallHeader.setForeground(new Color(15,124,244));
         //smallHeader.setVerticalTextPosition(JLabel.TOP);
         //smallHeader.setPreferredSize(new Dimension(60, 60));
-
-        banBtn = new JButton("Ban");
-        unBanBtn = new JButton("UnBan");
 
         imgPanel = new JPanel();
         imgPanel.setBackground(Color.white);
@@ -90,6 +91,7 @@ public class ManagementScreen extends JPanel {
         btnPanel.setBackground(Color.white);
         btnPanel.add(banBtn);
         btnPanel.add(unBanBtn);
+        btnPanel.add(logoutBtn);
 
         formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
@@ -111,7 +113,7 @@ public class ManagementScreen extends JPanel {
 
         banBtn.addActionListener(new BanListener());
         unBanBtn.addActionListener(new UnBanListener());
-
+        logoutBtn.addActionListener(new LogoutListener());
 
         mainScreen = myMainScreen;
     }
@@ -137,11 +139,20 @@ public class ManagementScreen extends JPanel {
     	        updateLists();
     	        usersLst.setVisibleRowCount(5);
     	        banLst.setVisibleRowCount(5);
+    	    	banBtn.setEnabled(true);
+    	    	unBanBtn.setEnabled(true);
+    	    	if(usersL.size()==0)
+    	    	{
+        	    	banBtn.setEnabled(false);
+        	    	unBanBtn.setEnabled(false);    	    		
+    	    	}
     		}
     		else
     		{
     	    	usersLst = new JList();
     	    	banLst = new JList();
+    	    	banBtn.setEnabled(false);
+    	    	unBanBtn.setEnabled(false);
     		}
 
 
@@ -240,6 +251,21 @@ public class ManagementScreen extends JPanel {
 
         		updateLists();
 
+        	} catch (Exception e) {
+        		System.err.println("Error!: " + e.getMessage());
+        		e.printStackTrace();
+        	}
+        }
+    }
+    class LogoutListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent a)
+        {
+        	try {
+        		mainScreen.manager.setVisible(false);
+        		mainScreen.login.setVisible(true);
+            	mainScreen.validate();
+            	mainScreen.mainPanel.validate();
         	} catch (Exception e) {
         		System.err.println("Error!: " + e.getMessage());
         		e.printStackTrace();
