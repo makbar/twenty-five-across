@@ -104,4 +104,14 @@ public class TfacrossGui extends JFrame {
 		login.setVisible(false);
 		register.setVisible(false);
 	}
+
+	public void serverLost() {
+		register.setVisible(false);
+		if(null!=manager) { manager.setVisible(false); }
+		if(null!=lister)  { lister.setVisible(false); }
+		if(null!=solverScreen) { solverScreen.setVisible(false); }
+		login.setVisible(true);
+		statusbarStatusLbl.setText("Connection to server lost.  Please check connection and try again.");
+		/* Also, set the state to the login state */ 
+	}
 }

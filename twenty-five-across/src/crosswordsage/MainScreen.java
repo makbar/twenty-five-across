@@ -151,40 +151,6 @@ public class MainScreen extends JFrame
         mEdit.add(mEdit_Split);
         // mTools.add(mTools_Version);
 
-		System.err.println("Connecting");
-
-       /* URL url = new URL("http://localhost:8080/UserManagerService/UserManager?wsdl");
-        QName qname = new QName("http://ejbs.twentyfiveacross/", "UserManagerService");
-        Service service = Service.create(url, qname);
-
-        userManager = service.getPort(UserManagerRemote.class);*/
-
-        /*
-        url = new URL("http://localhost:8080/GameManagerService/GameManager?wsdl");
-        qname = new QName("http://ejbs.twentyfiveacross/", "GameManagerService");
-        service = Service.create(url, qname);
-
-        gameManager = service.getPort(GameManagerRemote.class);*/
-
-        System.err.println("Creating properties");
-
-        //Hashtable <String,String> env = new Hashtable <String, String>();
-		//env.put(Context.INITIAL_CONTEXT_FACTORY,"org.jnp.interfaces.NamingContextFactory");
-		//env.put(Context.PROVIDER_URL, "http://localhost:8080");
-
-		java.util.Properties prop = System.getProperties();
-		prop.put(Context.PROVIDER_URL, "http://localhost:8080");
-
-		try {
-			InitialContext ic = new InitialContext(); //env
-			//gameManager = (GameManagerRemote) ic.lookup("java:global/twenty-five-across/GameManager");
-			gameManager = (GameManagerRemote) ic.lookup("twentyfiveacross.ejbs.GameManagerRemote");
-		} catch (Exception e) {
-            e.printStackTrace();
-		    // TODO: serverLost()
-		}
-
-		System.err.println("Connected");
     }
 
     private void BuildMenu()

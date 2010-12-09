@@ -305,6 +305,7 @@ public class CrosswordSolver extends JPanel
             }
             else if(e.getSource() == btnBack)
             {
+            	timer.stop();
         		mainScreen.solverScreen.setVisible(false);
         		mainScreen.lister.updateGameList();
         		mainScreen.lister.setVisible(true);
