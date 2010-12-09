@@ -164,7 +164,7 @@ public class SolverGrid extends Grid
     		if(user.length() > 0 && !users.contains(user))
     			users.add(user);
     	}
-    	if(gameManager.finishedUsers(currentGame) >= users.size()) {    		
+    	if(0 < users.size() && gameManager.finishedUsers(currentGame) >= users.size()) {    		
     		for(int i=0; i<squares.size(); i++)
             {
                 Square s = (Square)squares.get(i);
