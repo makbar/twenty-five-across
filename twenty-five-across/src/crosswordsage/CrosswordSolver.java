@@ -92,11 +92,12 @@ public class CrosswordSolver extends JPanel
 	        //int size = gameManager.getSolveStateSize(gameNumber);
 	        grid.applySolveState(gameNumber);
 	        if(grid.getUpdate()) {
+	        	timer.stop();
         		mainScreen.solverScreen.setVisible(false);
         		mainScreen.lister.updateGameList();
         		mainScreen.lister.setVisible(true);
             	mainScreen.validate();
-            	mainScreen.mainPanel.validate();
+            	mainScreen.mainPanel.validate();            	
 	        }
 	    }
 	    catch (Exception e) {
