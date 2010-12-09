@@ -104,7 +104,7 @@ public class GameManager implements GameManagerRemote {
 
 	@Override
 	public Boolean setLetter(int gameId, int x, int y, String letter, String username) throws Exception {
-		if(!letter.matches("[a-zA-Z]")) {
+		if(!letter.matches("[a-zA-Z ]")) {
 			System.err.println("User entered bad character: " + (int) letter.charAt(0));
 			return false;
 		}
