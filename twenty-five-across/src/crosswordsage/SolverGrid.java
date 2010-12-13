@@ -44,13 +44,7 @@ public class SolverGrid extends Grid
 
 	public void applySolveState(int gameId) throws Exception {
 		Map<String, String> ss = null;
-		try {
-			ss = gameManager.getSolveState(gameId);
-		} catch (Exception e) {
-			
-			/* TODO: Lost connection to server .. do something -EPS */
-			
-		}
+		ss = gameManager.getSolveState(gameId);
 
     	if(ss.size() != 0 && ss.size() != this.squares.size()) {
     		System.err.println("Tried to apply a solve state with a different number of squares from the puzzle!");

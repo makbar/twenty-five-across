@@ -127,7 +127,8 @@ public class ManagementScreen extends JPanel {
         }
         catch (Exception e) {
             e.printStackTrace();
-            // TODO: serverLost()
+	    	mainScreen.serverLost();
+	    	return;
         }
 
         try {
@@ -171,7 +172,8 @@ public class ManagementScreen extends JPanel {
         }
         catch (Exception e) {
             e.printStackTrace();
-            // TODO: serverLost()
+	    	mainScreen.serverLost();
+	    	return;
         }
 
         try {
@@ -204,7 +206,8 @@ public class ManagementScreen extends JPanel {
             }
             catch (Exception e) {
                 e.printStackTrace();
-                // TODO: serverLost()
+    	    	mainScreen.serverLost();
+    	    	return;
             }
 
             try {
@@ -236,7 +239,8 @@ public class ManagementScreen extends JPanel {
             }
             catch (Exception e) {
                 e.printStackTrace();
-                // TODO: serverLost()
+    	    	mainScreen.serverLost();
+    	    	return;
             }
 
             try {

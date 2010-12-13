@@ -121,7 +121,8 @@ public class RegisterScreen extends JPanel {
         	}
             catch (Exception e) {
                 e.printStackTrace();
-                // TODO: serverLost()
+    	    	mainScreen.serverLost();
+    	    	return;
             }
 
              try {

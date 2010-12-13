@@ -117,7 +117,8 @@ public class LoginScreen extends JPanel {
             }
             catch (Exception e) {
                 e.printStackTrace();
-                // TODO: serverLost()
+    	    	mainScreen.serverLost();
+    	    	return;
             }
 
             try {

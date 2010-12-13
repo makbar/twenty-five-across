@@ -101,7 +101,7 @@ public class CrosswordSolver extends JPanel
 	        }
 	    }
 	    catch (Exception e) {
-	        // TODO: lostServer()
+	    	mainScreen.serverLost();
 	    }
 	}
 
