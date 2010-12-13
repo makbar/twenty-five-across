@@ -106,7 +106,7 @@ public class UserManager implements UserManagerRemote {
 		if(!isSane(username)){
 			return false;
 		}
-		if(!checkLogin("root",managerToken)){
+		if(!checkLogin("root",managerToken) || "root".equals(username)){
 			return false;
 		}
 		UserInfo u = bean.find(username);
