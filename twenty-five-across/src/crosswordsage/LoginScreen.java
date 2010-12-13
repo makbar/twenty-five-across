@@ -215,7 +215,8 @@ public class LoginScreen extends JPanel {
             }
             catch (Exception e) {
                 e.printStackTrace();
-                // TODO: serverLost()
+                mainScreen.serverLost();
+                return;
             }
 
             try {
@@ -236,5 +237,15 @@ public class LoginScreen extends JPanel {
         		return;
         	}
         }
+    }
+
+    public void disconnectServer() {
+        pwField.setEnabled(false);
+        usernameField.setEnabled(false);
+        logInBtn.setEnabled(false);
+        registerBtn.setEnabled(false);
+        
+        serverField.setEnabled(true);
+        connectBtn.setEnabled(true);
     }
 }

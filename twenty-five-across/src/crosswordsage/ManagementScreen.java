@@ -245,7 +245,7 @@ public class ManagementScreen extends JPanel {
 
         		if(userManager.unBanUser(usersLst.getSelectedValue().toString(),rootToken))
         		{
-                	System.out.println("Ban "+usersLst.getSelectedValue().toString());
+                	System.out.println("Unban "+usersLst.getSelectedValue().toString());
                 	mainScreen.statusbarStatusLbl.setText("User "+usersLst.getSelectedValue().toString()+" Banned");
         		}
 
