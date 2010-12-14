@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 //import org.eclipse.persistence.annotations.Convert;
 
 @Stateless//(name="UserBeanInfo", mappedName="ejb/UserInfoJNDI") 
-public class UserBeanInfoImpl implements UserBeanInfo {
+public class UserInfoBeanImpl implements UserInfoBean {
 	
 	@PersistenceContext(name="persistence_ctx")
 	EntityManager em;

@@ -145,7 +145,7 @@ public class ManagementScreen extends JPanel {
     	    	if(usersL.size()==0)
     	    	{
         	    	banBtn.setEnabled(false);
-        	    	unBanBtn.setEnabled(false);    	    		
+        	    	unBanBtn.setEnabled(false);
     	    	}
     		}
     		else
@@ -250,7 +250,7 @@ public class ManagementScreen extends JPanel {
         		if(userManager.unBanUser(usersLst.getSelectedValue().toString(),rootToken))
         		{
                 	System.out.println("Unban "+usersLst.getSelectedValue().toString());
-                	mainScreen.statusbarStatusLbl.setText("User "+usersLst.getSelectedValue().toString()+" Banned");
+                	mainScreen.statusbarStatusLbl.setText("User "+usersLst.getSelectedValue().toString()+" Unbanned");
         		}
 
         		updateLists();

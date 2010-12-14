@@ -48,7 +48,7 @@ public class WordSolverPanel extends JPanel
         try
         {
             jbInit();
-            
+
             // EPS
             /*System.err.println("Creating properties");
 
@@ -56,7 +56,7 @@ public class WordSolverPanel extends JPanel
     		env.put(Context.INITIAL_CONTEXT_FACTORY,"org.jnp.interfaces.NamingContextFactory");
     		env.put(Context.PROVIDER_URL, "http://localhost:8080");
     		*/
-            
+
 
 
     		/*try {
@@ -67,7 +67,7 @@ public class WordSolverPanel extends JPanel
     			System.err.println("Error!: " + e.getMessage());
     			return;
     		}*/
-    		
+
         }
         catch (Exception ex)
         {
@@ -326,16 +326,14 @@ public class WordSolverPanel extends JPanel
         Arrays.sort(data2);
         return Arrays.equals(data1, data2);
     }
-    
+
     private void printItems() {
-    	
+
     	try {
 			jTextArea1.append("Connecting...\n");
-			
+
 			jTextArea1.append("Getting your greeting...\n");
-	
-			String blah = mainScreen.userManager.sayHi("Team");
-			jTextArea1.append(blah);
+
 			String[] bliggity = mainScreen.gameManager.listGames();
 			jTextArea1.append("Just got a list of games:");
 			jTextArea1.append("l: " + bliggity.length);
@@ -345,7 +343,7 @@ public class WordSolverPanel extends JPanel
 			bliggity = mainScreen.gameManager.listGames();
 			jTextArea1.append("\nJust got a list of games:");
 			jTextArea1.append("l: " + bliggity.length);
-			
+
 			int loadThisGame;
 			String[] games = mainScreen.gameManager.listGames();
 			if(games.length < 1) {
@@ -353,7 +351,7 @@ public class WordSolverPanel extends JPanel
 			}
 			for(int i = 0; i<games.length; i++) {
 				loadThisGame = Integer.parseInt(games[i]);
-				//SolveState s = mainScreen.gameManager.getSolveState(loadThisGame);		
+				//SolveState s = mainScreen.gameManager.getSolveState(loadThisGame);
 				String s = mainScreen.gameManager.getSolveStateString(loadThisGame);
 				jTextArea1.append("\nSolve State of game#" + loadThisGame + ": " + s);
 			}
